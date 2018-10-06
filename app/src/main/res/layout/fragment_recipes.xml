@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/tabs_and_toolbar_height"
+    tools:context=".RecipesFragment">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:contentDescription="@string/todo"
+            android:elevation="2dp"
+            android:outlineProvider="bounds"
+            android:scaleType="fitXY"
+            android:src="@color/white"
+            app:layout_constraintHeight_percent="0.1"
+            tools:scaleType="fitXY" />
+    </android.support.constraint.ConstraintLayout>
+
+    <com.mancj.materialsearchbar.MaterialSearchBar
+        android:id="@+id/search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:elevation="0dp"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.92"
+        app:mt_hint="@string/search_food"
+        app:mt_placeholder="@string/search_food"
+        app:mt_placeholderColor="@android:color/darker_gray"
+        app:mt_textColor="@color/black"></com.mancj.materialsearchbar.MaterialSearchBar>
+
+</android.support.constraint.ConstraintLayout>

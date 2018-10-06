@@ -1,0 +1,48 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+
+        <item name="android:windowContentTransitions">true</item>
+
+
+        <item name="android:windowEnterTransition">@android:transition/no_transition</item>
+        <item name="android:windowExitTransition">@android:transition/no_transition</item>
+
+        <item name="android:windowAllowEnterTransitionOverlap">true</item>
+        <item name="android:windowAllowReturnTransitionOverlap">true</item>
+        <item name="android:windowSharedElementEnterTransition">@android:transition/move</item>
+        <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Widget.AppTheme.Toolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/toolbar_height</item>
+        <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="contentInsetStartWithNavigation">0dp</item>
+    </style>
+
+
+    <style name="Widget.AppTheme.TabLayout" parent="Widget.AppCompat.ActionBar.TabBar">
+        <item name="android:background">@color/colorPrimary</item>
+        <!--<item name="tabIndicatorColor">@color/white</item>-->
+        <!--<item name="tabIndicatorHeight">3dp</item>-->
+        <item name="tabSelectedTextColor">@color/white</item>
+        <item name="tabTextColor">@color/colorPrimaryLight</item>
+    </style>
+</resources>

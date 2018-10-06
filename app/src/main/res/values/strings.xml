@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Step To Food</string>
+    <string name="todo">TODO</string>
+    <string name="step_to">STEP TO</string>
+    <string name="food">FOOD</string>
+    <string name="auth">Авторизация</string>
+    <string name="enter_pass">Введите пароль</string>
+    <string name="enter_login">Введите логин</string>
+    <string name="enter_name">Введите имя</string>
+    <string name="enter">Войти</string>
+    <string name="registration">Регистрация</string>
+    <string name="registr_button_text">Зарегистрироваться</string>
+    <string name="search_food">Поиск блюда</string>
+
+    <string name="transition_name_name">transition:NAME</string>
+    <string name="transition_name_login">transition:LOGIN</string>
+    <string name="transition_name_pass">transition:PASS</string>
+
+    <string name="tabRecipesText">Рецепты</string>
+    <string name="tabComposeText">Составить</string>
+    <string name="tabUserText">Пользователь</string>
+</resources>
