@@ -4,66 +4,97 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="@dimen/tabs_and_toolbar_height"
-    tools:context=".FoodInfoActivity">
+    android:paddingTop="@dimen/tabs_and_toolbar_height">
 
-    <ImageView
-        android:id="@+id/imageView"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:contentDescription="@string/todo"
-        app:layout_constraintHeight_percent="0.5"
-        app:srcCompat="@drawable/login"
-        tools:scaleType="fitXY">
+        android:layout_height="match_parent">
 
-<!--        <TextView
-            android:id="@+id/textViewStep"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/step_to"
-            android:textColor="@color/white"
-            android:textSize="38sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.10" />
+        <ImageView
+            android:id="@+id/imageFoodView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:contentDescription="@string/todo"
+            android:scaleType="fitXY"
+            app:layout_constraintHeight_percent="0.4"
+            app:srcCompat="@drawable/test_food_picture" />
 
         <TextView
-            android:id="@+id/textViewFood"
-            android:layout_width="wrap_content"
+            android:id="@+id/textFoodNameView"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/food"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textAlignment="textStart"
             android:textColor="@color/white"
-            android:textSize="38sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.18" />-->
-    </ImageView>
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageFoodView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imageFoodView"
+            app:layout_constraintVertical_bias="0.1"
+            app:layout_constraintWidth_percent="0.7" />
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/cardView"
+        <ToggleButton
+            android:id="@+id/buttonLike"
+            style="CheckBoxStyle"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/like_button"
+            android:textOff=""
+            android:textOn=""
+            app:layout_constraintBottom_toBottomOf="@+id/imageFoodView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.07"
+            app:layout_constraintHorizontal_bias="0.98"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imageFoodView"
+            app:layout_constraintVertical_bias="0.1"
+            app:layout_constraintWidth_percent="0.1" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageUserView"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/test_avatar"
+            app:layout_constraintBottom_toBottomOf="@+id/imageFoodView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.04"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imageFoodView"
+            app:layout_constraintVertical_bias="0.8" />
+
+        <TextView
+            android:id="@+id/textUserNameView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textAlignment="textStart"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageFoodView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.9"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imageFoodView"
+            app:layout_constraintVertical_bias="0.8"
+            app:layout_constraintWidth_percent="0.7" />
+    </android.support.constraint.ConstraintLayout>
+
+    <ScrollView
+        android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="28dp"
+        android:background="@drawable/bound_with_circle_top"
+        android:isScrollContainer="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHeight_percent="0.55"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.8">
+        app:layout_constraintCircleRadius="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.64"
+        app:layout_constraintStart_toStartOf="parent">
+    </ScrollView>
 
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-
-        </android.support.constraint.ConstraintLayout>
-    </android.support.v7.widget.CardView>
 
 </android.support.constraint.ConstraintLayout>

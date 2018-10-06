@@ -12,23 +12,23 @@
         android:theme="@style/AppTheme">
         <activity android:name=".LoginActivity">
 
-            <!--
+<!--
                 <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            -->
+-->
         </activity>
         <activity android:name=".RegistrationActivity" />
-        <activity android:name=".TabsMainActivity">
+        <activity android:name=".TabsMainActivity"/>
+        <activity android:name=".FoodInfoActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".FoodInfoActivity"></activity>
     </application>
 
 </manifest>

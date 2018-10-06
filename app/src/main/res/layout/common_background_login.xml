@@ -12,7 +12,7 @@
         android:contentDescription="@string/todo"
         app:layout_constraintHeight_percent="0.5"
         app:srcCompat="@drawable/login"
-        tools:scaleType="fitXY" />
+        android:scaleType="fitXY"/>
 
     <TextView
         android:id="@+id/textViewStep"
