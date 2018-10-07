@@ -22,7 +22,7 @@
     <string name="food_label">ПРОДУКТЫ</string>
     <string name="how_do_label">КАК ПРИГОТОВИТЬ</string>
     <string name="energy_label">ПИЩЕВАЯ ЦЕННОСТЬ (100 г.)</string>
-    <string name="calorie_label">Каллорийность</string>
+    <string name="calorie_label">Каллорий</string>
     <string name="fat_label">Жиры</string>
     <string name="protein_label">Белки</string>
     <string name="carbohydrates_label">Углеводы</string>
