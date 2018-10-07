@@ -14,7 +14,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        getSupportActionBar()?.hide()
+        supportActionBar?.hide()
     }
 
     fun openRegistrationView(view: View) {
@@ -23,7 +23,7 @@ class LoginActivity : AppCompatActivity() {
         this.startActivity(intent, bundle)
     }
 
-    fun getAnimation(): Bundle? {
+    private fun getAnimation(): Bundle? {
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                 this,
                 Pair<View, String>(findViewById(R.id.textLogin),

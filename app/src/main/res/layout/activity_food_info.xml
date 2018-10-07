@@ -2,11 +2,13 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/foodInfo"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="@dimen/tabs_and_toolbar_height">
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/foodInfoImageContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -36,28 +38,11 @@
             app:layout_constraintVertical_bias="0.1"
             app:layout_constraintWidth_percent="0.7" />
 
-        <ToggleButton
-            android:id="@+id/buttonLike"
-            style="CheckBoxStyle"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@drawable/like_button"
-            android:textOff=""
-            android:textOn=""
-            app:layout_constraintBottom_toBottomOf="@+id/imageFoodView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.07"
-            app:layout_constraintHorizontal_bias="0.98"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imageFoodView"
-            app:layout_constraintVertical_bias="0.1"
-            app:layout_constraintWidth_percent="0.1" />
-
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imageUserView"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:src="@drawable/test_avatar"
+            android:src="@drawable/avatar"
             app:layout_constraintBottom_toBottomOf="@+id/imageFoodView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.04"
@@ -93,8 +78,7 @@
         app:layout_constraintCircleRadius="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.64"
-        app:layout_constraintStart_toStartOf="parent">
-    </ScrollView>
+        app:layout_constraintStart_toStartOf="parent"/>
 
 
 </android.support.constraint.ConstraintLayout>
