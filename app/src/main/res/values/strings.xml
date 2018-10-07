@@ -28,4 +28,5 @@
     <string name="carbohydrates_label">Углеводы</string>
     <string name="add_products">Добавьте продукты...</string>
     <string name="add_description">Добавьте описание...</string>
+    <string name="gram">г.</string>
 </resources>
