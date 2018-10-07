@@ -15,18 +15,21 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_percent="0.7" />
 
-    <TextView
+    <EditText
         android:id="@+id/ingredientWeight"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:maxLines="1"
         android:singleLine="true"
-        android:textAlignment="textEnd"
+        android:textAlignment="center"
         android:textColor="@android:color/darker_gray"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.3" />
+        app:layout_constraintWidth_percent="0.3"
+        android:inputType="number"
+        android:ems="5"
+        android:hint="@string/gram"/>
 </android.support.constraint.ConstraintLayout>

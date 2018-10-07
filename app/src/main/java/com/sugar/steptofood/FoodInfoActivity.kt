@@ -16,9 +16,9 @@ class FoodInfoActivity : AppCompatActivity() {
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         inflater = this.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        setContentView(R.layout.activity_food_info)
+        setContentView(R.layout.widget_add_row_button)
         supportActionBar?.hide()
-        addLikeButton()
+//        addLikeButton()
     }
 
     @SuppressLint("InflateParams")
