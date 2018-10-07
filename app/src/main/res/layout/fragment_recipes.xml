@@ -38,6 +38,8 @@
         app:mt_hint="@string/search_food"
         app:mt_placeholder="@string/search_food"
         app:mt_placeholderColor="@android:color/darker_gray"
-        app:mt_textColor="@color/black"></com.mancj.materialsearchbar.MaterialSearchBar>
+        app:mt_textColor="@color/black">
+
+    </com.mancj.materialsearchbar.MaterialSearchBar>
 
 </android.support.constraint.ConstraintLayout>

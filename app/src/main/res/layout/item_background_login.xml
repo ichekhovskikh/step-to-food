@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/loginImageView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:contentDescription="@string/todo"
@@ -15,7 +15,7 @@
         android:scaleType="fitXY"/>
 
     <TextView
-        android:id="@+id/textViewStep"
+        android:id="@+id/stepTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/step_to"
@@ -29,7 +29,7 @@
         app:layout_constraintVertical_bias="0.10" />
 
     <TextView
-        android:id="@+id/textViewFood"
+        android:id="@+id/foodTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/food"

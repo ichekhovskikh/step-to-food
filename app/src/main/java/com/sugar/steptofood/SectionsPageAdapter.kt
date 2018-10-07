@@ -4,7 +4,6 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 
-
 class SectionsPageAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
     private val fragments = ArrayList<Fragment>()

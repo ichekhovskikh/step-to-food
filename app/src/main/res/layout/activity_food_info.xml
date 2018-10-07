@@ -1,57 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/foodInfo"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingTop="@dimen/tabs_and_toolbar_height">
+    android:layout_height="match_parent">
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/foodInfoImageContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/imageFoodView"
+            android:id="@+id/foodImageView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:contentDescription="@string/todo"
             android:scaleType="fitXY"
             app:layout_constraintHeight_percent="0.4"
-            app:srcCompat="@drawable/test_food_picture" />
+            app:srcCompat="@color/colorAccent" />
 
-        <TextView
-            android:id="@+id/textFoodNameView"
+        <EditText
+            android:id="@+id/foodNameTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
             android:maxLines="1"
             android:singleLine="true"
             android:textAlignment="textStart"
             android:textColor="@color/white"
+            android:textColorHint="@color/white"
             android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageFoodView"
+            app:layout_constraintBottom_toBottomOf="@+id/foodImageView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.1"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imageFoodView"
+            app:layout_constraintTop_toTopOf="@+id/foodImageView"
             app:layout_constraintVertical_bias="0.1"
             app:layout_constraintWidth_percent="0.7" />
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imageUserView"
+            android:id="@+id/userImageView"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:src="@drawable/avatar"
-            app:layout_constraintBottom_toBottomOf="@+id/imageFoodView"
+            app:layout_constraintBottom_toBottomOf="@+id/foodImageView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.04"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imageFoodView"
+            app:layout_constraintTop_toTopOf="@+id/foodImageView"
             app:layout_constraintVertical_bias="0.8" />
 
         <TextView
-            android:id="@+id/textUserNameView"
+            android:id="@+id/userNameTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:maxLines="1"
@@ -59,17 +58,27 @@
             android:textAlignment="textStart"
             android:textColor="@color/white"
             android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageFoodView"
+            app:layout_constraintBottom_toBottomOf="@+id/foodImageView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.9"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imageFoodView"
+            app:layout_constraintTop_toTopOf="@+id/foodImageView"
             app:layout_constraintVertical_bias="0.8"
             app:layout_constraintWidth_percent="0.7" />
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/imageActionContainer"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            app:layout_constraintBottom_toBottomOf="@+id/foodImageView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.98"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/foodImageView"
+            app:layout_constraintVertical_bias="0.1" />
     </android.support.constraint.ConstraintLayout>
 
     <ScrollView
-        android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@drawable/bound_with_circle_top"
@@ -78,7 +87,13 @@
         app:layout_constraintCircleRadius="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.64"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent">
 
+        <LinearLayout
+            android:id="@+id/foodInfoLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>

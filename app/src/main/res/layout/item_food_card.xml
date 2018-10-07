@@ -65,7 +65,7 @@
             app:layout_constraintWidth_percent="0.4" />
 
         <include
-            layout="@layout/widget_like_button"
+            layout="@layout/button_like"
             android:layout_height="@dimen/like_button_size"
             android:layout_width="45dp"
             app:layout_constraintBottom_toBottomOf="parent"

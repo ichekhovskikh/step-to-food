@@ -7,14 +7,11 @@ import android.content.Intent
 import android.support.v4.util.Pair
 import android.support.v4.app.ActivityOptionsCompat
 
-
-
 class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        supportActionBar?.hide()
     }
 
     fun openRegistrationView(view: View) {
@@ -26,11 +23,11 @@ class LoginActivity : AppCompatActivity() {
     private fun getAnimation(): Bundle? {
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                 this,
-                Pair<View, String>(findViewById(R.id.textLogin),
+                Pair<View, String>(findViewById(R.id.loginTextView),
                         getString(R.string.transition_name_login)),
-                Pair<View, String>(findViewById(R.id.textPass),
+                Pair<View, String>(findViewById(R.id.passTextView),
                         getString(R.string.transition_name_pass)),
-                Pair<View, String>(findViewById(R.id.textName),
+                Pair<View, String>(findViewById(R.id.nameInputText),
                         getString(R.string.transition_name_name))
         )
         return options.toBundle()
