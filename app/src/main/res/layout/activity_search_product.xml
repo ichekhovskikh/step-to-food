@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".SearchProductActivity">
+
+    <include
+        layout="@layout/item_search"
+        android:padding="8dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimary"
+        android:padding="16dp"
+        android:textSize="18sp"
+        android:text="@string/select_product"/>
+
+    <ListView
+        android:id="@+id/searchResultListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/ListView.Search"
+        android:paddingStart="16dp"
+        tools:ignore="RtlSymmetry" />
+</LinearLayout>

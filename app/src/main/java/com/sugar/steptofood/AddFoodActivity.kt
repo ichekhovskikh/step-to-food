@@ -16,7 +16,7 @@ class AddFoodActivity : AppCompatActivity() {
         inflater = this.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         setContentView(R.layout.activity_food)
         initializeActionBar()
-        initializeEditFoodView()
+        initEditFoodView()
     }
 
     private fun initializeActionBar() {
@@ -27,7 +27,7 @@ class AddFoodActivity : AppCompatActivity() {
     }
 
     @SuppressLint("InflateParams")
-    private fun initializeEditFoodView() {
+    private fun initEditFoodView() {
         addEditButton()
         val productsInfoLabel = inflater?.inflate(R.layout.item_products, null)
         val addRowButton = inflater?.inflate(R.layout.item_add_ingredient, null)

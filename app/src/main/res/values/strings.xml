@@ -3,6 +3,7 @@
     <string name="todo">TODO</string>
     <string name="step_to">STEP TO</string>
     <string name="food">FOOD</string>
+
     <string name="auth">Авторизация</string>
     <string name="enter_pass">Введите пароль</string>
     <string name="enter_login">Введите логин</string>
@@ -10,7 +11,6 @@
     <string name="enter">Войти</string>
     <string name="registration">Регистрация</string>
     <string name="registr_button_text">Зарегистрироваться</string>
-    <string name="search_food">Поиск блюда</string>
 
     <string name="transition_name_name">transition:NAME</string>
     <string name="transition_name_login">transition:LOGIN</string>
@@ -19,6 +19,7 @@
     <string name="tabRecipesText">Рецепты</string>
     <string name="tabComposeText">Составить</string>
     <string name="tabUserText">Пользователь</string>
+
     <string name="food_label">ПРОДУКТЫ</string>
     <string name="how_do_label">КАК ПРИГОТОВИТЬ</string>
     <string name="energy_label">ПИЩЕВАЯ ЦЕННОСТЬ (100 г.)</string>
@@ -29,8 +30,14 @@
     <string name="add_products">Добавьте продукты...</string>
     <string name="add_description">Добавьте описание...</string>
     <string name="gram">г.</string>
+
     <string name="done_label">ГОТОВО</string>
     <string name="cancel_label">ОТМЕНА</string>
     <string name="input_food_name">ВВЕДИТЕ НАЗВАНИЕ</string>
     <string name="select_food_image">ВЫБЕРИТЕ ФОТО</string>
+    <string name="select_product">ВЫБЕРИТЕ ПРОДУКТ</string>
+
+    <string name="search_food">Поиск блюда</string>
+
+    <string name="my_recipes">МОИ РЕЦЕПТЫ</string>
 </resources>

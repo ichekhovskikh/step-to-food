@@ -14,11 +14,11 @@ class FoodActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         inflater = this.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         setContentView(R.layout.activity_food)
-        initializeFoodInfoView()
+        initFoodInfoView()
     }
 
     @SuppressLint("InflateParams")
-    private fun initializeFoodInfoView() {
+    private fun initFoodInfoView() {
         addLikeButton()
         val productsInfoLabel = inflater?.inflate(R.layout.item_products, null)
         val addRowButton = inflater?.inflate(R.layout.item_ingredient, null)

@@ -3,6 +3,6 @@
     android:id="@+id/buttonLike"
     android:layout_width="45dp"
     android:layout_height="45dp"
-    android:background="@drawable/like_button"
+    android:background="@drawable/selector_like"
     android:textOff=""
     android:textOn="" />

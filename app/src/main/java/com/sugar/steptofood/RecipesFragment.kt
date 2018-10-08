@@ -4,17 +4,18 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.TextView
 import com.mancj.materialsearchbar.MaterialSearchBar
 
 class RecipesFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initializeSearch(view)
+        initSearch(view)
     }
 
     @SuppressLint("InflateParams")
-    private fun initializeSearch(view: View) {
+    private fun initSearch(view: View) {
         val search = inflater?.inflate(R.layout.item_search, null) as MaterialSearchBar
         search.setHint(getString(R.string.search_food))
         search.setPlaceHolder(getString(R.string.search_food))

@@ -10,17 +10,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.TranslucentActionBar">
-
         <activity
             android:name=".LoginActivity"
             android:theme="@style/AppTheme.TranslucentActionBar">
+
         </activity>
         <activity
             android:name=".RegistrationActivity"
             android:theme="@style/AppTheme.TranslucentActionBar" />
         <activity
             android:name=".MainTabsActivity"
-            android:theme="@style/AppTheme.TranslucentActionBar" >
+            android:theme="@style/AppTheme.TranslucentActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,7 +33,16 @@
         <activity
             android:name=".AddFoodActivity"
             android:theme="@style/AppTheme.ColoredActionBar">
-        </activity>
 
+        </activity>
+        <activity android:name=".SearchProductActivity"
+            android:theme="@style/AppTheme.ColoredStatusBar">
+
+        </activity>
+        <activity android:name=".ItemMenuActivity"
+            android:theme="@style/AppTheme.ColoredStatusBar">
+
+        </activity>
     </application>
+
 </manifest>

@@ -3,4 +3,4 @@
     android:id="@+id/buttonLike"
     android:layout_width="45dp"
     android:layout_height="45dp"
-    android:background="@drawable/edit_button" />
+    android:background="@drawable/selector_edit" />

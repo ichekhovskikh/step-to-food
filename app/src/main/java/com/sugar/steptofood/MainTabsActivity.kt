@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.view.ViewPager
 import kotlinx.android.synthetic.main.activity_main_tabs.*
+import kotlinx.android.synthetic.main.activity_main_tabs.view.*
 
 class MainTabsActivity : AppCompatActivity() {
 
@@ -12,11 +13,11 @@ class MainTabsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.setContentView(R.layout.activity_main_tabs)
-        initializeTabs()
+        initTabs()
 
     }
 
-    private fun initializeTabs() {
+    private fun initTabs() {
         this.sectionsPageAdapter = SectionsPageAdapter(this.supportFragmentManager)
         this.setupViewPager(pager)
         tabLayout.setupWithViewPager(pager)
