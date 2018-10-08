@@ -31,6 +31,8 @@
     <string name="add_description">Добавьте описание...</string>
     <string name="gram">г.</string>
 
+    <string name="select_products">ВЫБЕРИТЕ ПРОДУКТЫ</string>
+
     <string name="done_label">ГОТОВО</string>
     <string name="cancel_label">ОТМЕНА</string>
     <string name="input_food_name">ВВЕДИТЕ НАЗВАНИЕ</string>
