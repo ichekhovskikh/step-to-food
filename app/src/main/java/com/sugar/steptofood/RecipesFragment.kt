@@ -1,17 +1,29 @@
 package com.sugar.steptofood
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import android.widget.LinearLayout
+import com.mancj.materialsearchbar.MaterialSearchBar
 
-class RecipesFragment : Fragment() {
+class RecipesFragment : BaseFragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_recipes, container, false)
-        return view
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initializeSearch(view)
     }
+
+    @SuppressLint("InflateParams")
+    private fun initializeSearch(view: View) {
+        val search = inflater?.inflate(R.layout.item_search, null) as MaterialSearchBar
+        search.setHint(getString(R.string.search_food))
+        search.setPlaceHolder(getString(R.string.search_food))
+
+        val underTabContainer = view.findViewById<LinearLayout>(R.id.underTabContainer)
+        underTabContainer.addView(search)
+    }
+
+    override fun getLayout() = R.layout.fragment_recipes
 
     companion object {
         const val FRAGMENT_TAG = "RECIPES"

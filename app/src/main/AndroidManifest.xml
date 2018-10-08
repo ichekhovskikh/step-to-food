@@ -20,18 +20,19 @@
             android:theme="@style/AppTheme.TranslucentActionBar" />
         <activity
             android:name=".MainTabsActivity"
-            android:theme="@style/AppTheme.TranslucentActionBar" />
+            android:theme="@style/AppTheme.TranslucentActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".FoodActivity"
             android:theme="@style/AppTheme.TranslucentActionBar" />
         <activity
             android:name=".AddFoodActivity"
             android:theme="@style/AppTheme.ColoredActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
     </application>

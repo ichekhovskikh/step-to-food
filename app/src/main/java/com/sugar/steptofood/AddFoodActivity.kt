@@ -5,7 +5,7 @@ import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
-import kotlinx.android.synthetic.main.activity_food_info.*
+import kotlinx.android.synthetic.main.activity_food.*
 
 class AddFoodActivity : AppCompatActivity() {
 
@@ -14,7 +14,7 @@ class AddFoodActivity : AppCompatActivity() {
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         inflater = this.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        setContentView(R.layout.activity_food_info)
+        setContentView(R.layout.activity_food)
         initializeActionBar()
         initializeEditFoodView()
     }
