@@ -39,7 +39,7 @@ class MainTabsActivity : AppCompatActivity() {
         val adapter = SectionsPageAdapter(this.supportFragmentManager)
         adapter.addFragment(RecipesFragment(), this.getString(R.string.tabRecipesText))
         adapter.addFragment(ComposeFragment(), this.getString(R.string.tabComposeText))
-        adapter.addFragment(ComposeFragment(), this.getString(R.string.tabUserText))
+        adapter.addFragment(UserFragment(), this.getString(R.string.tabUserText))
         viewPager?.adapter = adapter
     }
 }

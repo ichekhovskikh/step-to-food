@@ -55,6 +55,7 @@
 
         <ListView
             android:id="@+id/productListView"
+            style="@style/ListView.HandwrittenFont"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="8dp"

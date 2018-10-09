@@ -5,8 +5,8 @@ import android.view.View
 
 class UserFragment : BaseFragment() {
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun initView(view: View, savedInstanceState: Bundle?) {
+
     }
 
     override fun getLayout(): Int = R.layout.fragment_user
