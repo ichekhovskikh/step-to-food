@@ -1,6 +1,6 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="true"
         android:drawable="@drawable/add_pressed"/>
-    <item android:drawable="@drawable/add_not_pressed"/>
+    <item android:drawable="@drawable/add_unpressed"/>
 </selector>
 

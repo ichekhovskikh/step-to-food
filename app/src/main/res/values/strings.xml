@@ -42,4 +42,5 @@
     <string name="search_food">Поиск блюда</string>
 
     <string name="my_recipes">МОИ РЕЦЕПТЫ</string>
+    <string name="search_recipes">ПОИСК РЕЦЕПТОВ</string>
 </resources>

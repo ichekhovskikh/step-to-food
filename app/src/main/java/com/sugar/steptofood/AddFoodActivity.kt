@@ -15,11 +15,11 @@ class AddFoodActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         inflater = this.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         setContentView(R.layout.activity_food)
-        initializeActionBar()
+        initActionBar()
         initEditFoodView()
     }
 
-    private fun initializeActionBar() {
+    private fun initActionBar() {
         supportActionBar?.setDisplayShowHomeEnabled(false)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setDisplayShowCustomEnabled(true)
@@ -29,8 +29,8 @@ class AddFoodActivity : AppCompatActivity() {
     @SuppressLint("InflateParams")
     private fun initEditFoodView() {
         addEditButton()
-        val productsInfoLabel = inflater?.inflate(R.layout.item_products, null)
-        val addRowButton = inflater?.inflate(R.layout.item_add_ingredient, null)
+        val productsInfoLabel = inflater?.inflate(R.layout.item_products_container, null)
+        val addRowButton = inflater?.inflate(R.layout.item_add_product, null)
         val howDoFoodView = inflater?.inflate(R.layout.item_edit_how_cook, null)
         val energyFoodView = inflater?.inflate(R.layout.item_edit_energy, null)
 

@@ -20,8 +20,8 @@ class FoodActivity : AppCompatActivity() {
     @SuppressLint("InflateParams")
     private fun initFoodInfoView() {
         addLikeButton()
-        val productsInfoLabel = inflater?.inflate(R.layout.item_products, null)
-        val addRowButton = inflater?.inflate(R.layout.item_ingredient, null)
+        val productsInfoLabel = inflater?.inflate(R.layout.item_products_container, null)
+        val addRowButton = inflater?.inflate(R.layout.item_product, null)
         val howDoFoodView = inflater?.inflate(R.layout.item_how_cook, null)
         val energyFoodView = inflater?.inflate(R.layout.item_energy, null)
 

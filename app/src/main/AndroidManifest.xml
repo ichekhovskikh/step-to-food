@@ -11,12 +11,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.TranslucentActionBar">
         <activity
-            android:name=".LoginActivity"
+            android:name=".LoginFragment"
             android:theme="@style/AppTheme.TranslucentActionBar">
 
         </activity>
         <activity
-            android:name=".RegistrationActivity"
+            android:name=".RegistrationFragment"
             android:theme="@style/AppTheme.TranslucentActionBar" />
         <activity
             android:name=".MainTabsActivity"
@@ -39,7 +39,7 @@
             android:theme="@style/AppTheme.ColoredStatusBar">
 
         </activity>
-        <activity android:name=".ItemMenuActivity"
+        <activity android:name=".UserItemActivity"
             android:theme="@style/AppTheme.ColoredStatusBar">
 
         </activity>

@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.widget.TextView
 import kotlinx.android.synthetic.main.fragment_recipes.*
 
-class ItemMenuActivity : AppCompatActivity() {
+class UserItemActivity : AppCompatActivity() {
     private var inflater: LayoutInflater? = null
 
     public override fun onCreate(savedInstanceState: Bundle?) {

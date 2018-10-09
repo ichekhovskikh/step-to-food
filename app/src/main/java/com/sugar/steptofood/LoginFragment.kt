@@ -7,7 +7,7 @@ import android.content.Intent
 import android.support.v4.util.Pair
 import android.support.v4.app.ActivityOptionsCompat
 
-class LoginActivity : AppCompatActivity() {
+class LoginFragment : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -15,7 +15,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun openRegistrationView(view: View) {
-        val intent = Intent(this, RegistrationActivity::class.java)
+        val intent = Intent(this, RegistrationFragment::class.java)
         val bundle: Bundle? = getAnimation()
         this.startActivity(intent, bundle)
     }
