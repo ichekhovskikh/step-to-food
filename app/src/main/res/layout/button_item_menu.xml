@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Button xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/button"
+    style="@android:style/Widget.Material.Button.Borderless.Colored"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:drawablePadding="8dp"
+    android:drawableStart="@drawable/menu_black"
+    android:padding="8dp"
+    android:text="Button"
+    android:textAlignment="textStart"
+    android:textColor="@color/black" />
