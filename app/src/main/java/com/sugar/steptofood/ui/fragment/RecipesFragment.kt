@@ -1,10 +1,12 @@
-package com.sugar.steptofood
+package com.sugar.steptofood.ui.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
 import com.mancj.materialsearchbar.MaterialSearchBar
+import com.sugar.steptofood.R
+import com.sugar.steptofood.ui.activity.BaseFragment
 
 class RecipesFragment : BaseFragment() {
 

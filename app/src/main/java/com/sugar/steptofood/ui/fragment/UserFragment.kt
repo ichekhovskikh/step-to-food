@@ -1,7 +1,9 @@
-package com.sugar.steptofood
+package com.sugar.steptofood.ui.fragment
 
 import android.os.Bundle
 import android.view.View
+import com.sugar.steptofood.R
+import com.sugar.steptofood.ui.activity.BaseFragment
 
 class UserFragment : BaseFragment() {
 

@@ -1,4 +1,4 @@
-package com.sugar.steptofood
+package com.sugar.steptofood.adapter
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager

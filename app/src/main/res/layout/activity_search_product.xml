@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".SearchProductActivity">
+    tools:context=".ui.activity.SearchProductActivity">
 
     <include
         layout="@layout/item_search"

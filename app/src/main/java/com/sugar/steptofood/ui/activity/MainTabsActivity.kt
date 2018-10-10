@@ -1,10 +1,14 @@
-package com.sugar.steptofood
+package com.sugar.steptofood.ui.activity
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.view.ViewPager
+import com.sugar.steptofood.ui.fragment.ComposeFragment
+import com.sugar.steptofood.R
+import com.sugar.steptofood.ui.fragment.RecipesFragment
+import com.sugar.steptofood.ui.fragment.UserFragment
+import com.sugar.steptofood.adapter.SectionsPageAdapter
 import kotlinx.android.synthetic.main.activity_main_tabs.*
-import kotlinx.android.synthetic.main.activity_main_tabs.view.*
 
 class MainTabsActivity : AppCompatActivity() {
 

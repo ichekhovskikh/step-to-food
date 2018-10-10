@@ -1,10 +1,11 @@
-package com.sugar.steptofood
+package com.sugar.steptofood.ui.activity
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
+import com.sugar.steptofood.R
 import kotlinx.android.synthetic.main.activity_food.*
 
 class FoodActivity : AppCompatActivity() {

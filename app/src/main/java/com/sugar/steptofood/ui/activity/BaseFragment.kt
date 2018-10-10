@@ -1,4 +1,4 @@
-package com.sugar.steptofood
+package com.sugar.steptofood.ui.activity
 
 import android.os.Bundle
 import android.support.annotation.LayoutRes

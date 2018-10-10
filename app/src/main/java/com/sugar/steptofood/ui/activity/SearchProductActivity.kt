@@ -1,7 +1,8 @@
-package com.sugar.steptofood
+package com.sugar.steptofood.ui.activity
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.sugar.steptofood.R
 
 class SearchProductActivity : AppCompatActivity() {
 
