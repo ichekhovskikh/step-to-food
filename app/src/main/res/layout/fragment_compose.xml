@@ -10,10 +10,10 @@
         android:id="@+id/backgroundImageView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:contentDescription="@string/todo"
         android:scaleType="fitXY"
         app:layout_constraintHeight_percent="0.3"
-        app:srcCompat="@drawable/compose_background"
-        android:contentDescription="@string/todo" />
+        app:srcCompat="@drawable/compose_background" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -21,63 +21,65 @@
         android:text="@string/select_products"
         android:textColor="@color/white"
         android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.22"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.21"
-        app:layout_constraintHorizontal_bias="0.22"/>
+        app:layout_constraintVertical_bias="0.21" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/addProductButton"
         android:layout_width="55dp"
         android:layout_height="55dp"
+        android:clickable="true"
+        android:focusable="true"
         android:src="@drawable/add_float_button"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.233"
-        app:layout_constraintHorizontal_bias="0.9"
-        app:fabSize="normal"/>
+        app:layout_constraintVertical_bias="0.233" />
 
     <android.support.v7.widget.CardView
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHeight_percent="0.73"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintWidth_percent="0.9"
-        app:layout_constraintHeight_percent="0.73"
-        app:layout_constraintVertical_bias="0.95">
+        app:layout_constraintVertical_bias="0.95"
+        app:layout_constraintWidth_percent="0.9">
 
         <ListView
             android:id="@+id/productListView"
             style="@style/ListView.HandwrittenFont"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="8dp"
-            android:background="@android:color/white" />
+            android:background="@android:color/white"
+            android:padding="8dp" />
     </android.support.v7.widget.CardView>
 
     <Button
         android:id="@+id/searchRecipesButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingStart="32dp"
+        android:background="@drawable/selector_search_food"
         android:paddingEnd="32dp"
-        android:textSize="16sp"
+        android:paddingStart="32dp"
         android:text="@string/search_recipes"
         android:textColor="@drawable/selector_search_food_text"
-        android:background="@drawable/selector_search_food"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.95"
-        app:layout_constraintHorizontal_bias="0.5"/>
+        app:layout_constraintVertical_bias="0.95" />
 
 </android.support.constraint.ConstraintLayout>
 

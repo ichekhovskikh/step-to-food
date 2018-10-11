@@ -14,7 +14,10 @@
         <activity
             android:name=".ui.activity.LoginActivity"
             android:theme="@style/AppTheme.TranslucentAnimLogin">
-
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <activity
@@ -23,13 +26,7 @@
 
         <activity
             android:name=".ui.activity.MainTabsActivity"
-            android:theme="@style/AppTheme.TranslucentActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/AppTheme.TranslucentActionBar"/>
 
         <activity
             android:name=".ui.activity.FoodActivity"
@@ -37,14 +34,10 @@
 
         <activity
             android:name=".ui.activity.AddFoodActivity"
-            android:theme="@style/AppTheme.ColoredActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.ColoredActionBar"/>
 
         <activity android:name=".ui.activity.SearchProductActivity"
-            android:theme="@style/AppTheme.ColoredStatusBar">
-
-        </activity>
+            android:theme="@style/AppTheme.ColoredStatusBar"/>
 
     </application>
 </manifest>

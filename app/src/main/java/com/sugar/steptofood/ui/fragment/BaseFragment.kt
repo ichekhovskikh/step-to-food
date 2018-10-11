@@ -1,4 +1,4 @@
-package com.sugar.steptofood.ui.activity
+package com.sugar.steptofood.ui.fragment
 
 import android.os.Bundle
 import android.support.annotation.LayoutRes
@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CompoundButton
 
 abstract class BaseFragment : Fragment() {
     protected var inflater: LayoutInflater? = null

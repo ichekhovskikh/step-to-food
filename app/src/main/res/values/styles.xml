@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:buttonStyle">@style/Button</item>
 
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
@@ -26,6 +27,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:buttonStyle">@style/Button</item>
 
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
@@ -38,6 +40,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:buttonStyle">@style/Button</item>
         <item name="android:windowSoftInputMode">adjustPan</item>
     </style>
 
@@ -49,10 +52,9 @@
         <item name="android:windowTranslucentNavigation">false</item>
         <item name="windowActionBar">true</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:buttonStyle">@style/Button</item>
         <item name="android:windowSoftInputMode">adjustPan</item>
     </style>
-
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Widget.AppTheme.Toolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:layout_width">match_parent</item>
@@ -63,8 +65,7 @@
 
     <style name="Widget.AppTheme.TabLayout" parent="Widget.AppCompat.ActionBar.TabBar">
         <item name="android:background">@color/colorPrimary</item>
-        <!--<item name="tabIndicatorColor">@color/white</item>-->
-        <!--<item name="tabIndicatorHeight">3dp</item>-->
+        <item name="tabIndicatorHeight">0dp</item>
         <item name="tabSelectedTextColor">@color/white</item>
         <item name="tabTextColor">@color/colorPrimaryLight</item>
     </style>
@@ -77,5 +78,9 @@
     <style name="ListView.HandwrittenFont" parent="@android:style/Widget.ListView">
         <item name="android:textColor">@color/black</item>
         <item name="android:font" tools:targetApi="o">@font/segoe_script_regular</item>
+    </style>
+
+    <style name="Button" parent="Widget.AppCompat.Button">
+        <item name="android:textAllCaps">false</item>
     </style>
 </resources>

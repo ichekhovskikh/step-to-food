@@ -12,7 +12,14 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //TODO logic enter if exists else open login
         setContentView(R.layout.activity_login)
+    }
+
+    fun login(view: View) {
+        //TODO logic enter if login, pass -> success
+        val intent = Intent(this, MainTabsActivity::class.java)
+        startActivity(intent)
     }
 
     fun openRegistrationView(view: View) {

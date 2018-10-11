@@ -1,5 +1,6 @@
 package com.sugar.steptofood.ui.activity
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.view.ViewPager
@@ -45,5 +46,11 @@ class MainTabsActivity : AppCompatActivity() {
         adapter.addFragment(ComposeFragment(), this.getString(R.string.tabComposeText))
         adapter.addFragment(UserFragment(), this.getString(R.string.tabUserText))
         viewPager?.adapter = adapter
+    }
+
+    override fun onBackPressed() {
+        val intent = Intent(Intent.ACTION_MAIN)
+        intent.addCategory(Intent.CATEGORY_HOME)
+        startActivity(intent)
     }
 }

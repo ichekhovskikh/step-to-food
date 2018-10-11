@@ -110,6 +110,7 @@
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:focusable="true"
+                android:onClick="login"
                 android:text="@string/enter"
                 android:textColor="@color/button_text_color"
                 android:textSize="20sp"
