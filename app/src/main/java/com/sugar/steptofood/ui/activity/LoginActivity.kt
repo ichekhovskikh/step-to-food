@@ -22,7 +22,7 @@ class LoginActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    fun openRegistrationView(view: View) {
+    fun toRegistration(view: View) {
         val intent = Intent(this, RegistrationActivity::class.java)
         val bundle: Bundle? = getAnimation()
         this.startActivity(intent, bundle)

@@ -15,6 +15,7 @@ class RecipesFragment : BaseFragment() {
 
     override fun initView(view: View, savedInstanceState: Bundle?) {
         initSearch(view)
+        initAllFoodCards(view)
     }
 
     override fun getLayout() = R.layout.fragment_recipes
@@ -27,6 +28,14 @@ class RecipesFragment : BaseFragment() {
 
         val underTabContainer = view.findViewById<LinearLayout>(R.id.underTabContainer)
         underTabContainer.addView(search)
+    }
+
+    private fun initAllFoodCards(view: View) {
+        val contentContainer = view.findViewById<LinearLayout>(R.id.contentContainer)
+        /* TODO
+        for with pagination food in foods
+        addFoodCard(contentContainer, food)
+        */
     }
 
     @SuppressLint("InflateParams")

@@ -1,6 +1,7 @@
 package com.sugar.steptofood.ui.fragment
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import android.widget.LinearLayout
 import com.sugar.steptofood.R
 import android.support.annotation.Nullable
 import android.widget.TextView
+import com.sugar.steptofood.ui.activity.LoginActivity
 
 
 class UserFragment : BaseFragment() {
@@ -80,7 +82,13 @@ class UserFragment : BaseFragment() {
                 R.drawable.arrow_back_black,
                 R.string.exit_menu_item)
 
-        button.setOnClickListener { /*TODO onclick -> exit*/ }
+        button.setOnClickListener {
+            //TODO dialog ok cancel
+            val intent = Intent(activity, LoginActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            startActivity(intent)
+        }
+
         container.addView(button)
     }
 
