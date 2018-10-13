@@ -13,7 +13,17 @@ import kotlinx.android.synthetic.main.activity_main_tabs.*
 
 class MainTabsActivity : AppCompatActivity() {
 
-    private var sectionsPageAdapter: SectionsPageAdapter? = null
+    companion object {
+        val RECIPES_TAB = 0
+        val COMPOSE_TAB = 1
+        val USER_TAB = 2
+    }
+
+    var sectionsPageAdapter: SectionsPageAdapter? = null
+
+    val recipesFragment: RecipesFragment = RecipesFragment.getInstance()
+    val composeFragment: ComposeFragment = ComposeFragment.getInstance()
+    val userFragment: UserFragment = UserFragment.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +33,6 @@ class MainTabsActivity : AppCompatActivity() {
     }
 
     private fun initTabs() {
-        this.sectionsPageAdapter = SectionsPageAdapter(this.supportFragmentManager)
         this.setupViewPager(pager)
         tabLayout.setupWithViewPager(pager)
 
@@ -41,14 +50,26 @@ class MainTabsActivity : AppCompatActivity() {
     }
 
     private fun setupViewPager(viewPager: ViewPager?) {
-        val adapter = SectionsPageAdapter(this.supportFragmentManager)
-        adapter.addFragment(RecipesFragment(), this.getString(R.string.tabRecipesText))
-        adapter.addFragment(ComposeFragment(), this.getString(R.string.tabComposeText))
-        adapter.addFragment(UserFragment(), this.getString(R.string.tabUserText))
-        viewPager?.adapter = adapter
+        sectionsPageAdapter = SectionsPageAdapter(this.supportFragmentManager)
+        sectionsPageAdapter?.addFragment(recipesFragment, this.getString(R.string.tabRecipesText))
+        sectionsPageAdapter?.addFragment(composeFragment, this.getString(R.string.tabComposeText))
+        sectionsPageAdapter?.addFragment(userFragment, this.getString(R.string.tabUserText))
+        viewPager?.adapter = sectionsPageAdapter
     }
 
     override fun onBackPressed() {
+        if (currentTabIsComposedFoods()) {
+            sectionsPageAdapter?.replace(COMPOSE_TAB, composeFragment)
+            pager.adapter?.notifyDataSetChanged()
+        }
+        else toHome()
+
+    }
+
+    private fun currentTabIsComposedFoods(): Boolean = pager.currentItem == COMPOSE_TAB
+            && sectionsPageAdapter?.getItem(COMPOSE_TAB) !is ComposeFragment
+
+    private fun toHome() {
         val intent = Intent(Intent.ACTION_MAIN)
         intent.addCategory(Intent.CATEGORY_HOME)
         startActivity(intent)

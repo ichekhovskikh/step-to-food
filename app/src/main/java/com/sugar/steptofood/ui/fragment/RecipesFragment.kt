@@ -1,20 +1,30 @@
 package com.sugar.steptofood.ui.fragment
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
+import android.support.v7.widget.CardView
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CompoundButton
-import android.widget.LinearLayout
-import android.widget.ToggleButton
+import android.widget.*
 import com.mancj.materialsearchbar.MaterialSearchBar
 import com.sugar.steptofood.R
+import com.sugar.steptofood.ui.activity.FoodActivity
+import com.sugar.steptofood.ui.activity.LoginActivity
+import kotlinx.android.synthetic.main.fragment_recipes.*
 import kotlinx.android.synthetic.main.item_food_card.*
 
 class RecipesFragment : BaseFragment() {
 
+    companion object {
+        fun getInstance(): RecipesFragment {
+            return RecipesFragment()
+        }
+    }
+
     override fun initView(view: View, savedInstanceState: Bundle?) {
         initSearch(view)
+        addFoodCard(contentContainer) //TODO test
         initAllFoodCards(view)
     }
 
@@ -39,17 +49,32 @@ class RecipesFragment : BaseFragment() {
     }
 
     @SuppressLint("InflateParams")
-    fun addFoodCard(container: ViewGroup) {
+    private fun addFoodCard(container: ViewGroup) {
         //TODO user, food
-        val foodCard = inflater?.inflate(R.layout.item_food_card, null)
-        val button: ToggleButton = inflater?.inflate(R.layout.button_like, null) as ToggleButton
-        button.setOnCheckedChangeListener { buttonView, isChecked ->  onLikeClick(buttonView, isChecked) }
-        buttonContainer.addView(button)
+        val foodCard = inflater?.inflate(R.layout.item_food_card, null) as CardView
+        addLikeButton(foodCard)
+        addFoodImage(foodCard)
         //TODO onclick userName -> user
+//        foodCard?.tag = "id"
         container.addView(foodCard)
     }
 
-    private fun onLikeClick(buttonView: CompoundButton?, isChecked: Boolean) {
-        //TODO add/remove from db
+    private fun addLikeButton(card: CardView) {
+        val button: ToggleButton = inflater?.inflate(R.layout.button_like, null) as ToggleButton
+        //TODO set initial value like
+        button.setOnCheckedChangeListener { buttonView, isChecked ->
+            //TODO add/remove from db
+        }
+        val buttonContainer = card.findViewById<FrameLayout>(R.id.buttonContainer)
+        buttonContainer?.addView(button)
+    }
+
+    private fun addFoodImage(card: CardView) {
+        val foodImageView = card.findViewById<ImageView>(R.id.foodImageView)
+        foodImageView.setOnClickListener {
+            val intent = Intent(activity, FoodActivity::class.java)
+            //TODO putExtra(food)
+            startActivity(intent)
+        }
     }
 }

@@ -3,8 +3,9 @@ package com.sugar.steptofood.adapter
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import android.support.v4.view.PagerAdapter
 
-class SectionsPageAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
+class SectionsPageAdapter(private val mFragmentManager: FragmentManager) : FragmentPagerAdapter(mFragmentManager) {
 
     private val fragments = ArrayList<Fragment>()
     private val fragmentTitles = ArrayList<String>()
@@ -24,5 +25,21 @@ class SectionsPageAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
     override fun getCount(): Int {
         return fragments.size
+    }
+
+    fun replace(currentFragment: Fragment, newFragment: Fragment) {
+        val position = fragments.indexOf(currentFragment)
+        replace(position, newFragment)
+    }
+
+    fun replace(position: Int, newFragment: Fragment) {
+        val transaction = mFragmentManager.beginTransaction()
+        transaction.remove(fragments[position]).commitNowAllowingStateLoss()
+        fragments[position] = newFragment
+        notifyDataSetChanged()
+    }
+
+    override fun getItemPosition(obj: Any): Int {
+       return PagerAdapter.POSITION_NONE
     }
 }

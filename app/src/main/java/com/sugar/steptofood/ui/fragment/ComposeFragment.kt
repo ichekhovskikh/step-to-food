@@ -6,14 +6,13 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ListView
-import android.widget.TextView
 import com.sugar.steptofood.ExstraName.Companion.PRODUCT
-import com.sugar.steptofood.ExstraName.Companion.PRODUCTS
 import com.sugar.steptofood.R
 import com.sugar.steptofood.adapter.HandwrittenListAdapter
-import com.sugar.steptofood.ui.activity.ComposedFoodsActivity
 import com.sugar.steptofood.ui.activity.SearchProductActivity
 import kotlinx.android.synthetic.main.fragment_compose.*
+import com.sugar.steptofood.ui.activity.MainTabsActivity
+
 
 class ComposeFragment : BaseFragment() {
 
@@ -21,6 +20,10 @@ class ComposeFragment : BaseFragment() {
 
     companion object {
         val GET_PRODUCT = 1
+
+        fun getInstance(): ComposeFragment {
+            return ComposeFragment()
+        }
     }
 
     override fun initView(view: View, savedInstanceState: Bundle?) {
@@ -51,9 +54,10 @@ class ComposeFragment : BaseFragment() {
 
     private fun initSearchButton(view: View) {
         searchRecipesButton.setOnClickListener {
-            val intent = Intent(activity, ComposedFoodsActivity::class.java)
-            intent.putExtra(PRODUCTS, productListAdapter?.getAllItems())
-            startActivity(intent)
+            /*activity?.intent?.putExtra(PRODUCTS, productListAdapter?.getAllItems())*/
+            val tabsActivity = (activity as MainTabsActivity)
+            tabsActivity.sectionsPageAdapter?.replace(this, ComposedFoodsFragment.getInstance())
+
         }
     }
 

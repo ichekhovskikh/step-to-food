@@ -10,6 +10,8 @@ import android.app.Activity
 import android.view.View
 import android.widget.AdapterView
 import com.sugar.steptofood.ExstraName.Companion.PRODUCT
+import com.sugar.steptofood.extension.afterTextChanged
+import kotlinx.android.synthetic.main.item_search.*
 
 
 class SearchProductActivity : AppCompatActivity() {
@@ -21,14 +23,18 @@ class SearchProductActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_product)
         initProductList()
+        showAllProducts()
+    }
+
+    private fun initSearch() {
+        search.afterTextChanged { refreshProductList(it) }
     }
 
     private fun initProductList() {
         adapter = ArrayAdapter(searchResultListView.context, android.R.layout.simple_list_item_1)
         searchResultListView.adapter = adapter
 
-        searchResultListView.onItemClickListener = AdapterView.OnItemClickListener {
-            adapterView: AdapterView<*>, parent: View, position: Int, id: Long ->
+        searchResultListView.onItemClickListener = AdapterView.OnItemClickListener { adapterView: AdapterView<*>, parent: View, position: Int, id: Long ->
             val returnIntent = Intent()
             returnIntent.putExtra(PRODUCT, adapter?.getItem(position))
             setResult(Activity.RESULT_OK, returnIntent)
@@ -36,9 +42,13 @@ class SearchProductActivity : AppCompatActivity() {
         }
     }
 
-    fun addProducts() {
+    fun showAllProducts() {
         /* TODO pagination
         adapter.addAll(db.Products)
         */
+    }
+
+    private fun refreshProductList(text: String) {
+        //search db; set adapter data
     }
 }

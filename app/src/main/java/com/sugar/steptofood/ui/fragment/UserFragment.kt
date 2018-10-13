@@ -15,6 +15,12 @@ import com.sugar.steptofood.ui.activity.LoginActivity
 
 class UserFragment : BaseFragment() {
 
+    companion object {
+        fun getInstance(): UserFragment {
+            return UserFragment()
+        }
+    }
+
     override fun initView(view: View, savedInstanceState: Bundle?) {
         initMenuItems(view)
         initUserImage(view)

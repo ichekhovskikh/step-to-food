@@ -13,6 +13,7 @@ class FoodActivity : AppCompatActivity() {
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //TODO getExtra(food)
         inflater = this.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         setContentView(R.layout.activity_food)
         initFoodInfoView()
@@ -34,6 +35,7 @@ class FoodActivity : AppCompatActivity() {
         foodNameTextView.keyListener = null
         foodNameTextView.hint = "Гречка"
         userNameTextView.text = "Иван Чеховских"
+        //TODO setData
     }
 
     @SuppressLint("InflateParams")
