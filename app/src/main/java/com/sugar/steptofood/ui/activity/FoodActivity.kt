@@ -33,8 +33,9 @@ class FoodActivity : AppCompatActivity() {
         foodInfoLayout.addView(energyFoodView)
 
         foodNameTextView.keyListener = null
-        foodNameTextView.hint = "Гречка"
+        foodNameTextView.setText("Гречка")
         userNameTextView.text = "Иван Чеховских"
+        //TODO click name -> user
         //TODO setData
     }
 

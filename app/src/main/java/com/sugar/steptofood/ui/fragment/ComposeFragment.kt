@@ -48,6 +48,7 @@ class ComposeFragment : BaseFragment() {
     private fun initAddButton(view: View) {
         addProductButton.setOnClickListener {
             val intent = Intent(activity, SearchProductActivity::class.java)
+            //TODO added product yet
             startActivityForResult(intent, GET_PRODUCT)
         }
     }

@@ -28,6 +28,21 @@ class RecipesFragment : BaseFragment() {
 
     override fun getLayout() = R.layout.fragment_recipes
 
+    fun getRecipes() {
+        //TODO recipes for cards
+    }
+
+    @SuppressLint("InflateParams")
+    fun addButtonInCorner(card: CardView) {
+        val button: ToggleButton = inflater?.inflate(R.layout.button_like, null) as ToggleButton
+        //TODO set initial value like
+        button.setOnCheckedChangeListener { buttonView, isChecked ->
+            //TODO add/remove from db
+        }
+        val buttonContainer = card.findViewById<FrameLayout>(R.id.buttonContainer)
+        buttonContainer?.addView(button)
+    }
+
     @SuppressLint("InflateParams")
     private fun initSearch(view: View) {
         val search = inflater?.inflate(R.layout.item_search, null) as MaterialSearchBar
@@ -50,21 +65,11 @@ class RecipesFragment : BaseFragment() {
     private fun addFoodCard(container: ViewGroup) {
         //TODO user, food
         val foodCard = inflater?.inflate(R.layout.item_food_card, null) as CardView
-        addLikeButton(foodCard)
+        addButtonInCorner(foodCard)
         addFoodImage(foodCard)
         //TODO onclick userName -> user
 //        foodCard?.tag = "id"
         container.addView(foodCard)
-    }
-
-    private fun addLikeButton(card: CardView) {
-        val button: ToggleButton = inflater?.inflate(R.layout.button_like, null) as ToggleButton
-        //TODO set initial value like
-        button.setOnCheckedChangeListener { buttonView, isChecked ->
-            //TODO add/remove from db
-        }
-        val buttonContainer = card.findViewById<FrameLayout>(R.id.buttonContainer)
-        buttonContainer?.addView(button)
     }
 
     private fun addFoodImage(card: CardView) {

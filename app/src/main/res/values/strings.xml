@@ -13,6 +13,7 @@
     <string name="registr_button_text">Зарегистрироваться</string>
     <string name="error_registration">Данный логин уже используется</string>
     <string name="error_login">Логин или пароль введены неверно</string>
+    <string name="error_text_input">Недопустимое значение</string>
 
     <string name="transition_name_name">transition:NAME</string>
     <string name="transition_name_login">transition:LOGIN</string>

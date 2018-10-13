@@ -22,6 +22,7 @@ class SearchProductActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_product)
+        //TODO added product yet
         initProductList()
         showAllProducts()
     }
@@ -34,12 +35,13 @@ class SearchProductActivity : AppCompatActivity() {
         adapter = ArrayAdapter(searchResultListView.context, android.R.layout.simple_list_item_1)
         searchResultListView.adapter = adapter
 
-        searchResultListView.onItemClickListener = AdapterView.OnItemClickListener { adapterView: AdapterView<*>, parent: View, position: Int, id: Long ->
-            val returnIntent = Intent()
-            returnIntent.putExtra(PRODUCT, adapter?.getItem(position))
-            setResult(Activity.RESULT_OK, returnIntent)
-            finish()
-        }
+        searchResultListView.onItemClickListener =
+                AdapterView.OnItemClickListener { adapterView: AdapterView<*>, parent: View, position: Int, id: Long ->
+                    val returnIntent = Intent()
+                    returnIntent.putExtra(PRODUCT, adapter?.getItem(position))
+                    setResult(Activity.RESULT_OK, returnIntent)
+                    finish()
+                }
     }
 
     fun showAllProducts() {

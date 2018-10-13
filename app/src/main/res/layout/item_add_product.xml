@@ -19,6 +19,7 @@
         app:layout_constraintWidth_percent="0.7" />
 
     <include
+        android:id="@+id/buttonAddProduct"
         layout="@layout/button_add"
         android:layout_width="0dp"
         android:layout_height="35dp"

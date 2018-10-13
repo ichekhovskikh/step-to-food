@@ -19,12 +19,14 @@
             android:textSize="18sp" />
 
         <include
+            android:id="@+id/buttonEditDescription"
             layout="@layout/button_edit"
             android:layout_width="25dp"
             android:layout_height="25dp" />
     </LinearLayout>
 
     <EditText
+        android:id="@+id/descriptionTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/add_description"

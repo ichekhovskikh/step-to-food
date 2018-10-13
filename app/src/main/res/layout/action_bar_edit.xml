@@ -4,6 +4,8 @@
     android:id="@+id/editActionBar"
     android:layout_width="match_parent"
     android:layout_height="@dimen/tabs_height"
+    app:elevation="0dp"
+    android:theme="@style/AppTheme.AppBarOverlay"
     android:background="@color/colorPrimary">
 
     <android.support.constraint.ConstraintLayout
@@ -11,29 +13,34 @@
         android:layout_height="match_parent">
 
         <Button
+            android:id="@+id/buttonDone"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:text="@string/done_label"
             android:textColor="@color/white"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.3" />
+            app:layout_constraintWidth_percent="0.3"
+            app:layout_constraintHeight_percent="0.9"
+            app:layout_constraintVertical_bias="0" />
 
         <Button
+            android:id="@+id/buttonCancel"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:text="@string/cancel_label"
             android:textColor="@color/white"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1"
-            app:layout_constraintWidth_percent="0.3" />
+            app:layout_constraintWidth_percent="0.3"
+            app:layout_constraintHeight_percent="0.9"
+            app:layout_constraintVertical_bias="0" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.design.widget.AppBarLayout>
