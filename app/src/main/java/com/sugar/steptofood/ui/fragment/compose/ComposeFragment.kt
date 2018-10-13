@@ -1,4 +1,4 @@
-package com.sugar.steptofood.ui.fragment
+package com.sugar.steptofood.ui.fragment.compose
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
@@ -12,6 +12,7 @@ import com.sugar.steptofood.adapter.HandwrittenListAdapter
 import com.sugar.steptofood.ui.activity.SearchProductActivity
 import kotlinx.android.synthetic.main.fragment_compose.*
 import com.sugar.steptofood.ui.activity.TabsActivity
+import com.sugar.steptofood.ui.fragment.BaseFragment
 
 
 class ComposeFragment : BaseFragment() {

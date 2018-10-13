@@ -36,5 +36,9 @@
             android:name=".ui.activity.SearchProductActivity"
             android:theme="@style/AppTheme.ColoredStatusBar"/>
 
+        <activity
+            android:name=".ui.activity.UserItemActivity"
+            android:theme="@style/AppTheme.ColoredStatusBar"/>
+
     </application>
 </manifest>

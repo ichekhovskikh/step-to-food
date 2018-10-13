@@ -1,4 +1,4 @@
-package com.sugar.steptofood.ui.fragment
+package com.sugar.steptofood.ui.fragment.compose
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -6,12 +6,12 @@ import android.os.Bundle
 import android.support.v7.widget.CardView
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CompoundButton
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.ToggleButton
 import com.sugar.steptofood.R
 import com.sugar.steptofood.ui.activity.FoodActivity
+import com.sugar.steptofood.ui.fragment.BaseFragment
 import kotlinx.android.synthetic.main.fragment_composed_foods.*
 
 class ComposedFoodsFragment : BaseFragment() {

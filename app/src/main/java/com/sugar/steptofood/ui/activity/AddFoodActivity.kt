@@ -113,7 +113,7 @@ class AddFoodActivity : AppCompatActivity() {
     private fun allFieldsAreFilled(): Boolean {
         val errorMsg = getString(R.string.error_text_input)
 
-        return (/*validateImage() &&*/
+        return (validateImage() &&
                 validateProductsList(errorMsg) &&
                 TextValidator.validate(descriptionTextView, errorMsg) &&
                 TextValidator.validate(energyTextView, errorMsg) &&

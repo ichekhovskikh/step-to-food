@@ -1,4 +1,4 @@
-package com.sugar.steptofood.ui.fragment
+package com.sugar.steptofood.ui.fragment.auth
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
 import com.sugar.steptofood.R
 import com.sugar.steptofood.ui.activity.TabsActivity
+import com.sugar.steptofood.ui.fragment.BaseFragment
 import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginFragment : BaseFragment() {

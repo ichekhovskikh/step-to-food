@@ -4,10 +4,10 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.view.ViewPager
-import com.sugar.steptofood.ui.fragment.ComposeFragment
+import com.sugar.steptofood.ui.fragment.compose.ComposeFragment
 import com.sugar.steptofood.R
-import com.sugar.steptofood.ui.fragment.RecipesFragment
-import com.sugar.steptofood.ui.fragment.UserFragment
+import com.sugar.steptofood.ui.fragment.recipes.RecipesFragment
+import com.sugar.steptofood.ui.fragment.user.UserFragment
 import com.sugar.steptofood.adapter.SectionsPageAdapter
 import kotlinx.android.synthetic.main.activity_main_tabs.*
 

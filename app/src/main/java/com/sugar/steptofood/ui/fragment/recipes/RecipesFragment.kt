@@ -1,4 +1,4 @@
-package com.sugar.steptofood.ui.fragment
+package com.sugar.steptofood.ui.fragment.recipes
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -10,9 +10,10 @@ import android.widget.*
 import com.mancj.materialsearchbar.MaterialSearchBar
 import com.sugar.steptofood.R
 import com.sugar.steptofood.ui.activity.FoodActivity
+import com.sugar.steptofood.ui.fragment.BaseFragment
 import kotlinx.android.synthetic.main.fragment_recipes.*
 
-class RecipesFragment : BaseFragment() {
+open class RecipesFragment : BaseFragment() {
 
     companion object {
         fun getInstance(): RecipesFragment {
@@ -28,13 +29,13 @@ class RecipesFragment : BaseFragment() {
 
     override fun getLayout() = R.layout.fragment_recipes
 
-    fun getRecipes() {
+    open fun getRecipes() {
         //TODO recipes for cards
     }
 
     @SuppressLint("InflateParams")
-    fun addButtonInCorner(card: CardView) {
-        val button: ToggleButton = inflater?.inflate(R.layout.button_like, null) as ToggleButton
+    open fun addButtonInCorner(card: CardView) {
+        val button = inflater?.inflate(R.layout.button_like, null) as ToggleButton
         //TODO set initial value like
         button.setOnCheckedChangeListener { buttonView, isChecked ->
             //TODO add/remove from db

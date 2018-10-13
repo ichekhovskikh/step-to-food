@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import com.sugar.steptofood.R
-import com.sugar.steptofood.ui.fragment.LoginFragment
+import com.sugar.steptofood.ui.fragment.auth.LoginFragment
 
 class StartActivity : AppCompatActivity() {
 

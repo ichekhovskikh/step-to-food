@@ -1,4 +1,4 @@
-package com.sugar.steptofood.ui.fragment
+package com.sugar.steptofood.ui.fragment.user
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -11,6 +11,10 @@ import com.sugar.steptofood.R
 import android.support.annotation.Nullable
 import android.widget.TextView
 import com.sugar.steptofood.ui.activity.AddFoodActivity
+import com.sugar.steptofood.ui.activity.StartActivity
+import com.sugar.steptofood.ui.activity.UserItemActivity
+import com.sugar.steptofood.ui.fragment.BaseFragment
+import com.sugar.steptofood.utils.ExstraName.Companion.ITEM_TYPE
 
 
 class UserFragment : BaseFragment() {
@@ -69,7 +73,11 @@ class UserFragment : BaseFragment() {
                 R.drawable.menu_black,
                 R.string.my_recipes_menu_item)
 
-        button.setOnClickListener { /*TODO onclick -> my*/ }
+        button.setOnClickListener {
+            val intent = Intent(activity, UserItemActivity::class.java)
+            intent.putExtra(ITEM_TYPE, UserItemActivity.ItemType.MY)
+            startActivity(intent)
+        }
         container.addView(button)
     }
 
@@ -80,7 +88,11 @@ class UserFragment : BaseFragment() {
                 R.drawable.like_black,
                 R.string.like_recipes_menu_item)
 
-        button.setOnClickListener { /*TODO onclick -> like*/ }
+        button.setOnClickListener {
+            val intent = Intent(activity, UserItemActivity::class.java)
+            intent.putExtra(ITEM_TYPE, UserItemActivity.ItemType.LIKE)
+            startActivity(intent)
+        }
         container.addView(button)
     }
 
@@ -93,7 +105,7 @@ class UserFragment : BaseFragment() {
 
         button.setOnClickListener {
             //TODO dialog ok cancel
-            val intent = Intent(activity, LoginFragment::class.java)
+            val intent = Intent(activity, StartActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             startActivity(intent)
         }

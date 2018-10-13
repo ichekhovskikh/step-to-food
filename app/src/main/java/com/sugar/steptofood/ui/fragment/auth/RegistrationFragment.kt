@@ -1,8 +1,9 @@
-package com.sugar.steptofood.ui.fragment
+package com.sugar.steptofood.ui.fragment.auth
 
 import android.os.Bundle
 import android.view.View
 import com.sugar.steptofood.R
+import com.sugar.steptofood.ui.fragment.BaseFragment
 import kotlinx.android.synthetic.main.fragment_registration.*
 
 
