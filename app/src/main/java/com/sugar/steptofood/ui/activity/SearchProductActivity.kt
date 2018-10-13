@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.activity_search_product.*
 import android.app.Activity
 import android.view.View
 import android.widget.AdapterView
-import com.sugar.steptofood.ExstraName.Companion.PRODUCT
+import com.sugar.steptofood.utils.ExstraName.Companion.PRODUCT
 import com.sugar.steptofood.extension.afterTextChanged
 import kotlinx.android.synthetic.main.item_search.*
 

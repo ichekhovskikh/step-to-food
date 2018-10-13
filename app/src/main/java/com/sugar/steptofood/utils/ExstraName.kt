@@ -1,4 +1,4 @@
-package com.sugar.steptofood
+package com.sugar.steptofood.utils
 
 class ExstraName private constructor() {
 

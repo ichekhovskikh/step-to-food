@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activity.MainTabsActivity"
+    tools:context=".ui.activity.TabsActivity"
     android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout

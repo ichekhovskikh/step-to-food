@@ -12,8 +12,8 @@
         android:theme="@style/AppTheme.ColoredStatusBar">
 
         <activity
-            android:name=".ui.activity.LoginActivity"
-            android:theme="@style/AppTheme.TranslucentAnimLogin">
+            android:name=".ui.activity.StartActivity"
+            android:theme="@style/AppTheme.TranslucentActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -21,11 +21,7 @@
         </activity>
 
         <activity
-            android:name=".ui.activity.RegistrationActivity"
-            android:theme="@style/AppTheme.TranslucentAnimLogin" />
-
-        <activity
-            android:name=".ui.activity.MainTabsActivity"
+            android:name=".ui.activity.TabsActivity"
             android:theme="@style/AppTheme.TranslucentActionBar"/>
 
         <activity
@@ -36,7 +32,8 @@
             android:name=".ui.activity.AddFoodActivity"
             android:theme="@style/AppTheme.ColoredActionBar"/>
 
-        <activity android:name=".ui.activity.SearchProductActivity"
+        <activity
+            android:name=".ui.activity.SearchProductActivity"
             android:theme="@style/AppTheme.ColoredStatusBar"/>
 
     </application>

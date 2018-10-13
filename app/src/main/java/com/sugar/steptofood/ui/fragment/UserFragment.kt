@@ -10,7 +10,7 @@ import android.widget.LinearLayout
 import com.sugar.steptofood.R
 import android.support.annotation.Nullable
 import android.widget.TextView
-import com.sugar.steptofood.ui.activity.LoginActivity
+import com.sugar.steptofood.ui.activity.AddFoodActivity
 
 
 class UserFragment : BaseFragment() {
@@ -55,7 +55,10 @@ class UserFragment : BaseFragment() {
                 R.drawable.add_black,
                 R.string.add_recipes_menu_item)
 
-        button.setOnClickListener { /*TODO onclick -> add*/ }
+        button.setOnClickListener {
+            val intent = Intent(activity, AddFoodActivity::class.java)
+            startActivity(intent)
+        }
         container.addView(button)
     }
 
@@ -90,7 +93,7 @@ class UserFragment : BaseFragment() {
 
         button.setOnClickListener {
             //TODO dialog ok cancel
-            val intent = Intent(activity, LoginActivity::class.java)
+            val intent = Intent(activity, LoginFragment::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             startActivity(intent)
         }

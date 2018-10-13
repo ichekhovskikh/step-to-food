@@ -6,12 +6,12 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ListView
-import com.sugar.steptofood.ExstraName.Companion.PRODUCT
+import com.sugar.steptofood.utils.ExstraName.Companion.PRODUCT
 import com.sugar.steptofood.R
 import com.sugar.steptofood.adapter.HandwrittenListAdapter
 import com.sugar.steptofood.ui.activity.SearchProductActivity
 import kotlinx.android.synthetic.main.fragment_compose.*
-import com.sugar.steptofood.ui.activity.MainTabsActivity
+import com.sugar.steptofood.ui.activity.TabsActivity
 
 
 class ComposeFragment : BaseFragment() {
@@ -55,7 +55,7 @@ class ComposeFragment : BaseFragment() {
     private fun initSearchButton(view: View) {
         searchRecipesButton.setOnClickListener {
             /*activity?.intent?.putExtra(PRODUCTS, productListAdapter?.getAllItems())*/
-            val tabsActivity = (activity as MainTabsActivity)
+            val tabsActivity = (activity as TabsActivity)
             tabsActivity.sectionsPageAdapter?.replace(this, ComposedFoodsFragment.getInstance())
 
         }

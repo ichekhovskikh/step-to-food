@@ -10,9 +10,7 @@ import android.widget.*
 import com.mancj.materialsearchbar.MaterialSearchBar
 import com.sugar.steptofood.R
 import com.sugar.steptofood.ui.activity.FoodActivity
-import com.sugar.steptofood.ui.activity.LoginActivity
 import kotlinx.android.synthetic.main.fragment_recipes.*
-import kotlinx.android.synthetic.main.item_food_card.*
 
 class RecipesFragment : BaseFragment() {
 

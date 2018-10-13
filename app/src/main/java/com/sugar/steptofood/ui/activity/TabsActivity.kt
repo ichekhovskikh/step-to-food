@@ -11,7 +11,7 @@ import com.sugar.steptofood.ui.fragment.UserFragment
 import com.sugar.steptofood.adapter.SectionsPageAdapter
 import kotlinx.android.synthetic.main.activity_main_tabs.*
 
-class MainTabsActivity : AppCompatActivity() {
+class TabsActivity : AppCompatActivity() {
 
     companion object {
         val RECIPES_TAB = 0
@@ -35,18 +35,6 @@ class MainTabsActivity : AppCompatActivity() {
     private fun initTabs() {
         this.setupViewPager(pager)
         tabLayout.setupWithViewPager(pager)
-
-        /*tabLayout?.addOnTabSelectedListener(object: TabLayout.BaseOnTabSelectedListener<TabLayout.Tab> {
-            override fun onTabReselected(tab: TabLayout.Tab) {}
-            override fun onTabUnselected(tab: TabLayout.Tab) {}
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                if (tab.text == getString(R.string.tabRecipesText)) {
-                    appBar?.elevation = 0f
-                } else {
-                    appBar?.elevation = 10f
-                }
-            }
-        })*/
     }
 
     private fun setupViewPager(viewPager: ViewPager?) {
