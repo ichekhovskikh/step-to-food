@@ -13,6 +13,7 @@ import android.widget.TextView
 import com.sugar.steptofood.ui.activity.AddFoodActivity
 import com.sugar.steptofood.ui.activity.StartActivity
 import com.sugar.steptofood.ui.activity.UserItemActivity
+import com.sugar.steptofood.ui.factory.DialogFactory
 import com.sugar.steptofood.ui.fragment.BaseFragment
 import com.sugar.steptofood.utils.ExstraName.Companion.ITEM_TYPE
 
@@ -104,12 +105,8 @@ open class UserFragment : BaseFragment() {
                 R.string.exit_menu_item)
 
         button.setOnClickListener {
-            //TODO dialog ok cancel
-            val intent = Intent(activity, StartActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            startActivity(intent)
+            DialogFactory.createExitDialog(context) { exit() }.show()
         }
-
         container.addView(button)
     }
 
@@ -118,5 +115,11 @@ open class UserFragment : BaseFragment() {
         button.setCompoundDrawablesWithIntrinsicBounds(imgResource, 0, 0, 0)
         button.text = getString(textResource)
         return button
+    }
+
+    private fun exit() {
+        val intent = Intent(activity, StartActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        startActivity(intent)
     }
 }

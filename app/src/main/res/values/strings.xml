@@ -52,4 +52,9 @@
     <string name="added_recipes_menu_item">Добавленные рецепты</string>
     <string name="like_recipes_menu_item">Понравившиеся рецепты</string>
     <string name="exit_menu_item">Выйти</string>
+
+    <string name="dialog_tittle">Выход</string>
+    <string name="dialog_message">Вы уверены, что хотите выйти?</string>
+    <string name="yes">ДА</string>
+    <string name="no">НЕТ</string>
 </resources>
