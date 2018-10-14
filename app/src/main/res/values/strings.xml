@@ -44,11 +44,12 @@
 
     <string name="search_food">Поиск блюда</string>
 
-    <string name="my_recipes">МОИ РЕЦЕПТЫ</string>
+    <string name="added_recipes_tittle">ДОБАВЛЕННЫЕ РЕЦЕПТЫ</string>
+    <string name="like_recipes_tittle">ПОНРАВИВШИЕСЯ РЕЦЕПТЫ</string>
     <string name="search_recipes">ПОИСК РЕЦЕПТОВ</string>
 
     <string name="add_recipes_menu_item">Добавить новый рецепт</string>
-    <string name="my_recipes_menu_item">Мои рецепты</string>
+    <string name="added_recipes_menu_item">Добавленные рецепты</string>
     <string name="like_recipes_menu_item">Понравившиеся рецепты</string>
     <string name="exit_menu_item">Выйти</string>
 </resources>

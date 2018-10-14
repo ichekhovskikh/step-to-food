@@ -9,9 +9,12 @@ import android.view.ViewGroup
 import android.widget.*
 import com.mancj.materialsearchbar.MaterialSearchBar
 import com.sugar.steptofood.R
+import com.sugar.steptofood.ui.factory.CardViewFactory
+import com.sugar.steptofood.ui.activity.AnotherUserActivity
 import com.sugar.steptofood.ui.activity.FoodActivity
 import com.sugar.steptofood.ui.fragment.BaseFragment
 import kotlinx.android.synthetic.main.fragment_recipes.*
+import kotlinx.android.synthetic.main.item_small_food_info.*
 
 open class RecipesFragment : BaseFragment() {
 
@@ -22,8 +25,7 @@ open class RecipesFragment : BaseFragment() {
     }
 
     override fun initView(view: View, savedInstanceState: Bundle?) {
-        initSearch(view)
-        addFoodCard(contentContainer) //TODO test
+        initSearch()
         initAllFoodCards(view)
     }
 
@@ -34,51 +36,57 @@ open class RecipesFragment : BaseFragment() {
     }
 
     @SuppressLint("InflateParams")
-    open fun addButtonInCorner(card: CardView) {
-        val button = inflater?.inflate(R.layout.button_like, null) as ToggleButton
-        //TODO set initial value like
-        button.setOnCheckedChangeListener { buttonView, isChecked ->
-            //TODO add/remove from db
-        }
-        val buttonContainer = card.findViewById<FrameLayout>(R.id.buttonContainer)
-        buttonContainer?.addView(button)
-    }
-
-    @SuppressLint("InflateParams")
-    private fun initSearch(view: View) {
+    private fun initSearch() {
         val search = inflater?.inflate(R.layout.item_search, null) as MaterialSearchBar
         search.setHint(getString(R.string.search_food))
         search.setPlaceHolder(getString(R.string.search_food))
-
-        val underTabContainer = view.findViewById<LinearLayout>(R.id.underTabContainer)
         underTabContainer.addView(search)
     }
 
-    private fun initAllFoodCards(view: View) {
-        val contentContainer = view.findViewById<LinearLayout>(R.id.contentContainer)
+    protected fun initAllFoodCards(view: View) {
         /* TODO
         for with pagination food in foods
         addFoodCard(contentContainer, food)
         */
+        addFoodCard(contentContainer) //TODO test
     }
 
-    @SuppressLint("InflateParams")
     private fun addFoodCard(container: ViewGroup) {
         //TODO user, food
-        val foodCard = inflater?.inflate(R.layout.item_food_card, null) as CardView
-        addButtonInCorner(foodCard)
-        addFoodImage(foodCard)
-        //TODO onclick userName -> user
-//        foodCard?.tag = "id"
+        val foodCard = CardViewFactory.createFoodCardView(inflater)
         container.addView(foodCard)
-    }
 
-    private fun addFoodImage(card: CardView) {
-        val foodImageView = card.findViewById<ImageView>(R.id.foodImageView)
+        addButtonInCornerListener(foodCard)
+
         foodImageView.setOnClickListener {
             val intent = Intent(activity, FoodActivity::class.java)
             //TODO putExtra(food)
             startActivity(intent)
+        }
+
+        textUserNameView.setOnClickListener {
+            val intent = Intent(activity, AnotherUserActivity::class.java)
+            //TODO putExtra(user)
+            startActivity(intent)
+        }
+    }
+
+    private fun addButtonInCornerListener(card: CardView) {
+        addLikeListenerIfButtonExists(card)
+        addRemoveListenerIfButtonExists(card)
+    }
+
+    private fun addLikeListenerIfButtonExists(card: CardView) {
+        val button = card.findViewById<ToggleButton>(R.id.buttonLike)
+        button?.setOnCheckedChangeListener { buttonView, isChecked ->
+            //TODO add/remove from db
+        }
+    }
+
+    private fun addRemoveListenerIfButtonExists(card: CardView) {
+        val button = card.findViewById<Button>(R.id.buttonRemove)
+        button?.setOnClickListener {
+            //TODO remove from db
         }
     }
 }

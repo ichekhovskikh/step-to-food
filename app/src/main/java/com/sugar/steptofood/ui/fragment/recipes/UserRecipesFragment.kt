@@ -1,10 +1,11 @@
 package com.sugar.steptofood.ui.fragment.recipes
 
 import android.annotation.SuppressLint
-import android.support.v7.widget.CardView
-import android.widget.Button
-import android.widget.FrameLayout
+import android.os.Bundle
+import android.view.View
+import android.widget.TextView
 import com.sugar.steptofood.R
+import kotlinx.android.synthetic.main.fragment_recipes.*
 
 class UserRecipesFragment : RecipesFragment() {
 
@@ -12,18 +13,19 @@ class UserRecipesFragment : RecipesFragment() {
         fun getInstance() = UserRecipesFragment()
     }
 
+    override fun initView(view: View, savedInstanceState: Bundle?) {
+        initTittle()
+        initAllFoodCards(view)
+    }
+
     override fun getRecipes() {
         //TODO recipes for cards
     }
 
     @SuppressLint("InflateParams")
-    override fun addButtonInCorner(card: CardView) {
-        val button = inflater?.inflate(R.layout.button_remove, null) as Button
-        //TODO set initial value like
-        button.setOnClickListener {
-            //TODO remove from db
-        }
-        val buttonContainer = card.findViewById<FrameLayout>(R.id.buttonContainer)
-        buttonContainer?.addView(button)
+    private fun initTittle() {
+        val title = inflater?.inflate(R.layout.item_menu_title, null) as TextView
+        title.text = getString(R.string.added_recipes_tittle)
+        underTabContainer.addView(title)
     }
 }

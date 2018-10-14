@@ -20,7 +20,7 @@ class UserItemActivity : AppCompatActivity() {
 
     private fun selectFragment(type: ItemType) {
         when (type) {
-            ItemType.MY -> setFragment(UserRecipesFragment.getInstance())
+            ItemType.ADDED -> setFragment(UserRecipesFragment.getInstance())
             ItemType.LIKE -> setFragment(UserLikeFragment.getInstance())
         }
     }
@@ -34,6 +34,6 @@ class UserItemActivity : AppCompatActivity() {
 
     enum class ItemType {
         LIKE,
-        MY
+        ADDED
     }
 }

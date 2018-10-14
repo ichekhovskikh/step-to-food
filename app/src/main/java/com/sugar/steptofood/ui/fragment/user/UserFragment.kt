@@ -17,7 +17,7 @@ import com.sugar.steptofood.ui.fragment.BaseFragment
 import com.sugar.steptofood.utils.ExstraName.Companion.ITEM_TYPE
 
 
-class UserFragment : BaseFragment() {
+open class UserFragment : BaseFragment() {
 
     companion object {
         fun getInstance(): UserFragment {
@@ -35,10 +35,10 @@ class UserFragment : BaseFragment() {
 
     override fun getLayout(): Int = R.layout.fragment_user
 
-    private fun initMenuItems(view: View) {
+    open fun initMenuItems(view: View) {
         val menuContainer = view.findViewById<LinearLayout>(R.id.itemMenuContainer)
         initAddFood(menuContainer)
-        initMyRecipes(menuContainer)
+        initAddedRecipes(menuContainer)
         initLikeRecipes(menuContainer)
         initExit(menuContainer)
     }
@@ -53,7 +53,7 @@ class UserFragment : BaseFragment() {
     }
 
     @SuppressLint("InflateParams")
-    private fun initAddFood(container: ViewGroup) {
+    fun initAddFood(container: ViewGroup) {
         val button = createButton(
                 R.layout.button_item_menu,
                 R.drawable.add_black,
@@ -67,22 +67,22 @@ class UserFragment : BaseFragment() {
     }
 
     @SuppressLint("InflateParams")
-    private fun initMyRecipes(container: ViewGroup) {
+    fun initAddedRecipes(container: ViewGroup) {
         val button = createButton(
                 R.layout.button_item_menu,
                 R.drawable.menu_black,
-                R.string.my_recipes_menu_item)
+                R.string.added_recipes_menu_item)
 
         button.setOnClickListener {
             val intent = Intent(activity, UserItemActivity::class.java)
-            intent.putExtra(ITEM_TYPE, UserItemActivity.ItemType.MY)
+            intent.putExtra(ITEM_TYPE, UserItemActivity.ItemType.ADDED)
             startActivity(intent)
         }
         container.addView(button)
     }
 
     @SuppressLint("InflateParams")
-    private fun initLikeRecipes(container: ViewGroup) {
+    fun initLikeRecipes(container: ViewGroup) {
         val button = createButton(
                 R.layout.button_item_menu,
                 R.drawable.like_black,
@@ -97,7 +97,7 @@ class UserFragment : BaseFragment() {
     }
 
     @SuppressLint("InflateParams")
-    private fun initExit(container: ViewGroup) {
+    fun initExit(container: ViewGroup) {
         val button = createButton(
                 R.layout.button_item_menu,
                 R.drawable.arrow_back_black,
