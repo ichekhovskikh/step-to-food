@@ -10,7 +10,7 @@ class CardViewFactory private constructor() {
 
     companion object {
 
-        @SuppressLint("ResourceAsColor") //TODO annotation remove
+        @SuppressLint("ResourceAsColor", "InflateParams") //TODO annotation remove
         fun createFoodCardView(inflater: LayoutInflater?): CardView {
             //TODO user, food
             val foodCard = inflater?.inflate(R.layout.item_food_card, null) as CardView

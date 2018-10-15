@@ -43,12 +43,12 @@
         app:layout_constraintWidth_percent="0.4" />
 
     <TextView
-        android:id="@+id/textCalorieNameView"
-        android:layout_width="0dp"
+        android:id="@+id/textCalorieLabel"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:maxLines="1"
         android:singleLine="true"
-        android:text="Каллорийность: "
+        android:text="@string/calories_label"
         android:textAlignment="textStart"
         android:textColor="@color/colorPrimaryLight"
         android:textSize="12sp"
@@ -57,8 +57,24 @@
         app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.9" />
+
+    <TextView
+        android:id="@+id/textCalorieNameView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textAlignment="textStart"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.9"
-        app:layout_constraintWidth_percent="0.4" />
+        app:layout_constraintWidth_percent="0.15" />
 
     <FrameLayout
         android:id="@+id/buttonContainer"

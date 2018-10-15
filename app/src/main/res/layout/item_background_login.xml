@@ -9,9 +9,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:contentDescription="@string/todo"
+        android:scaleType="fitXY"
         app:layout_constraintHeight_percent="0.5"
-        app:srcCompat="@drawable/login"
-        android:scaleType="fitXY"/>
+        app:srcCompat="@drawable/login" />
 
     <TextView
         android:id="@+id/stepTextView"

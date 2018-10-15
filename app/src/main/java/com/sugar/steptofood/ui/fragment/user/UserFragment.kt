@@ -53,7 +53,6 @@ open class UserFragment : BaseFragment() {
         userNameTextView.text = userName
     }
 
-    @SuppressLint("InflateParams")
     fun initAddFood(container: ViewGroup) {
         val button = createButton(
                 R.layout.button_item_menu,
@@ -67,7 +66,6 @@ open class UserFragment : BaseFragment() {
         container.addView(button)
     }
 
-    @SuppressLint("InflateParams")
     fun initAddedRecipes(container: ViewGroup) {
         val button = createButton(
                 R.layout.button_item_menu,
@@ -82,7 +80,6 @@ open class UserFragment : BaseFragment() {
         container.addView(button)
     }
 
-    @SuppressLint("InflateParams")
     fun initLikeRecipes(container: ViewGroup) {
         val button = createButton(
                 R.layout.button_item_menu,
@@ -97,7 +94,6 @@ open class UserFragment : BaseFragment() {
         container.addView(button)
     }
 
-    @SuppressLint("InflateParams")
     fun initExit(container: ViewGroup) {
         val button = createButton(
                 R.layout.button_item_menu,

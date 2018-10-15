@@ -21,9 +21,9 @@ class TabsActivity : AppCompatActivity() {
 
     var sectionsPageAdapter: SectionsPageAdapter? = null
 
-    val recipesFragment: RecipesFragment = RecipesFragment.getInstance()
-    val composeFragment: ComposeFragment = ComposeFragment.getInstance()
-    val userFragment: UserFragment = UserFragment.getInstance()
+    private val recipesFragment: RecipesFragment = RecipesFragment.getInstance()
+    private val composeFragment: ComposeFragment = ComposeFragment.getInstance()
+    private val userFragment: UserFragment = UserFragment.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,8 +49,7 @@ class TabsActivity : AppCompatActivity() {
         if (currentTabIsComposedFoods()) {
             sectionsPageAdapter?.replace(COMPOSE_TAB, composeFragment)
             pager.adapter?.notifyDataSetChanged()
-        }
-        else toHome()
+        } else toHome()
 
     }
 

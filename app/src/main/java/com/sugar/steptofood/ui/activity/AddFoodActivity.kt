@@ -63,7 +63,6 @@ class AddFoodActivity : AppCompatActivity() {
         buttonCancel.setOnClickListener { finish() }
     }
 
-    @SuppressLint("InflateParams")
     private fun initEditFoodView() {
         addEditContentOnView()
 
@@ -87,6 +86,7 @@ class AddFoodActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("InflateParams")
     private fun addEditContentOnView() {
         addEditButton()
         val productsContainer = inflater?.inflate(R.layout.item_products_container, null)

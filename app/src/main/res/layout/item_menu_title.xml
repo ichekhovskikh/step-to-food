@@ -3,7 +3,7 @@
     android:id="@+id/menuTitleTextView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:textAlignment="center"
     android:padding="16dp"
+    android:textAlignment="center"
     android:textColor="@color/colorPrimary"
     android:textSize="16sp" />

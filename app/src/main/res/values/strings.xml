@@ -57,4 +57,5 @@
     <string name="dialog_message">Вы уверены, что хотите выйти?</string>
     <string name="yes">ДА</string>
     <string name="no">НЕТ</string>
+    <string name="calories_label">Каллорийность:</string>
 </resources>

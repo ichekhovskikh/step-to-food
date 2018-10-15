@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:drawablePadding="8dp"
     android:drawableStart="@drawable/menu_black"
-    android:textSize="16sp"
-    android:text="Button"
     android:textAlignment="textStart"
-    android:textColor="@color/black" />
+    android:textColor="@color/black"
+    android:textSize="16sp" />

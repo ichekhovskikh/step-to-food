@@ -7,22 +7,25 @@
         android:id="@+id/productNameTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:maxLines="1"
         android:layout_marginTop="12dp"
+        android:maxLines="1"
         android:singleLine="true"
         android:textAlignment="textStart"
         android:textColor="@android:color/darker_gray"
         android:textSize="14sp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_percent="0.6" />
 
     <EditText
         android:id="@+id/weightEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:ems="5"
+        android:hint="@string/gram"
+        android:inputType="number"
         android:maxLines="1"
         android:singleLine="true"
         android:textAlignment="center"
@@ -32,8 +35,5 @@
         app:layout_constraintHorizontal_bias="0.95"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.3"
-        android:inputType="number"
-        android:ems="5"
-        android:hint="@string/gram"/>
+        app:layout_constraintWidth_percent="0.3" />
 </android.support.constraint.ConstraintLayout>

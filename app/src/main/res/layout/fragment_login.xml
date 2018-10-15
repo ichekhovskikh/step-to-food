@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/authTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/auth"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.08"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/auth"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="20sp" />
+        app:layout_constraintVertical_bias="0.08" />
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/nameInputText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:transitionName="@string/transition_name_name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.35"
-        app:layout_constraintWidth_percent="0.8"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:transitionName="@string/transition_name_name">
+        app:layout_constraintWidth_percent="0.8">
 
         <android.support.design.widget.TextInputEditText
             android:layout_width="match_parent"
@@ -39,16 +39,16 @@
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/loginTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:transitionName="@string/transition_name_login"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.35"
-        app:layout_constraintWidth_percent="0.8"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:transitionName="@string/transition_name_login">
+        app:layout_constraintWidth_percent="0.8">
 
         <android.support.design.widget.TextInputEditText
             android:layout_width="match_parent"
@@ -61,6 +61,9 @@
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/passTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:transitionName="@string/transition_name_pass"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -68,10 +71,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.6"
         app:layout_constraintWidth_percent="0.8"
-        app:passwordToggleEnabled="true"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:transitionName="@string/transition_name_pass">
+        app:passwordToggleEnabled="true">
 
         <android.support.design.widget.TextInputEditText
             android:layout_width="match_parent"
@@ -85,12 +85,6 @@
 
     <TextView
         android:id="@+id/errorMsg"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
@@ -98,38 +92,43 @@
         android:text="@string/error_login"
         android:textColor="@android:color/holo_red_dark"
         android:textSize="14sp"
-        android:visibility="invisible" />
-
-    <TextView
-        android:id="@+id/buttonLogin"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.95"
+        app:layout_constraintVertical_bias="0.7" />
+
+    <TextView
+        android:id="@+id/buttonLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
         android:focusable="true"
         android:text="@string/enter"
         android:textColor="@color/button_text_color"
-        android:textSize="20sp" />
-
-    <TextView
-        android:id="@+id/buttonRegistration"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.95"
+        app:layout_constraintVertical_bias="0.95" />
+
+    <TextView
+        android:id="@+id/buttonRegistration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
         android:focusable="true"
         android:text="@string/registration"
         android:textColor="@color/button_text_color"
-        android:textSize="20sp" />
-
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.95" />
 </android.support.constraint.ConstraintLayout>

@@ -8,21 +8,21 @@
 
     <include
         layout="@layout/item_search"
-        android:padding="8dp"/>
+        android:padding="8dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorPrimary"
         android:padding="16dp"
-        android:textSize="18sp"
-        android:text="@string/select_product"/>
+        android:text="@string/select_product"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp" />
 
     <ListView
         android:id="@+id/searchResultListView"
+        style="@style/ListView.Search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/ListView.Search"
         android:paddingStart="16dp"
         tools:ignore="RtlSymmetry" />
 </LinearLayout>

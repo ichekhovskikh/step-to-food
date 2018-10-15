@@ -21,7 +21,6 @@ class LoginFragment : BaseFragment() {
     override fun initView(view: View, savedInstanceState: Bundle?) {
         buttonRegistration.setOnClickListener { toRegistration(it) }
         buttonLogin.setOnClickListener { login(it) }
-
     }
 
     override fun getLayout(): Int = R.layout.fragment_login

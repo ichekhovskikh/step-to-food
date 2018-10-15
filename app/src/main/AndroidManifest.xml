@@ -21,7 +21,7 @@
 
         <activity
             android:name=".ui.activity.TabsActivity"
-            android:theme="@style/AppTheme.TranslucentActionBar"/>
+            android:theme="@style/AppTheme.ColoredStatusBar"/>
 
         <activity
             android:name=".ui.activity.FoodActivity"

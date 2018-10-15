@@ -26,8 +26,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="12dp"
                 android:layout_marginStart="12dp"
+                android:padding="12dp"
                 android:text="@string/calorie_label"
                 android:textAlignment="center"
                 android:textColor="@color/colorPrimaryLight"
@@ -37,13 +37,13 @@
                 android:id="@+id/energyTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="12dp"
                 android:layout_marginStart="12dp"
+                android:ems="5"
+                android:hint="@string/gram"
+                android:inputType="number"
+                android:padding="12dp"
                 android:textAlignment="center"
                 android:textColor="@color/colorPrimaryLight"
-                android:hint="@string/gram"
-                android:ems="5"
-                android:inputType="number"
                 android:textSize="14sp" />
         </LinearLayout>
 
@@ -66,12 +66,12 @@
                 android:id="@+id/proteinTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:ems="5"
+                android:hint="@string/gram"
+                android:inputType="number"
                 android:padding="12dp"
                 android:textAlignment="center"
                 android:textColor="@color/colorPrimaryLight"
-                android:hint="@string/gram"
-                android:ems="5"
-                android:inputType="number"
                 android:textSize="14sp" />
         </LinearLayout>
 
@@ -94,12 +94,12 @@
                 android:id="@+id/fatTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:ems="5"
+                android:hint="@string/gram"
+                android:inputType="number"
                 android:padding="12dp"
                 android:textAlignment="center"
                 android:textColor="@color/colorPrimaryLight"
-                android:hint="@string/gram"
-                android:ems="5"
-                android:inputType="number"
                 android:textSize="14sp" />
         </LinearLayout>
 
@@ -112,10 +112,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
                 android:padding="12dp"
                 android:text="@string/carbohydrates_label"
                 android:textAlignment="center"
-                android:layout_marginEnd="12dp"
                 android:textColor="@color/colorPrimaryLight"
                 android:textSize="14sp" />
 
@@ -123,13 +123,13 @@
                 android:id="@+id/carbohydratesTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="12dp"
                 android:layout_marginEnd="12dp"
+                android:ems="5"
+                android:hint="@string/gram"
+                android:inputType="number"
+                android:padding="12dp"
                 android:textAlignment="center"
                 android:textColor="@color/colorPrimaryLight"
-                android:hint="@string/gram"
-                android:ems="5"
-                android:inputType="number"
                 android:textSize="14sp" />
         </LinearLayout>
     </LinearLayout>

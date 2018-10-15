@@ -4,9 +4,9 @@
     android:id="@+id/editActionBar"
     android:layout_width="match_parent"
     android:layout_height="@dimen/tabs_height"
-    app:elevation="0dp"
+    android:background="@color/colorPrimary"
     android:theme="@style/AppTheme.AppBarOverlay"
-    android:background="@color/colorPrimary">
+    app:elevation="0dp">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -21,11 +21,11 @@
             android:textColor="@color/white"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHeight_percent="0.9"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.3"
-            app:layout_constraintHeight_percent="0.9"
-            app:layout_constraintVertical_bias="0" />
+            app:layout_constraintVertical_bias="0"
+            app:layout_constraintWidth_percent="0.3" />
 
         <Button
             android:id="@+id/buttonCancel"
@@ -37,10 +37,9 @@
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.3"
             app:layout_constraintHeight_percent="0.9"
-            app:layout_constraintVertical_bias="0" />
-
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0"
+            app:layout_constraintWidth_percent="0.3" />
     </android.support.constraint.ConstraintLayout>
 </android.support.design.widget.AppBarLayout>

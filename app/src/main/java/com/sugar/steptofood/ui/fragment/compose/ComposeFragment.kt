@@ -40,8 +40,7 @@ class ComposeFragment : BaseFragment() {
         productListAdapter = HandwrittenListAdapter(view.context)
         productListView.adapter = productListAdapter
 
-        productListView.onItemClickListener = AdapterView.OnItemClickListener {
-            adapterView: AdapterView<*>, parent: View, position: Int, id: Long ->
+        productListView.onItemClickListener = AdapterView.OnItemClickListener { adapterView: AdapterView<*>, parent: View, position: Int, id: Long ->
             productListAdapter?.remove(productListAdapter?.getItem(position))
         }
     }
@@ -56,7 +55,7 @@ class ComposeFragment : BaseFragment() {
 
     private fun initSearchButton(view: View) {
         searchRecipesButton.setOnClickListener {
-            /*activity?.intent?.putExtra(PRODUCTS, productListAdapter?.getAllItems())*/
+            /*TODO activity?.intent?.putExtra(PRODUCTS, productListAdapter?.getAllItems())*/
             val tabsActivity = (activity as TabsActivity)
             tabsActivity.sectionsPageAdapter?.replace(this, ComposedFoodsFragment.getInstance())
 

@@ -34,12 +34,12 @@ class SectionsPageAdapter(private val mFragmentManager: FragmentManager) : Fragm
 
     fun replace(position: Int, newFragment: Fragment) {
         val transaction = mFragmentManager.beginTransaction()
-        transaction.remove(fragments[position]).commitNowAllowingStateLoss()
+        transaction.remove(fragments[position]).commitNow()
         fragments[position] = newFragment
         notifyDataSetChanged()
     }
 
     override fun getItemPosition(obj: Any): Int {
-       return PagerAdapter.POSITION_NONE
+        return PagerAdapter.POSITION_NONE
     }
 }

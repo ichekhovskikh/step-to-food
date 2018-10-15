@@ -6,5 +6,4 @@
     android:layout_height="wrap_content"
     android:elevation="0dp"
     app:mt_placeholderColor="@android:color/darker_gray"
-    app:mt_textColor="@color/black">
-</com.mancj.materialsearchbar.MaterialSearchBar>
+    app:mt_textColor="@color/black" />
