@@ -3,6 +3,7 @@
     package="com.sugar.steptofood">
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_descriptor"
         android:icon="@mipmap/step_to_food"

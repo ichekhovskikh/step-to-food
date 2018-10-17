@@ -116,7 +116,7 @@ class AddFoodActivity : AppCompatActivity() {
         return (validateImage() &&
                 validateProductsList(errorMsg) &&
                 TextValidator.validate(descriptionTextView, errorMsg) &&
-                TextValidator.validate(energyTextView, errorMsg) &&
+                TextValidator.validate(calorieTextView, errorMsg) &&
                 TextValidator.validate(proteinTextView, errorMsg) &&
                 TextValidator.validate(fatTextView, errorMsg) &&
                 TextValidator.validate(carbohydratesTextView, errorMsg))
