@@ -4,12 +4,15 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.view.ViewPager
+import com.sugar.steptofood.App
 import com.sugar.steptofood.ui.fragment.compose.ComposeFragment
 import com.sugar.steptofood.R
 import com.sugar.steptofood.ui.fragment.recipes.RecipesFragment
 import com.sugar.steptofood.ui.fragment.user.UserFragment
 import com.sugar.steptofood.adapter.SectionsPageAdapter
+import com.sugar.steptofood.db.SQLiteHelper
 import kotlinx.android.synthetic.main.activity_main_tabs.*
+import javax.inject.Inject
 
 class TabsActivity : AppCompatActivity() {
 
@@ -19,6 +22,8 @@ class TabsActivity : AppCompatActivity() {
         val USER_TAB = 2
     }
 
+    @Inject
+    lateinit var dbHelper: SQLiteHelper
     var sectionsPageAdapter: SectionsPageAdapter? = null
 
     private val recipesFragment: RecipesFragment = RecipesFragment.getInstance()
@@ -27,6 +32,7 @@ class TabsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        App.appComponent.inject(this)
         this.setContentView(R.layout.activity_main_tabs)
         initTabs()
 

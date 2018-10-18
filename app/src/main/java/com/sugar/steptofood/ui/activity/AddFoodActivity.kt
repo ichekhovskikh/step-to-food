@@ -15,7 +15,9 @@ import android.support.annotation.ColorRes
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import com.sugar.steptofood.App
 import com.sugar.steptofood.R
+import com.sugar.steptofood.db.SQLiteHelper
 import com.sugar.steptofood.utils.TextValidator
 import kotlinx.android.synthetic.main.activity_food.*
 import kotlinx.android.synthetic.main.item_add_product.*
@@ -23,6 +25,7 @@ import kotlinx.android.synthetic.main.item_edit_energy.*
 import kotlinx.android.synthetic.main.item_edit_how_cook.*
 import kotlinx.android.synthetic.main.item_products_container.*
 import com.sugar.steptofood.utils.KeyboardUtils
+import javax.inject.Inject
 
 class AddFoodActivity : AppCompatActivity() {
 
@@ -31,12 +34,14 @@ class AddFoodActivity : AppCompatActivity() {
         val PICK_IMAGE = 2
     }
 
+    @Inject
+    lateinit var dbHelper: SQLiteHelper
     private var inflater: LayoutInflater? = null
-
     private var imageUri: Uri? = null
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        App.appComponent.inject(this)
         inflater = this.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         setContentView(R.layout.activity_food)
         initActionBar()

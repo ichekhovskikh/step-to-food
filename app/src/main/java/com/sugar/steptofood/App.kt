@@ -1,14 +1,19 @@
 package com.sugar.steptofood
 
 import android.app.Application
+import com.sugar.steptofood.di.AppComponent
+import com.sugar.steptofood.di.DaggerAppComponent
+import com.sugar.steptofood.di.module.ContextModule
 
 class App : Application() {
-
-    companion object {
-        lateinit var instance: App
+    override fun onCreate() {
+        super.onCreate()
+        appComponent = DaggerAppComponent.builder()
+                .contextModule(ContextModule(this))
+                .build()
     }
 
-    init {
-        instance = this
+    companion object {
+        lateinit var appComponent: AppComponent
     }
 }

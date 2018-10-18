@@ -9,18 +9,25 @@ import kotlinx.android.synthetic.main.activity_search_product.*
 import android.app.Activity
 import android.view.View
 import android.widget.AdapterView
+import com.sugar.steptofood.App
+import com.sugar.steptofood.db.SQLiteHelper
 import com.sugar.steptofood.utils.ExstraName.Companion.PRODUCT
 import com.sugar.steptofood.extension.afterTextChanged
 import kotlinx.android.synthetic.main.item_search.*
+import javax.inject.Inject
 
 
 class SearchProductActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var dbHelper: SQLiteHelper
 
     //TODO replace string on Product
     private var adapter: ArrayAdapter<String>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        App.appComponent.inject(this)
         setContentView(R.layout.activity_search_product)
         //TODO added product yet
         initProductList()
