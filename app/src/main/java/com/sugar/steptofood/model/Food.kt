@@ -1,4 +1,4 @@
-package com.sugar.steptofood.db.dto
+package com.sugar.steptofood.model
 
 import com.j256.ormlite.dao.ForeignCollection
 import com.j256.ormlite.field.DatabaseField
@@ -33,4 +33,4 @@ data class Food(
 
         @DatabaseField(canBeNull = false)
         var carbohydrates: Double? = null
-) : Dto
+) : Entity

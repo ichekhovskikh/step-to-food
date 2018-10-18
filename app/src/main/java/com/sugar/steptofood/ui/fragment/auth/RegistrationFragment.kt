@@ -14,12 +14,12 @@ class RegistrationFragment : BaseFragment() {
     }
 
     override fun initView(view: View, savedInstanceState: Bundle?) {
-        buttonRegistration.setOnClickListener { registration(it) }
+        buttonRegistration.setOnClickListener { register(it) }
     }
 
     override fun getLayout(): Int = R.layout.fragment_registration
 
-    fun registration(view: View) {
+    fun register(view: View) {
         //TODO enter if login, pass not exist in db -> login
         fragmentManager?.popBackStack()
     }

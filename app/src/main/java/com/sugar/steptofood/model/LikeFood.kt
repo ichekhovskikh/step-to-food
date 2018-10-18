@@ -1,10 +1,10 @@
-package com.sugar.steptofood.db.dto
+package com.sugar.steptofood.model
 
 import com.j256.ormlite.field.DatabaseField
 import com.j256.ormlite.table.DatabaseTable
 
-@DatabaseTable(tableName = "product_food")
-data class ProductFood(
+@DatabaseTable(tableName = "like_food")
+data class LikeFood (
         @DatabaseField(generatedId = true)
         override var id: Int? = null,
 
@@ -12,8 +12,5 @@ data class ProductFood(
         var food: Food? = null,
 
         @DatabaseField(foreign = true)
-        var product: Product? = null,
-
-        @DatabaseField(canBeNull = false)
-        var weight: Int? = null
-) : Dto
+        var user: User? = null
+) : Entity

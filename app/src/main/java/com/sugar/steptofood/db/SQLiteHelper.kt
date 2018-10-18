@@ -6,7 +6,7 @@ import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper
 import com.j256.ormlite.support.ConnectionSource
 import com.j256.ormlite.table.TableUtils
 import com.sugar.steptofood.db.dao.EntityDao
-import com.sugar.steptofood.db.dto.*
+import com.sugar.steptofood.model.*
 import javax.inject.Inject
 
 class SQLiteHelper @Inject constructor(context: Context) : OrmLiteSqliteOpenHelper(context, DB_NAME, null, DB_VERSION) {
