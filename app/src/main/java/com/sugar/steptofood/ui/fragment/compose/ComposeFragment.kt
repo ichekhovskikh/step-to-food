@@ -6,13 +6,13 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ListView
-import com.sugar.steptofood.utils.ExstraName.Companion.PRODUCT
 import com.sugar.steptofood.R
 import com.sugar.steptofood.adapter.HandwrittenListAdapter
 import com.sugar.steptofood.ui.activity.SearchProductActivity
 import kotlinx.android.synthetic.main.fragment_compose.*
 import com.sugar.steptofood.ui.activity.TabsActivity
 import com.sugar.steptofood.ui.fragment.BaseFragment
+import com.sugar.steptofood.utils.ExtraName.PRODUCT
 
 
 class ComposeFragment : BaseFragment() {
@@ -22,9 +22,7 @@ class ComposeFragment : BaseFragment() {
     companion object {
         val GET_PRODUCT = 1
 
-        fun getInstance(): ComposeFragment {
-            return ComposeFragment()
-        }
+        fun getInstance() = ComposeFragment()
     }
 
     override fun initView(view: View, savedInstanceState: Bundle?) {

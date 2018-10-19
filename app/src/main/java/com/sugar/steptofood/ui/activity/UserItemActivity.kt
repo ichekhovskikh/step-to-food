@@ -8,7 +8,7 @@ import com.sugar.steptofood.R
 import com.sugar.steptofood.db.SQLiteHelper
 import com.sugar.steptofood.ui.fragment.recipes.UserLikeFragment
 import com.sugar.steptofood.ui.fragment.recipes.UserRecipesFragment
-import com.sugar.steptofood.utils.ExstraName.Companion.ITEM_TYPE
+import com.sugar.steptofood.utils.ExtraName.ITEM_TYPE
 import javax.inject.Inject
 
 class UserItemActivity : AppCompatActivity() {

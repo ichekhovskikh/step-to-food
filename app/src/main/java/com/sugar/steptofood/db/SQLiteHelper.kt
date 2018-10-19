@@ -16,7 +16,7 @@ class SQLiteHelper @Inject constructor(context: Context) : OrmLiteSqliteOpenHelp
         val DB_VERSION = 1
     }
 
-    val  userDao: EntityDao<User> by lazy { EntityDao(getConnectionSource(), User::class.java) }
+    val userDao: EntityDao<User> by lazy { EntityDao(getConnectionSource(), User::class.java) }
     val foodDao: EntityDao<Food> by lazy { EntityDao(getConnectionSource(), Food::class.java) }
     val productDao: EntityDao<Product> by lazy { EntityDao(getConnectionSource(), Product::class.java) }
     val likeFoodDao: EntityDao<LikeFood> by lazy { EntityDao(getConnectionSource(), LikeFood::class.java) }

@@ -1,6 +1,5 @@
 package com.sugar.steptofood.ui.fragment.user
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -15,15 +14,12 @@ import com.sugar.steptofood.ui.activity.StartActivity
 import com.sugar.steptofood.ui.activity.UserItemActivity
 import com.sugar.steptofood.ui.factory.DialogFactory
 import com.sugar.steptofood.ui.fragment.BaseFragment
-import com.sugar.steptofood.utils.ExstraName.Companion.ITEM_TYPE
-
+import com.sugar.steptofood.utils.ExtraName.ITEM_TYPE
 
 open class UserFragment : BaseFragment() {
 
     companion object {
-        fun getInstance(): UserFragment {
-            return UserFragment()
-        }
+        fun getInstance() = UserFragment()
     }
 
     override fun initView(view: View, savedInstanceState: Bundle?) {

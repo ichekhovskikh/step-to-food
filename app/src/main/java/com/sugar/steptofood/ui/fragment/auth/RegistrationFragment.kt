@@ -6,7 +6,6 @@ import com.sugar.steptofood.R
 import com.sugar.steptofood.ui.fragment.BaseFragment
 import kotlinx.android.synthetic.main.fragment_registration.*
 
-
 class RegistrationFragment : BaseFragment() {
 
     companion object {

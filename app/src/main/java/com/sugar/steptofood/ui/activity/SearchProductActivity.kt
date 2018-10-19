@@ -11,8 +11,8 @@ import android.view.View
 import android.widget.AdapterView
 import com.sugar.steptofood.App
 import com.sugar.steptofood.db.SQLiteHelper
-import com.sugar.steptofood.utils.ExstraName.Companion.PRODUCT
 import com.sugar.steptofood.extension.afterTextChanged
+import com.sugar.steptofood.utils.ExtraName.PRODUCT
 import kotlinx.android.synthetic.main.item_search.*
 import javax.inject.Inject
 

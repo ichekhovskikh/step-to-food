@@ -18,9 +18,7 @@ import kotlinx.android.synthetic.main.item_small_food_info.*
 class ComposedFoodsFragment : BaseFragment() {
 
     companion object {
-        fun getInstance(): ComposedFoodsFragment {
-            return ComposedFoodsFragment()
-        }
+        fun getInstance() = ComposedFoodsFragment()
     }
 
     override fun initView(view: View, savedInstanceState: Bundle?) {

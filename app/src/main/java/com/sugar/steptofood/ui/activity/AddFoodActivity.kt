@@ -18,13 +18,13 @@ import android.widget.TextView
 import com.sugar.steptofood.App
 import com.sugar.steptofood.R
 import com.sugar.steptofood.db.SQLiteHelper
-import com.sugar.steptofood.utils.TextValidator
 import kotlinx.android.synthetic.main.activity_food.*
 import kotlinx.android.synthetic.main.item_add_product.*
 import kotlinx.android.synthetic.main.item_edit_energy.*
 import kotlinx.android.synthetic.main.item_edit_how_cook.*
 import kotlinx.android.synthetic.main.item_products_container.*
-import com.sugar.steptofood.utils.KeyboardUtils
+import com.sugar.steptofood.utils.showKeyboard
+import com.sugar.steptofood.utils.validateTextView
 import javax.inject.Inject
 
 class AddFoodActivity : AppCompatActivity() {
@@ -76,7 +76,7 @@ class AddFoodActivity : AppCompatActivity() {
 
         buttonEditDescription.setOnClickListener {
             descriptionTextView.requestFocus()
-            KeyboardUtils.showKeyboard(this, descriptionTextView)
+            showKeyboard(this)
         }
 
         buttonAddProduct.setOnClickListener {
@@ -110,7 +110,7 @@ class AddFoodActivity : AppCompatActivity() {
         val buttonEdit = inflater?.inflate(R.layout.button_edit, null)
         buttonEdit?.setOnClickListener {
             foodNameTextView.requestFocus()
-            KeyboardUtils.showKeyboard(this, foodNameTextView)
+            showKeyboard(this)
         }
         imageActionContainer.addView(buttonEdit)
     }
@@ -120,11 +120,11 @@ class AddFoodActivity : AppCompatActivity() {
 
         return (validateImage() &&
                 validateProductsList(errorMsg) &&
-                TextValidator.validate(descriptionTextView, errorMsg) &&
-                TextValidator.validate(calorieTextView, errorMsg) &&
-                TextValidator.validate(proteinTextView, errorMsg) &&
-                TextValidator.validate(fatTextView, errorMsg) &&
-                TextValidator.validate(carbohydratesTextView, errorMsg))
+                validateTextView(descriptionTextView, errorMsg) &&
+                validateTextView(calorieTextView, errorMsg) &&
+                validateTextView(proteinTextView, errorMsg) &&
+                validateTextView(fatTextView, errorMsg) &&
+                validateTextView(carbohydratesTextView, errorMsg))
     }
 
     private fun validateImage(): Boolean {
@@ -143,7 +143,7 @@ class AddFoodActivity : AppCompatActivity() {
             for (i in 0 until productContainer.childCount) {
                 val view = productContainer.getChildAt(i)
                 val weightEditText = view.findViewById<EditText>(R.id.weightEditText)
-                if (!TextValidator.validate(weightEditText, errorMsg)) {
+                if (!validateTextView(weightEditText, errorMsg)) {
                     return false
                 }
             }
@@ -163,7 +163,7 @@ class AddFoodActivity : AppCompatActivity() {
     @SuppressLint("InflateParams")
     private fun addProduct(data: Intent?) {
         //TODO Product product = (Product implements Serializable) intent.getSerializableExtra(PRODUCT);
-        //data?.getStringExtra(ExstraName.PRODUCT) to item_product
+        //data?.getStringExtra(ExtraName.PRODUCT) to item_product
         val product = inflater?.inflate(R.layout.item_product, null)
         productContainer.addView(product)
         setSupportColorTextView(productsLabel, R.color.colorPrimary)
