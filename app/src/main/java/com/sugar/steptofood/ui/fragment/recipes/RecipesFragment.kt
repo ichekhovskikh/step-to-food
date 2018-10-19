@@ -3,16 +3,16 @@ package com.sugar.steptofood.ui.fragment.recipes
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.widget.CardView
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
 import com.mancj.materialsearchbar.MaterialSearchBar
 import com.sugar.steptofood.R
 import com.sugar.steptofood.ui.factory.CardViewFactory
 import com.sugar.steptofood.ui.activity.AnotherUserActivity
 import com.sugar.steptofood.ui.activity.FoodActivity
 import com.sugar.steptofood.ui.fragment.BaseFragment
+import kotlinx.android.synthetic.main.button_like.*
+import kotlinx.android.synthetic.main.button_remove.*
 import kotlinx.android.synthetic.main.fragment_recipes.*
 import kotlinx.android.synthetic.main.item_small_food_info.*
 
@@ -53,8 +53,7 @@ open class RecipesFragment : BaseFragment() {
         //TODO user, food
         val foodCard = CardViewFactory.createFoodCardView(inflater)
         container.addView(foodCard)
-
-        addButtonInCornerListener(foodCard)
+        addButtonInCornerListener()
 
         foodImageView.setOnClickListener {
             val intent = Intent(activity, FoodActivity::class.java)
@@ -69,21 +68,19 @@ open class RecipesFragment : BaseFragment() {
         }
     }
 
-    private fun addButtonInCornerListener(card: CardView) {
-        addLikeListenerIfButtonExists(card)
-        addRemoveListenerIfButtonExists(card)
+    private fun addButtonInCornerListener() {
+        addLikeListenerIfButtonExists()
+        addRemoveListenerIfButtonExists()
     }
 
-    private fun addLikeListenerIfButtonExists(card: CardView) {
-        val button = card.findViewById<ToggleButton>(R.id.buttonLike)
-        button?.setOnCheckedChangeListener { buttonView, isChecked ->
+    private fun addLikeListenerIfButtonExists() {
+        buttonLike?.setOnCheckedChangeListener { buttonView, isChecked ->
             //TODO add/remove from db
         }
     }
 
-    private fun addRemoveListenerIfButtonExists(card: CardView) {
-        val button = card.findViewById<Button>(R.id.buttonRemove)
-        button?.setOnClickListener {
+    private fun addRemoveListenerIfButtonExists() {
+        buttonRemove?.setOnClickListener {
             //TODO remove from db
         }
     }

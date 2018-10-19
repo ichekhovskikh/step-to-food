@@ -1,8 +1,7 @@
 package com.sugar.steptofood.ui.fragment.user
 
 import android.view.View
-import android.widget.LinearLayout
-import com.sugar.steptofood.R
+import kotlinx.android.synthetic.main.fragment_user.*
 
 class AnotherUserFragment : UserFragment() {
 
@@ -11,8 +10,7 @@ class AnotherUserFragment : UserFragment() {
     }
 
     override fun initMenuItems(view: View) {
-        val menuContainer = view.findViewById<LinearLayout>(R.id.itemMenuContainer)
-        initAddedRecipes(menuContainer)
-        initLikeRecipes(menuContainer)
+        initAddedRecipes(itemMenuContainer)
+        initLikeRecipes(itemMenuContainer)
     }
 }

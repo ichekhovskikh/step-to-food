@@ -8,11 +8,9 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
-import android.view.View
 import android.net.Uri
 import android.os.Build
 import android.support.annotation.ColorRes
-import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import com.sugar.steptofood.App
@@ -25,6 +23,7 @@ import kotlinx.android.synthetic.main.item_edit_how_cook.*
 import kotlinx.android.synthetic.main.item_products_container.*
 import com.sugar.steptofood.utils.showKeyboard
 import com.sugar.steptofood.utils.validateTextView
+import kotlinx.android.synthetic.main.action_bar_edit.*
 import javax.inject.Inject
 
 class AddFoodActivity : AppCompatActivity() {
@@ -53,18 +52,15 @@ class AddFoodActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setDisplayShowCustomEnabled(true)
         supportActionBar?.setCustomView(R.layout.action_bar_edit)
-        setActionOnClickButtons(supportActionBar!!.customView)
+        setActionOnClickButtons()
     }
 
-    private fun setActionOnClickButtons(view: View) {
-        val buttonDone = view.findViewById<Button>(R.id.buttonDone)
+    private fun setActionOnClickButtons() {
         buttonDone.setOnClickListener {
             //TODO if success add to db
             if (allFieldsAreFilled())
                 finish()
         }
-
-        val buttonCancel = view.findViewById<Button>(R.id.buttonCancel)
         buttonCancel.setOnClickListener { finish() }
     }
 
@@ -142,7 +138,7 @@ class AddFoodActivity : AppCompatActivity() {
         } else {
             for (i in 0 until productContainer.childCount) {
                 val view = productContainer.getChildAt(i)
-                val weightEditText = view.findViewById<EditText>(R.id.weightEditText)
+                val weightEditText: EditText = view.findViewById(R.id.weightEditText)
                 if (!validateTextView(weightEditText, errorMsg)) {
                     return false
                 }

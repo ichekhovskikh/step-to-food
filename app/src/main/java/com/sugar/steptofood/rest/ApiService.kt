@@ -16,7 +16,7 @@ interface ApiService {
                  @Field("password") password: String): Single<BaseResponse<Int>>
 
     @FormUrlEncoded
-    @POST("/logIn")
+    @POST("/login")
     fun login(@Field("login") login: String,
               @Field("password") password: String): Single<BaseResponse<UserToken>>
 

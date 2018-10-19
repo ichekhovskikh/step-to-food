@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.LinearLayout
 import com.sugar.steptofood.R
 import android.support.annotation.Nullable
 import android.widget.TextView
@@ -15,6 +14,7 @@ import com.sugar.steptofood.ui.activity.UserItemActivity
 import com.sugar.steptofood.ui.factory.DialogFactory
 import com.sugar.steptofood.ui.fragment.BaseFragment
 import com.sugar.steptofood.utils.ExtraName.ITEM_TYPE
+import kotlinx.android.synthetic.main.fragment_user.*
 
 open class UserFragment : BaseFragment() {
 
@@ -33,11 +33,10 @@ open class UserFragment : BaseFragment() {
     override fun getLayout(): Int = R.layout.fragment_user
 
     open fun initMenuItems(view: View) {
-        val menuContainer = view.findViewById<LinearLayout>(R.id.itemMenuContainer)
-        initAddFood(menuContainer)
-        initAddedRecipes(menuContainer)
-        initLikeRecipes(menuContainer)
-        initExit(menuContainer)
+        initAddFood(itemMenuContainer)
+        initAddedRecipes(itemMenuContainer)
+        initLikeRecipes(itemMenuContainer)
+        initExit(itemMenuContainer)
     }
 
     private fun initUserImage(view: View) {

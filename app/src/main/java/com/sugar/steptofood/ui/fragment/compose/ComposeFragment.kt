@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
-import android.widget.ListView
 import com.sugar.steptofood.R
 import com.sugar.steptofood.adapter.HandwrittenListAdapter
 import com.sugar.steptofood.ui.activity.SearchProductActivity
@@ -13,7 +12,6 @@ import kotlinx.android.synthetic.main.fragment_compose.*
 import com.sugar.steptofood.ui.activity.TabsActivity
 import com.sugar.steptofood.ui.fragment.BaseFragment
 import com.sugar.steptofood.utils.ExtraName.PRODUCT
-
 
 class ComposeFragment : BaseFragment() {
 
@@ -34,7 +32,6 @@ class ComposeFragment : BaseFragment() {
     override fun getLayout(): Int = R.layout.fragment_compose
 
     private fun initProductList(view: View) {
-        val productListView = view.findViewById<ListView>(R.id.productListView)
         productListAdapter = HandwrittenListAdapter(view.context)
         productListView.adapter = productListAdapter
 
