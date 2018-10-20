@@ -18,23 +18,17 @@ class SQLiteHelper @Inject constructor(context: Context) : OrmLiteSqliteOpenHelp
 
     val userDao: EntityDao<User> by lazy { EntityDao(getConnectionSource(), User::class.java) }
     val foodDao: EntityDao<Food> by lazy { EntityDao(getConnectionSource(), Food::class.java) }
-    val productDao: EntityDao<Product> by lazy { EntityDao(getConnectionSource(), Product::class.java) }
     val likeFoodDao: EntityDao<LikeFood> by lazy { EntityDao(getConnectionSource(), LikeFood::class.java) }
-    val productFoodDao: EntityDao<ProductFood> by lazy { EntityDao(getConnectionSource(), ProductFood::class.java) }
 
     override fun onCreate(database: SQLiteDatabase?, connectionSource: ConnectionSource?) {
         TableUtils.createTableIfNotExists(connectionSource, User::class.java)
-        TableUtils.createTableIfNotExists(connectionSource, Product::class.java)
         TableUtils.createTableIfNotExists(connectionSource, Food::class.java)
-        TableUtils.createTableIfNotExists(connectionSource, ProductFood::class.java)
         TableUtils.createTableIfNotExists(connectionSource, LikeFood::class.java)
     }
 
     override fun onUpgrade(database: SQLiteDatabase?, connectionSource: ConnectionSource?, oldVersion: Int, newVersion: Int) {
         TableUtils.dropTable<LikeFood, Any>(connectionSource, LikeFood::class.java, true)
-        TableUtils.dropTable<ProductFood, Any>(connectionSource, ProductFood::class.java, true)
         TableUtils.dropTable<User, Any>(connectionSource, User::class.java, true)
-        TableUtils.dropTable<Product, Any>(connectionSource, Product::class.java, true)
         TableUtils.dropTable<Food, Any>(connectionSource, Food::class.java, true)
         onCreate(database, connectionSource)
     }

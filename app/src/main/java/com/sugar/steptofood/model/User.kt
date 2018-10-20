@@ -1,5 +1,7 @@
 package com.sugar.steptofood.model
 
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
 import com.j256.ormlite.dao.ForeignCollection
 import com.j256.ormlite.field.DatabaseField
 import com.j256.ormlite.field.ForeignCollectionField
@@ -7,18 +9,20 @@ import com.j256.ormlite.table.DatabaseTable
 
 @DatabaseTable(tableName = "user")
 data class User(
-        @DatabaseField(generatedId = true)
+        @DatabaseField(columnName = "id", id = true)
+        @SerializedName("id")
         override var id: Int? = null,
 
-        @DatabaseField(canBeNull = false)
-        var name: String = "",
+        @DatabaseField(columnName = "name", canBeNull = false)
+        @SerializedName("name")
+        var name: String? = null,
 
-        @DatabaseField
-        var avatar: String = "",
+        @DatabaseField(columnName = "avatar", canBeNull = true)
+        @SerializedName("avatar")
+        @Expose
+        var avatar: String? = null,
 
-        @ForeignCollectionField(eager = false)
-        var likeFoods: ForeignCollection<LikeFood>? = null,
-
-        @ForeignCollectionField(eager = false)
-        var addedFoods: ForeignCollection<Food>? = null
+        @SerializedName("token")
+        @Expose
+        val token: String? = null
 ) : Entity

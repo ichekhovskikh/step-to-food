@@ -1,36 +1,57 @@
 package com.sugar.steptofood.model
 
-import com.j256.ormlite.dao.ForeignCollection
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
 import com.j256.ormlite.field.DatabaseField
-import com.j256.ormlite.field.ForeignCollectionField
 import com.j256.ormlite.table.DatabaseTable
 
 @DatabaseTable(tableName = "food")
 data class Food(
-        @DatabaseField(generatedId = true)
+        @DatabaseField(columnName = "id", id = true)
+        @SerializedName("id")
         override var id: Int? = null,
 
-        @DatabaseField(canBeNull = false)
+        @DatabaseField(columnName = "name", canBeNull = false)
+        @SerializedName("name")
         var name: String = "",
 
-        @ForeignCollectionField(eager = false)
-        var products: ForeignCollection<ProductFood>? = null,
+        @DatabaseField(columnName = "image", canBeNull = false)
+        @SerializedName("image")
+        var image: String = "",
 
-        @DatabaseField(foreign = true)
-        var author: User? = null,
-
-        @DatabaseField(canBeNull = false)
+        @DatabaseField(columnName = "description", canBeNull = false)
+        @SerializedName("description")
         var description: String = "",
 
-        @DatabaseField(canBeNull = false)
+        @DatabaseField(columnName = "calorie", canBeNull = false)
+        @SerializedName("calorie")
         var calorie: Double? = null,
 
-        @DatabaseField(canBeNull = false)
+        @DatabaseField(columnName = "image", canBeNull = false)
+        @SerializedName("protein")
         var protein: Double? = null,
 
-        @DatabaseField(canBeNull = false)
+        @DatabaseField(columnName = "fat", canBeNull = false)
+        @SerializedName("fat")
         var fat: Double? = null,
 
-        @DatabaseField(canBeNull = false)
-        var carbohydrates: Double? = null
+        @DatabaseField(columnName = "carbohydrates", canBeNull = false)
+        @SerializedName("carbohydrates")
+        var carbohydrates: Double? = null,
+
+        @DatabaseField(foreign = true)
+        @SerializedName("author")
+        var author: User? = null,
+
+        @SerializedName("products")
+        @Expose
+        var products: List<Product>? = null,
+
+        @SerializedName("is_your_added")
+        @Expose
+        var isYourAdded: Boolean = false,
+
+        @SerializedName("has_your_like")
+        @Expose
+        var hasYourLike: Boolean = false
 ) : Entity

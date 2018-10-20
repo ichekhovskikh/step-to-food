@@ -1,18 +1,24 @@
 package com.sugar.steptofood.model
 
-import com.j256.ormlite.dao.ForeignCollection
-import com.j256.ormlite.field.DatabaseField
-import com.j256.ormlite.field.ForeignCollectionField
-import com.j256.ormlite.table.DatabaseTable
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
 
-@DatabaseTable(tableName = "product")
 data class Product(
-        @DatabaseField(generatedId = true)
+        @SerializedName("id")
         override var id: Int? = null,
 
-        @DatabaseField(canBeNull = false)
+        @SerializedName("name")
         var name: String = "",
 
-        @ForeignCollectionField(eager = false)
-        var foods: ForeignCollection<ProductFood>? = null
+        @SerializedName("foods")
+        @Expose
+        var foods: List<Food>? = null,
+
+        @SerializedName("weight")
+        @Expose
+        var weight: Int? = null,
+
+        @SerializedName("included_in_search")
+        @Expose
+        var includedInSearch: Boolean = false
 ) : Entity
