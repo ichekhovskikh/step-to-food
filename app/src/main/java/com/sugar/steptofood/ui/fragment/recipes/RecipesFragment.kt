@@ -1,22 +1,19 @@
 package com.sugar.steptofood.ui.fragment.recipes
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import com.mancj.materialsearchbar.MaterialSearchBar
 import com.sugar.steptofood.R
-import com.sugar.steptofood.ui.factory.CardViewFactory
-import com.sugar.steptofood.ui.activity.AnotherUserActivity
-import com.sugar.steptofood.ui.activity.FoodActivity
+import com.sugar.steptofood.model.Food
+import com.sugar.steptofood.ui.FoodView
 import com.sugar.steptofood.ui.fragment.BaseFragment
 import kotlinx.android.synthetic.main.button_like.*
 import kotlinx.android.synthetic.main.button_remove.*
 import kotlinx.android.synthetic.main.fragment_recipes.*
-import kotlinx.android.synthetic.main.item_small_food_info.*
 
-open class RecipesFragment : BaseFragment() {
+open class RecipesFragment : FoodView, BaseFragment() {
 
     companion object {
         fun getInstance() = RecipesFragment()
@@ -49,23 +46,27 @@ open class RecipesFragment : BaseFragment() {
         addFoodCard(contentContainer) //TODO test
     }
 
+    fun refreshFoods(foods: List<Food>) {
+    }
+
     private fun addFoodCard(container: ViewGroup) {
         //TODO user, food
-        val foodCard = CardViewFactory.createFoodCardView(inflater)
+        //TODO replace on adapter
+        /*val foodCard = CardViewFactory.createFoodCardView(inflater)
         container.addView(foodCard)
         addButtonInCornerListener()
 
         foodImageView.setOnClickListener {
-            val intent = Intent(activity, FoodActivity::class.java)
+            val intent = Intent(view, FoodActivity::class.java)
             //TODO putExtra(food)
             startActivity(intent)
         }
 
         textUserNameView.setOnClickListener {
-            val intent = Intent(activity, AnotherUserActivity::class.java)
+            val intent = Intent(view, AnotherUserActivity::class.java)
             //TODO putExtra(user)
             startActivity(intent)
-        }
+        }*/
     }
 
     private fun addButtonInCornerListener() {

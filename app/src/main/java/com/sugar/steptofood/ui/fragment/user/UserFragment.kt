@@ -1,6 +1,7 @@
 package com.sugar.steptofood.ui.fragment.user
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,7 @@ import android.widget.Button
 import com.sugar.steptofood.R
 import android.support.annotation.Nullable
 import android.widget.TextView
+import com.sugar.steptofood.ui.FoodView
 import com.sugar.steptofood.ui.activity.AddFoodActivity
 import com.sugar.steptofood.ui.activity.StartActivity
 import com.sugar.steptofood.ui.activity.UserItemActivity
@@ -16,7 +18,7 @@ import com.sugar.steptofood.ui.fragment.BaseFragment
 import com.sugar.steptofood.utils.ExtraName.ITEM_TYPE
 import kotlinx.android.synthetic.main.fragment_user.*
 
-open class UserFragment : BaseFragment() {
+open class UserFragment : FoodView, BaseFragment() {
 
     companion object {
         fun getInstance() = UserFragment()
@@ -99,6 +101,10 @@ open class UserFragment : BaseFragment() {
             DialogFactory.createExitDialog(context) { exit() }.show()
         }
         container.addView(button)
+    }
+
+    fun setUserAvatar(image: Bitmap) {
+
     }
 
     private fun createButton(resource: Int, @Nullable imgResource: Int, textResource: Int): Button {

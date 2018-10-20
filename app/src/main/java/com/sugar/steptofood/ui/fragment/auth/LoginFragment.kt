@@ -8,6 +8,7 @@ import android.support.transition.*
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
 import com.sugar.steptofood.R
+import com.sugar.steptofood.ui.activity.StartActivity
 import com.sugar.steptofood.ui.activity.TabsActivity
 import com.sugar.steptofood.ui.fragment.BaseFragment
 import kotlinx.android.synthetic.main.fragment_login.*
@@ -27,8 +28,7 @@ class LoginFragment : BaseFragment() {
 
     private fun login() {
         //TODO logic enter if login, pass -> success
-        val intent = Intent(activity, TabsActivity::class.java)
-        startActivity(intent)
+        (activity as StartActivity).login()
     }
 
     private fun toRegistration() {

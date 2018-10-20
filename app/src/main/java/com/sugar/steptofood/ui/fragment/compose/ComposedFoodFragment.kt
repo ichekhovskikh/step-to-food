@@ -1,29 +1,26 @@
 package com.sugar.steptofood.ui.fragment.compose
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import com.sugar.steptofood.R
-import com.sugar.steptofood.ui.factory.CardViewFactory
-import com.sugar.steptofood.ui.activity.AnotherUserActivity
-import com.sugar.steptofood.ui.activity.FoodActivity
+import com.sugar.steptofood.model.Food
+import com.sugar.steptofood.ui.FoodView
 import com.sugar.steptofood.ui.fragment.BaseFragment
 import kotlinx.android.synthetic.main.button_like.*
 import kotlinx.android.synthetic.main.button_remove.*
 import kotlinx.android.synthetic.main.fragment_composed_foods.*
-import kotlinx.android.synthetic.main.item_small_food_info.*
 
-class ComposedFoodsFragment : BaseFragment() {
+class ComposedFoodFragment : FoodView, BaseFragment() {
 
     companion object {
-        fun getInstance() = ComposedFoodsFragment()
+        fun getInstance() = ComposedFoodFragment()
     }
 
     override fun initView(view: View, savedInstanceState: Bundle?) {
-        /*activity?.intent?.getSerializableExtra(PRODUCTS)*/
+        /*view?.intent?.getSerializableExtra(PRODUCTS)*/
         initAllProductsCards(view)
-        addProductsCard(composedFoodsContainer) //TODO test
+        addProductsCard(composedFoodContainer) //TODO test
     }
 
     override fun getLayout(): Int = R.layout.fragment_composed_foods
@@ -35,23 +32,27 @@ class ComposedFoodsFragment : BaseFragment() {
         */
     }
 
+    fun refreshFoods(foods: List<Food>) {
+    }
+
     private fun addProductsCard(container: ViewGroup) {
         //TODO user, food, products
-        val productsCard = CardViewFactory.createProductsCardView(inflater)
+        //TODO replace on adapter
+        /*val productsCard = CardViewFactory.createProductsCardView(inflater)
         container.addView(productsCard)
         addButtonInCornerListener()
 
         foodImageView.setOnClickListener {
-            val intent = Intent(activity, FoodActivity::class.java)
+            val intent = Intent(view, FoodActivity::class.java)
             //TODO putExtra(food)
             startActivity(intent)
         }
 
         textUserNameView.setOnClickListener {
-            val intent = Intent(activity, AnotherUserActivity::class.java)
+            val intent = Intent(view, AnotherUserActivity::class.java)
             //TODO putExtra(user)
             startActivity(intent)
-        }
+        }*/
     }
 
     private fun addProducts(container: ViewGroup) {

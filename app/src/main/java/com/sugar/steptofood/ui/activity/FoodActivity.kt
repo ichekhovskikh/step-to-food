@@ -50,5 +50,6 @@ class FoodActivity : AppCompatActivity() {
     private fun addLikeButton() {
         val buttonLike = inflater?.inflate(R.layout.button_like, null)
         imageActionContainer.addView(buttonLike)
+        //TODO set initial value
     }
 }

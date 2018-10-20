@@ -12,10 +12,10 @@ import android.widget.AdapterView
 import com.sugar.steptofood.App
 import com.sugar.steptofood.db.SQLiteHelper
 import com.sugar.steptofood.extension.afterTextChanged
+import com.sugar.steptofood.model.Product
 import com.sugar.steptofood.utils.ExtraName.PRODUCT
 import kotlinx.android.synthetic.main.item_search.*
 import javax.inject.Inject
-
 
 class SearchProductActivity : AppCompatActivity() {
 
@@ -35,7 +35,9 @@ class SearchProductActivity : AppCompatActivity() {
     }
 
     private fun initSearch() {
-        search.afterTextChanged { refreshProductList(it) }
+        search.afterTextChanged {
+            //TODO presenter.search
+        }
     }
 
     private fun initProductList() {
@@ -57,7 +59,7 @@ class SearchProductActivity : AppCompatActivity() {
         */
     }
 
-    private fun refreshProductList(text: String) {
+    fun refreshProductList(products: List<Product>) {
         //search db; set adapter data
     }
 }

@@ -52,14 +52,14 @@ class TabsActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (currentTabIsComposedFoods()) {
+        if (currentTabIsComposedFood()) {
             sectionsPageAdapter?.replace(COMPOSE_TAB, composeFragment)
             pager.adapter?.notifyDataSetChanged()
         } else toHome()
 
     }
 
-    private fun currentTabIsComposedFoods(): Boolean = pager.currentItem == COMPOSE_TAB
+    private fun currentTabIsComposedFood(): Boolean = pager.currentItem == COMPOSE_TAB
             && sectionsPageAdapter?.getItem(COMPOSE_TAB) !is ComposeFragment
 
     private fun toHome() {

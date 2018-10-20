@@ -38,13 +38,17 @@ class AddFoodActivity : AppCompatActivity() {
     private var inflater: LayoutInflater? = null
     private var imageUri: Uri? = null
 
-    public override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         App.appComponent.inject(this)
         inflater = this.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         setContentView(R.layout.activity_food)
         initActionBar()
         initEditFoodView()
+    }
+
+    fun showNotificationAndExit() {
+
     }
 
     private fun initActionBar() {

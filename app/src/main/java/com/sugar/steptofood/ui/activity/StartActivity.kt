@@ -1,15 +1,17 @@
 package com.sugar.steptofood.ui.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import com.sugar.steptofood.App
 import com.sugar.steptofood.R
 import com.sugar.steptofood.db.SQLiteHelper
+import com.sugar.steptofood.ui.FoodView
 import com.sugar.steptofood.ui.fragment.auth.LoginFragment
 import javax.inject.Inject
 
-class StartActivity : AppCompatActivity() {
+class StartActivity : FoodView, AppCompatActivity() {
 
     @Inject
     lateinit var dbHelper: SQLiteHelper
@@ -27,5 +29,10 @@ class StartActivity : AppCompatActivity() {
                 .beginTransaction()
                 .add(R.id.fragmentContainer, fragment)
                 .commit()
+    }
+
+    fun login() {
+        val intent = Intent(this, TabsActivity::class.java)
+        startActivity(intent)
     }
 }

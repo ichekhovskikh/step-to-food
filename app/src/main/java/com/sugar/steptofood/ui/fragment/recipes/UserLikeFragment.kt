@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import com.sugar.steptofood.R
+import com.sugar.steptofood.ui.FoodView
 import kotlinx.android.synthetic.main.fragment_recipes.*
 
 class UserLikeFragment : RecipesFragment() {

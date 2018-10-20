@@ -50,9 +50,9 @@ class ComposeFragment : BaseFragment() {
 
     private fun initSearchButton(view: View) {
         searchRecipesButton.setOnClickListener {
-            /*TODO activity?.intent?.putExtra(PRODUCTS, productListAdapter?.getAllItems())*/
+            /*TODO view?.intent?.putExtra(PRODUCTS, productListAdapter?.getAllItems())*/
             val tabsActivity = (activity as TabsActivity)
-            tabsActivity.sectionsPageAdapter?.replace(this, ComposedFoodsFragment.getInstance())
+            tabsActivity.sectionsPageAdapter?.replace(this, ComposedFoodFragment.getInstance())
 
         }
     }

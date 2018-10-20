@@ -33,7 +33,7 @@
             android:theme="@style/AppTheme.TranslucentActionBar"/>
 
         <activity
-            android:name=".ui.activity.AddFoodActivity"
+            android:name=".ui.activity.AddBaseActivity"
             android:theme="@style/AppTheme.ColoredActionBar"/>
 
         <activity
