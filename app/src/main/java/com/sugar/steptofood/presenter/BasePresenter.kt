@@ -1,9 +1,9 @@
 package com.sugar.steptofood.presenter
 
 import com.sugar.steptofood.rest.ApiService
-import com.sugar.steptofood.ui.FoodView
+import com.sugar.steptofood.ui.view.BaseView
 
-open class BasePresenter<V : FoodView>(protected open val view: V,
+open class BasePresenter<V : BaseView>(protected open val view: V,
                                        protected open val api: ApiService) {
 
     protected fun defaultError(block: () -> Unit = {}) = { error: String ->
