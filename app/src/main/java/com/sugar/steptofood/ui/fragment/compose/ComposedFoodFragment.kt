@@ -5,8 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.sugar.steptofood.R
 import com.sugar.steptofood.model.Food
-import com.sugar.steptofood.ui.FoodView
 import com.sugar.steptofood.ui.fragment.BaseFragment
+import com.sugar.steptofood.ui.view.FoodView
 import kotlinx.android.synthetic.main.button_like.*
 import kotlinx.android.synthetic.main.button_remove.*
 import kotlinx.android.synthetic.main.fragment_composed_foods.*
@@ -25,14 +25,14 @@ class ComposedFoodFragment : FoodView, BaseFragment() {
 
     override fun getLayout(): Int = R.layout.fragment_composed_foods
 
+    override fun refreshFoods(foods: List<Food>) {
+    }
+
     private fun initAllProductsCards(view: View) {
         /* TODO
         for with pagination food in foods
         addProductsCard(contentContainer, food)
         */
-    }
-
-    fun refreshFoods(foods: List<Food>) {
     }
 
     private fun addProductsCard(container: ViewGroup) {
@@ -43,13 +43,13 @@ class ComposedFoodFragment : FoodView, BaseFragment() {
         addButtonInCornerListener()
 
         foodImageView.setOnClickListener {
-            val intent = Intent(view, FoodActivity::class.java)
+            val intent = Intent(activity, FoodActivity::class.java)
             //TODO putExtra(food)
             startActivity(intent)
         }
 
         textUserNameView.setOnClickListener {
-            val intent = Intent(view, AnotherUserActivity::class.java)
+            val intent = Intent(activity, AnotherUserActivity::class.java)
             //TODO putExtra(user)
             startActivity(intent)
         }*/

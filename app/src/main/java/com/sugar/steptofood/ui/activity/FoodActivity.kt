@@ -8,10 +8,11 @@ import android.view.LayoutInflater
 import com.sugar.steptofood.App
 import com.sugar.steptofood.R
 import com.sugar.steptofood.db.SQLiteHelper
+import com.sugar.steptofood.ui.view.FoodView
 import kotlinx.android.synthetic.main.activity_food.*
 import javax.inject.Inject
 
-class FoodActivity : AppCompatActivity() {
+class FoodActivity : FoodView, AppCompatActivity() {
 
     @Inject
     lateinit var dbHelper: SQLiteHelper

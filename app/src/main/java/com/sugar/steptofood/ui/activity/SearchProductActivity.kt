@@ -13,11 +13,12 @@ import com.sugar.steptofood.App
 import com.sugar.steptofood.db.SQLiteHelper
 import com.sugar.steptofood.extension.afterTextChanged
 import com.sugar.steptofood.model.Product
+import com.sugar.steptofood.ui.view.ProductView
 import com.sugar.steptofood.utils.ExtraName.PRODUCT
 import kotlinx.android.synthetic.main.item_search.*
 import javax.inject.Inject
 
-class SearchProductActivity : AppCompatActivity() {
+class SearchProductActivity : ProductView, AppCompatActivity() {
 
     @Inject
     lateinit var dbHelper: SQLiteHelper
@@ -32,6 +33,10 @@ class SearchProductActivity : AppCompatActivity() {
         //TODO added product yet
         initProductList()
         showAllProducts()
+    }
+
+    override fun refreshProducts(food: List<Product>) {
+        //TODO search db; set adapter data
     }
 
     private fun initSearch() {
@@ -57,9 +62,5 @@ class SearchProductActivity : AppCompatActivity() {
         /* TODO pagination
         adapter.addAll(db.Products)
         */
-    }
-
-    fun refreshProductList(products: List<Product>) {
-        //search db; set adapter data
     }
 }

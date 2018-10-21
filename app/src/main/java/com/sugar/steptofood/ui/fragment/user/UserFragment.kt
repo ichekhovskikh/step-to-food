@@ -9,16 +9,16 @@ import android.widget.Button
 import com.sugar.steptofood.R
 import android.support.annotation.Nullable
 import android.widget.TextView
-import com.sugar.steptofood.ui.FoodView
 import com.sugar.steptofood.ui.activity.AddFoodActivity
 import com.sugar.steptofood.ui.activity.StartActivity
 import com.sugar.steptofood.ui.activity.UserItemActivity
-import com.sugar.steptofood.ui.factory.DialogFactory
 import com.sugar.steptofood.ui.fragment.BaseFragment
+import com.sugar.steptofood.ui.view.UserView
 import com.sugar.steptofood.utils.ExtraName.ITEM_TYPE
+import com.sugar.steptofood.utils.showExitDialog
 import kotlinx.android.synthetic.main.fragment_user.*
 
-open class UserFragment : FoodView, BaseFragment() {
+open class UserFragment : UserView, BaseFragment() {
 
     companion object {
         fun getInstance() = UserFragment()
@@ -39,6 +39,14 @@ open class UserFragment : FoodView, BaseFragment() {
         initAddedRecipes(itemMenuContainer)
         initLikeRecipes(itemMenuContainer)
         initExit(itemMenuContainer)
+    }
+
+    override fun setUserAvatar(image: Bitmap) {
+
+    }
+
+    override fun setUserName(name: String) {
+
     }
 
     private fun initUserImage(view: View) {
@@ -98,13 +106,9 @@ open class UserFragment : FoodView, BaseFragment() {
                 R.string.exit_menu_item)
 
         button.setOnClickListener {
-            DialogFactory.createExitDialog(context) { exit() }.show()
+            showExitDialog(context, ::exit)
         }
         container.addView(button)
-    }
-
-    fun setUserAvatar(image: Bitmap) {
-
     }
 
     private fun createButton(resource: Int, @Nullable imgResource: Int, textResource: Int): Button {

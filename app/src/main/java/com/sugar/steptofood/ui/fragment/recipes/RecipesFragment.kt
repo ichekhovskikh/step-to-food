@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import com.mancj.materialsearchbar.MaterialSearchBar
 import com.sugar.steptofood.R
 import com.sugar.steptofood.model.Food
-import com.sugar.steptofood.ui.FoodView
 import com.sugar.steptofood.ui.fragment.BaseFragment
+import com.sugar.steptofood.ui.view.FoodView
 import kotlinx.android.synthetic.main.button_like.*
 import kotlinx.android.synthetic.main.button_remove.*
 import kotlinx.android.synthetic.main.fragment_recipes.*
@@ -46,7 +46,7 @@ open class RecipesFragment : FoodView, BaseFragment() {
         addFoodCard(contentContainer) //TODO test
     }
 
-    fun refreshFoods(foods: List<Food>) {
+    override fun refreshFoods(foods: List<Food>) {
     }
 
     private fun addFoodCard(container: ViewGroup) {
@@ -57,13 +57,13 @@ open class RecipesFragment : FoodView, BaseFragment() {
         addButtonInCornerListener()
 
         foodImageView.setOnClickListener {
-            val intent = Intent(view, FoodActivity::class.java)
+            val intent = Intent(activity, FoodActivity::class.java)
             //TODO putExtra(food)
             startActivity(intent)
         }
 
         textUserNameView.setOnClickListener {
-            val intent = Intent(view, AnotherUserActivity::class.java)
+            val intent = Intent(activity, AnotherUserActivity::class.java)
             //TODO putExtra(user)
             startActivity(intent)
         }*/

@@ -16,6 +16,7 @@ import android.widget.TextView
 import com.sugar.steptofood.App
 import com.sugar.steptofood.R
 import com.sugar.steptofood.db.SQLiteHelper
+import com.sugar.steptofood.ui.view.FoodView
 import kotlinx.android.synthetic.main.activity_food.*
 import kotlinx.android.synthetic.main.item_add_product.*
 import kotlinx.android.synthetic.main.item_edit_energy.*
@@ -26,7 +27,7 @@ import com.sugar.steptofood.utils.validateTextView
 import kotlinx.android.synthetic.main.action_bar_edit.*
 import javax.inject.Inject
 
-class AddFoodActivity : AppCompatActivity() {
+class AddFoodActivity : FoodView, AppCompatActivity() {
 
     companion object {
         val GET_PRODUCT = 1

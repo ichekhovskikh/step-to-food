@@ -1,19 +1,18 @@
 package com.sugar.steptofood.presenter
 
 import com.sugar.steptofood.extension.customSubscribe
-import com.sugar.steptofood.model.Product
 import com.sugar.steptofood.rest.ApiService
-import com.sugar.steptofood.ui.FoodView
+import com.sugar.steptofood.ui.view.ProductView
 
-class ProductPresenter(view: FoodView,
-                       api: ApiService) : BasePresenter<FoodView>(view, api) {
+class ProductPresenter(view: ProductView,
+                       api: ApiService) : BasePresenter<ProductView>(view, api) {
 
-    fun getAllProducts(onSuccess: ((List<Product>) -> Unit)) {
-//        view.onShowLoading()
+    fun getAllProducts() {
+        //view.onShowLoading()
         api.getAllProducts()
                 .customSubscribe({
                     //view.onHideLoading()
-                    onSuccess.invoke(it)
+                    view.refreshProducts(it)
                 }, defaultError())
     }
 }
