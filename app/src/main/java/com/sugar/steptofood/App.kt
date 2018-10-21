@@ -15,5 +15,7 @@ class App : Application() {
 
     companion object {
         lateinit var appComponent: AppComponent
+
+        const val BASE_URL = "http://localhost:8080"
     }
 }

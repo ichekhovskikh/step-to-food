@@ -11,12 +11,19 @@ import android.widget.AdapterView
 import com.sugar.steptofood.App
 import com.sugar.steptofood.extension.afterTextChanged
 import com.sugar.steptofood.model.Product
+import com.sugar.steptofood.presenter.ProductPresenter
+import com.sugar.steptofood.rest.ApiService
 import com.sugar.steptofood.ui.view.ProductView
 import com.sugar.steptofood.utils.ExtraName.PRODUCT
 import kotlinx.android.synthetic.main.item_search.*
+import javax.inject.Inject
 
 class SearchProductActivity : ProductView, AppCompatActivity() {
 
+    @Inject
+    lateinit var api: ApiService
+
+    private val presenter by lazy { ProductPresenter(this, api) }
     private var adapter: ArrayAdapter<Product>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {

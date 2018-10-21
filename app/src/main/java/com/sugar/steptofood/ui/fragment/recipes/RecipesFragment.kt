@@ -5,16 +5,25 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import com.mancj.materialsearchbar.MaterialSearchBar
+import com.sugar.steptofood.App
 import com.sugar.steptofood.R
 import com.sugar.steptofood.model.Food
 import com.sugar.steptofood.ui.fragment.BaseFragment
 import com.sugar.steptofood.ui.view.FoodView
 import kotlinx.android.synthetic.main.fragment_recipes.*
 import com.sugar.steptofood.adapter.RecipeAdapter
+import com.sugar.steptofood.presenter.FoodPresenter
+import com.sugar.steptofood.rest.ApiService
 import com.sugar.steptofood.ui.activity.AnotherUserActivity
 import com.sugar.steptofood.ui.activity.FoodActivity
+import javax.inject.Inject
 
 open class RecipesFragment : FoodView, BaseFragment() {
+
+    @Inject
+    lateinit var api: ApiService
+
+    private val presenter by lazy { FoodPresenter(this, api) }
     private var adapter: RecipeAdapter? = null
 
     companion object {
@@ -22,6 +31,7 @@ open class RecipesFragment : FoodView, BaseFragment() {
     }
 
     override fun initView(view: View, savedInstanceState: Bundle?) {
+        App.appComponent.inject(this)
         initHeader()
         initContent()
     }

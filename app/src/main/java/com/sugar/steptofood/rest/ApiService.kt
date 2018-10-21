@@ -52,8 +52,8 @@ interface ApiService {
     @GET("/addedFoods?userId={userId}")
     fun getAddedFood(@Path("userId") userId: Int): Single<BaseResponse<List<Food>>>
 
-    @GET("/recommendedFoods?userId={userId}")
-    fun getRecommendedFood(@Path("userId") userId: Int): Single<BaseResponse<List<Food>>>
+    @GET("/recommendedFoods")
+    fun getRecommendedFood(): Single<BaseResponse<List<Food>>>
 
     @GET("/searchFoods?search={name}")
     fun searchFoods(@Field("name") name: String): Single<BaseResponse<List<Food>>>

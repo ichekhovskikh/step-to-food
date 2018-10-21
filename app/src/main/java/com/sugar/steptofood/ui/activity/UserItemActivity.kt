@@ -9,6 +9,7 @@ import com.sugar.steptofood.db.SQLiteHelper
 import com.sugar.steptofood.ui.fragment.recipes.UserLikeFragment
 import com.sugar.steptofood.ui.fragment.recipes.UserRecipesFragment
 import com.sugar.steptofood.utils.ExtraName.ITEM_TYPE
+import com.sugar.steptofood.utils.ExtraName.UID
 import javax.inject.Inject
 
 class UserItemActivity : AppCompatActivity() {
@@ -16,11 +17,13 @@ class UserItemActivity : AppCompatActivity() {
     @Inject
     lateinit var dbHelper: SQLiteHelper
 
+    private var userId: Int? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         App.appComponent.inject(this)
         setContentView(R.layout.activity_user_item)
-        //TODO extra user
+        userId = intent.getIntExtra(UID, -1)
         val type = intent.getSerializableExtra(ITEM_TYPE) as ItemType
         selectFragment(type)
     }

@@ -9,9 +9,9 @@ import com.sugar.steptofood.ui.view.FoodView
 class FoodPresenter(view: FoodView,
                     api: ApiService) : BasePresenter<FoodView>(view, api) {
 
-    fun getRecommendedFoods(userId: Int) {
+    fun getRecommendedFoods() {
         //view.onShowLoading()
-        api.getRecommendedFood(userId)
+        api.getRecommendedFood()
                 .customSubscribe({
                     //view.onHideLoading()
                     view.refreshFoods(it)

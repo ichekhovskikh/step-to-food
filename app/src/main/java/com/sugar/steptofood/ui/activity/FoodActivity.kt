@@ -5,10 +5,18 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.sugar.steptofood.App
 import com.sugar.steptofood.R
+import com.sugar.steptofood.presenter.FoodPresenter
+import com.sugar.steptofood.rest.ApiService
 import com.sugar.steptofood.ui.view.FoodView
 import kotlinx.android.synthetic.main.activity_food.*
+import javax.inject.Inject
 
 class FoodActivity : FoodView, AppCompatActivity() {
+
+    @Inject
+    lateinit var api: ApiService
+
+    private val presenter by lazy { FoodPresenter(this, api) }
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

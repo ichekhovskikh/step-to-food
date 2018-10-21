@@ -4,7 +4,6 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.view.ViewPager
-import com.sugar.steptofood.App
 import com.sugar.steptofood.ui.fragment.compose.ComposeFragment
 import com.sugar.steptofood.R
 import com.sugar.steptofood.ui.fragment.recipes.RecipesFragment
@@ -22,7 +21,6 @@ class TabsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        App.appComponent.inject(this)
         this.setContentView(R.layout.activity_main_tabs)
         initTabs()
 

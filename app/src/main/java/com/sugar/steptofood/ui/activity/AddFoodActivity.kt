@@ -13,6 +13,8 @@ import android.widget.EditText
 import android.widget.TextView
 import com.sugar.steptofood.App
 import com.sugar.steptofood.R
+import com.sugar.steptofood.presenter.FoodPresenter
+import com.sugar.steptofood.rest.ApiService
 import com.sugar.steptofood.ui.view.FoodView
 import kotlinx.android.synthetic.main.activity_food.*
 import kotlinx.android.synthetic.main.item_add_product.*
@@ -22,9 +24,14 @@ import kotlinx.android.synthetic.main.item_products_container.*
 import com.sugar.steptofood.utils.showKeyboard
 import com.sugar.steptofood.utils.validateTextView
 import kotlinx.android.synthetic.main.action_bar_edit.*
+import javax.inject.Inject
 
 class AddFoodActivity : FoodView, AppCompatActivity() {
 
+    @Inject
+    lateinit var api: ApiService
+
+    private val presenter by lazy { FoodPresenter(this, api) }
     private var imageUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {

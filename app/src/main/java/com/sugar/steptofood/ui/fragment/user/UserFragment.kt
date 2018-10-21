@@ -9,6 +9,9 @@ import android.widget.Button
 import com.sugar.steptofood.R
 import android.support.annotation.Nullable
 import android.widget.TextView
+import com.sugar.steptofood.App
+import com.sugar.steptofood.presenter.UserPresenter
+import com.sugar.steptofood.rest.ApiService
 import com.sugar.steptofood.ui.activity.AddFoodActivity
 import com.sugar.steptofood.ui.activity.StartActivity
 import com.sugar.steptofood.ui.activity.UserItemActivity
@@ -17,14 +20,21 @@ import com.sugar.steptofood.ui.view.UserView
 import com.sugar.steptofood.utils.ExtraName.ITEM_TYPE
 import com.sugar.steptofood.utils.showExitDialog
 import kotlinx.android.synthetic.main.fragment_user.*
+import javax.inject.Inject
 
 open class UserFragment : UserView, BaseFragment() {
+
+    @Inject
+    lateinit var api: ApiService
+
+    private val presenter by lazy { UserPresenter(this, api) }
 
     companion object {
         fun getInstance() = UserFragment()
     }
 
     override fun initView(view: View, savedInstanceState: Bundle?) {
+        App.appComponent.inject(this)
         initMenuItems(view)
 
         //TODO activity extra user
@@ -50,7 +60,7 @@ open class UserFragment : UserView, BaseFragment() {
     }
 
     private fun setUserName(view: View, userName: String) {
-        val userNameTextView = view.findViewById<TextView>(R.id.userNameTextView)
+        val userNameTextView: TextView = view.findViewById(R.id.userNameTextView)
         userNameTextView.text = userName
     }
 

@@ -2,6 +2,7 @@ package com.sugar.steptofood.di.module
 
 import android.app.Application
 import android.content.Context
+import com.sugar.steptofood.Session
 import com.sugar.steptofood.db.SQLiteHelper
 import dagger.Module
 import dagger.Provides
@@ -14,9 +15,9 @@ class ContextModule(private val app: Application) {
     @Singleton
     fun provideContext(): Context = app
 
-    /*@Provides
+    @Provides
     @Singleton
-    fun provideSession(context: Context): Session = Session(context)*/
+    fun provideSession(context: Context): Session = Session(context)
 
     @Provides
     @Singleton

@@ -6,10 +6,21 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import com.sugar.steptofood.App
 import com.sugar.steptofood.R
+import com.sugar.steptofood.Session
+import com.sugar.steptofood.presenter.LoginPresenter
+import com.sugar.steptofood.rest.ApiService
 import com.sugar.steptofood.ui.view.LoginView
 import com.sugar.steptofood.ui.fragment.auth.LoginFragment
+import javax.inject.Inject
 
 class StartActivity : LoginView, AppCompatActivity() {
+
+    @Inject
+    lateinit var session: Session
+    @Inject
+    lateinit var api: ApiService
+
+    private val presenter by lazy { LoginPresenter(this, api, session) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
