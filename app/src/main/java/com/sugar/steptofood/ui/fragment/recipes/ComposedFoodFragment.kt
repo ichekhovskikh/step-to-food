@@ -4,6 +4,8 @@ import com.sugar.steptofood.adapter.ComposedFoodAdapter
 import com.sugar.steptofood.model.Food
 import kotlinx.android.synthetic.main.fragment_recipes.*
 import android.view.ViewGroup
+import com.sugar.steptofood.model.Product
+import com.sugar.steptofood.utils.ExtraName.PRODUCTS
 
 class ComposedFoodFragment : RecipesFragment() {
     private var adapter: ComposedFoodAdapter? = null
@@ -13,7 +15,8 @@ class ComposedFoodFragment : RecipesFragment() {
     }
 
     override fun getRecipes() {
-        //TODO presenter.getComposedFood(products)
+        val product = activity!!.intent.getSerializableExtra(PRODUCTS) as List<Product>
+        presenter.searchFoodsByProduct(product)
     }
 
     override fun initHeader() {

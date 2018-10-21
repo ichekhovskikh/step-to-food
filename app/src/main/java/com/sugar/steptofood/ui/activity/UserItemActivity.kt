@@ -17,7 +17,8 @@ class UserItemActivity : AppCompatActivity() {
     @Inject
     lateinit var dbHelper: SQLiteHelper
 
-    private var userId: Int? = null
+    var userId: Int? = null
+        private set
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

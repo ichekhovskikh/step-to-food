@@ -3,6 +3,7 @@ package com.sugar.steptofood.ui.fragment.recipes
 import android.annotation.SuppressLint
 import android.widget.TextView
 import com.sugar.steptofood.R
+import com.sugar.steptofood.ui.activity.UserItemActivity
 import kotlinx.android.synthetic.main.fragment_recipes.*
 
 class UserLikeFragment : RecipesFragment() {
@@ -12,7 +13,8 @@ class UserLikeFragment : RecipesFragment() {
     }
 
     override fun getRecipes() {
-        //TODO recipes for cards
+        val userId = (activity as UserItemActivity).userId
+        presenter.getLikeFoods(userId!!)
     }
 
     @SuppressLint("InflateParams")

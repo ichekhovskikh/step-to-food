@@ -13,6 +13,7 @@ import javax.inject.Singleton
 interface AppComponent {
 
     fun inject(startActivity: StartActivity)
+    fun inject(tabsActivity: TabsActivity)
     fun inject(foodActivity: FoodActivity)
     fun inject(addFoodActivity: AddFoodActivity)
     fun inject(searchProductActivity: SearchProductActivity)

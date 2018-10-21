@@ -16,6 +16,8 @@ import com.sugar.steptofood.presenter.FoodPresenter
 import com.sugar.steptofood.rest.ApiService
 import com.sugar.steptofood.ui.activity.AnotherUserActivity
 import com.sugar.steptofood.ui.activity.FoodActivity
+import com.sugar.steptofood.utils.ExtraName.FOOD_ID
+import com.sugar.steptofood.utils.ExtraName.UID
 import javax.inject.Inject
 
 open class RecipesFragment : FoodView, BaseFragment() {
@@ -23,7 +25,7 @@ open class RecipesFragment : FoodView, BaseFragment() {
     @Inject
     lateinit var api: ApiService
 
-    private val presenter by lazy { FoodPresenter(this, api) }
+    protected val presenter by lazy { FoodPresenter(this, api) }
     private var adapter: RecipeAdapter? = null
 
     companion object {
@@ -38,9 +40,7 @@ open class RecipesFragment : FoodView, BaseFragment() {
 
     override fun getLayout() = R.layout.fragment_recipes
 
-    open fun getRecipes() {
-        //TODO presenter.getRecommendedFood()
-    }
+    open fun getRecipes() = presenter.getRecommendedFoods()
 
     @SuppressLint("InflateParams")
     open fun initHeader() {
@@ -66,21 +66,21 @@ open class RecipesFragment : FoodView, BaseFragment() {
 
     fun onFoodImageClickListener(food: Food) {
         val intent = Intent(activity, FoodActivity::class.java)
-        //TODO putExtra(food)
+        intent.putExtra(FOOD_ID, food.id)
         startActivity(intent)
     }
 
     fun onUserNameClickListener(food: Food) {
         val intent = Intent(activity, AnotherUserActivity::class.java)
-        //TODO putExtra(user)
+        intent.putExtra(UID, food.author?.id)
         startActivity(intent)
     }
 
     fun onRemoveClickListener(food: Food) {
-        //TODO remove from db
+        presenter.removeFood(food.id!!)
     }
 
     fun onLikeClickListener(food: Food, hasLike: Boolean) {
-        //TODO add/remove from db
+        presenter.setLikeFood(food.id!!, hasLike)
     }
 }

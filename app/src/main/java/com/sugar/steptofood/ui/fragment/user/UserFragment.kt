@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import com.sugar.steptofood.R
 import android.support.annotation.Nullable
-import android.widget.TextView
 import com.sugar.steptofood.App
+import com.sugar.steptofood.Session
 import com.sugar.steptofood.presenter.UserPresenter
 import com.sugar.steptofood.rest.ApiService
 import com.sugar.steptofood.ui.activity.AddFoodActivity
@@ -18,6 +18,7 @@ import com.sugar.steptofood.ui.activity.UserItemActivity
 import com.sugar.steptofood.ui.fragment.BaseFragment
 import com.sugar.steptofood.ui.view.UserView
 import com.sugar.steptofood.utils.ExtraName.ITEM_TYPE
+import com.sugar.steptofood.utils.ExtraName.UID
 import com.sugar.steptofood.utils.showExitDialog
 import kotlinx.android.synthetic.main.fragment_user.*
 import javax.inject.Inject
@@ -25,9 +26,12 @@ import javax.inject.Inject
 open class UserFragment : UserView, BaseFragment() {
 
     @Inject
+    lateinit var session: Session
+    @Inject
     lateinit var api: ApiService
 
-    private val presenter by lazy { UserPresenter(this, api) }
+    private val presenter by lazy { UserPresenter(this, api, session) }
+    protected var userId: Int? = null
 
     companion object {
         fun getInstance() = UserFragment()
@@ -36,10 +40,9 @@ open class UserFragment : UserView, BaseFragment() {
     override fun initView(view: View, savedInstanceState: Bundle?) {
         App.appComponent.inject(this)
         initMenuItems(view)
-
-        //TODO activity extra user
-        //TODO presenter image, name
-        setUserName(view, "Иван Чеховских")
+        userId = activity!!.intent.getIntExtra(UID, session.userId)
+        presenter.getUserName(userId!!)
+        presenter.getUserAvatar(userId!!)
     }
 
     override fun getLayout(): Int = R.layout.fragment_user
@@ -51,17 +54,12 @@ open class UserFragment : UserView, BaseFragment() {
         initExit(itemMenuContainer)
     }
 
-    override fun setUserAvatar(image: Bitmap) {
-
-    }
-
     override fun setUserName(name: String) {
-
+        userNameTextView.text = name
     }
 
-    private fun setUserName(view: View, userName: String) {
-        val userNameTextView: TextView = view.findViewById(R.id.userNameTextView)
-        userNameTextView.text = userName
+    override fun setUserAvatar(image: Bitmap) {
+        userImageView.setImageBitmap(image)
     }
 
     fun initAddFood(container: ViewGroup) {
@@ -85,6 +83,7 @@ open class UserFragment : UserView, BaseFragment() {
 
         button.setOnClickListener {
             val intent = Intent(activity, UserItemActivity::class.java)
+            intent.putExtra(UID, userId)
             intent.putExtra(ITEM_TYPE, UserItemActivity.ItemType.ADDED)
             startActivity(intent)
         }
@@ -99,6 +98,7 @@ open class UserFragment : UserView, BaseFragment() {
 
         button.setOnClickListener {
             val intent = Intent(activity, UserItemActivity::class.java)
+            intent.putExtra(UID, userId)
             intent.putExtra(ITEM_TYPE, UserItemActivity.ItemType.LIKE)
             startActivity(intent)
         }
@@ -127,6 +127,7 @@ open class UserFragment : UserView, BaseFragment() {
     private fun exit() {
         val intent = Intent(activity, StartActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        presenter.terminate()
         startActivity(intent)
     }
 }

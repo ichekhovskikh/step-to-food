@@ -3,10 +3,12 @@ package com.sugar.steptofood.presenter
 import com.sugar.steptofood.extension.customSubscribe
 import com.sugar.steptofood.rest.ApiService
 import android.graphics.BitmapFactory
+import com.sugar.steptofood.Session
 import com.sugar.steptofood.ui.view.UserView
 
 class UserPresenter(view: UserView,
-                    api: ApiService) : BasePresenter<UserView>(view, api) {
+                    api: ApiService,
+                    val session: Session) : BasePresenter<UserView>(view, api) {
 
     fun getUserAvatar(userId: Int) {
         //view.onShowLoading()
@@ -24,6 +26,15 @@ class UserPresenter(view: UserView,
                 .customSubscribe({
                     //view.onHideLoading()
                     view.setUserName(it.name!!)
+                }, defaultError())
+    }
+
+    fun terminate() {
+        //view.onShowLoading()
+        api.terminate()
+                .customSubscribe({
+                    //view.onHideLoading()
+                    session.reset()
                 }, defaultError())
     }
 }

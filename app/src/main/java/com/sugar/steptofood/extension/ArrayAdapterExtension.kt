@@ -2,8 +2,8 @@ package com.sugar.steptofood.extension
 
 import android.widget.ArrayAdapter
 
-fun <T> ArrayAdapter<T>.getAll(): List<T?> {
-    val items: MutableList<T?> = mutableListOf()
+fun <T> ArrayAdapter<T>.getAll(): ArrayList<T?> {
+    val items: ArrayList<T?> = ArrayList()
     for (i in 0 until count) {
         items.add(getItem(i))
     }
