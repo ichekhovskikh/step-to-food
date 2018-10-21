@@ -17,4 +17,13 @@ class UserPresenter(view: UserView,
                     view.setUserAvatar(bitmap)
                 }, defaultError())
     }
+
+    fun getUserName(userId: Int) {
+        //view.onShowLoading()
+        api.getUser(userId)
+                .customSubscribe({
+                    //view.onHideLoading()
+                    view.setUserName(it.name!!)
+                }, defaultError())
+    }
 }

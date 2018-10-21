@@ -7,36 +7,30 @@ import android.widget.ArrayAdapter
 import com.sugar.steptofood.R
 import kotlinx.android.synthetic.main.activity_search_product.*
 import android.app.Activity
-import android.view.View
 import android.widget.AdapterView
 import com.sugar.steptofood.App
-import com.sugar.steptofood.db.SQLiteHelper
 import com.sugar.steptofood.extension.afterTextChanged
 import com.sugar.steptofood.model.Product
 import com.sugar.steptofood.ui.view.ProductView
 import com.sugar.steptofood.utils.ExtraName.PRODUCT
 import kotlinx.android.synthetic.main.item_search.*
-import javax.inject.Inject
 
 class SearchProductActivity : ProductView, AppCompatActivity() {
 
-    @Inject
-    lateinit var dbHelper: SQLiteHelper
-
-    //TODO replace string on Product
-    private var adapter: ArrayAdapter<String>? = null
+    private var adapter: ArrayAdapter<Product>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         App.appComponent.inject(this)
         setContentView(R.layout.activity_search_product)
-        //TODO added product yet
+        initSearch()
         initProductList()
-        showAllProducts()
+        //TODO presenter getAll
     }
 
-    override fun refreshProducts(food: List<Product>) {
-        //TODO search db; set adapter data
+    override fun refreshProducts(products: List<Product>) {
+        adapter?.clear()
+        adapter?.addAll(products)
     }
 
     private fun initSearch() {
@@ -50,17 +44,11 @@ class SearchProductActivity : ProductView, AppCompatActivity() {
         searchResultListView.adapter = adapter
 
         searchResultListView.onItemClickListener =
-                AdapterView.OnItemClickListener { adapterView: AdapterView<*>, parent: View, position: Int, id: Long ->
+                AdapterView.OnItemClickListener { adapterView, parent, position, id ->
                     val returnIntent = Intent()
                     returnIntent.putExtra(PRODUCT, adapter?.getItem(position))
                     setResult(Activity.RESULT_OK, returnIntent)
                     finish()
                 }
-    }
-
-    fun showAllProducts() {
-        /* TODO pagination
-        adapter.addAll(db.Products)
-        */
     }
 }

@@ -10,20 +10,10 @@ import com.sugar.steptofood.R
 import com.sugar.steptofood.ui.fragment.recipes.RecipesFragment
 import com.sugar.steptofood.ui.fragment.user.UserFragment
 import com.sugar.steptofood.adapter.SectionsPageAdapter
-import com.sugar.steptofood.db.SQLiteHelper
 import kotlinx.android.synthetic.main.activity_main_tabs.*
-import javax.inject.Inject
 
 class TabsActivity : AppCompatActivity() {
 
-    companion object {
-        val RECIPES_TAB = 0
-        val COMPOSE_TAB = 1
-        val USER_TAB = 2
-    }
-
-    @Inject
-    lateinit var dbHelper: SQLiteHelper
     var sectionsPageAdapter: SectionsPageAdapter? = null
 
     private val recipesFragment: RecipesFragment = RecipesFragment.getInstance()
@@ -66,5 +56,11 @@ class TabsActivity : AppCompatActivity() {
         val intent = Intent(Intent.ACTION_MAIN)
         intent.addCategory(Intent.CATEGORY_HOME)
         startActivity(intent)
+    }
+
+    companion object {
+        val RECIPES_TAB = 0
+        val COMPOSE_TAB = 1
+        val USER_TAB = 2
     }
 }

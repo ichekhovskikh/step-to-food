@@ -46,6 +46,7 @@
 
     <string name="added_recipes_tittle">ДОБАВЛЕННЫЕ РЕЦЕПТЫ</string>
     <string name="like_recipes_tittle">ПОНРАВИВШИЕСЯ РЕЦЕПТЫ</string>
+    <string name="composed_recipes_tittle">НАЙДЕННЫН РЕЦЕПТЫ</string>
     <string name="search_recipes">ПОИСК РЕЦЕПТОВ</string>
 
     <string name="add_recipes_menu_item">Добавить новый рецепт</string>

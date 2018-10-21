@@ -2,12 +2,10 @@ package com.sugar.steptofood.ui.activity
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
-import android.view.LayoutInflater
 import android.net.Uri
 import android.os.Build
 import android.support.annotation.ColorRes
@@ -15,7 +13,6 @@ import android.widget.EditText
 import android.widget.TextView
 import com.sugar.steptofood.App
 import com.sugar.steptofood.R
-import com.sugar.steptofood.db.SQLiteHelper
 import com.sugar.steptofood.ui.view.FoodView
 import kotlinx.android.synthetic.main.activity_food.*
 import kotlinx.android.synthetic.main.item_add_product.*
@@ -25,29 +22,20 @@ import kotlinx.android.synthetic.main.item_products_container.*
 import com.sugar.steptofood.utils.showKeyboard
 import com.sugar.steptofood.utils.validateTextView
 import kotlinx.android.synthetic.main.action_bar_edit.*
-import javax.inject.Inject
 
 class AddFoodActivity : FoodView, AppCompatActivity() {
 
-    companion object {
-        val GET_PRODUCT = 1
-        val PICK_IMAGE = 2
-    }
-
-    @Inject
-    lateinit var dbHelper: SQLiteHelper
-    private var inflater: LayoutInflater? = null
     private var imageUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         App.appComponent.inject(this)
-        inflater = this.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         setContentView(R.layout.activity_food)
         initActionBar()
         initEditFoodView()
     }
 
+    //TODO
     fun showNotificationAndExit() {
 
     }
@@ -62,9 +50,8 @@ class AddFoodActivity : FoodView, AppCompatActivity() {
 
     private fun setActionOnClickButtons() {
         buttonDone.setOnClickListener {
-            //TODO if success add to db
             if (allFieldsAreFilled())
-                finish()
+                finish() //TODO replace on presenter
         }
         buttonCancel.setOnClickListener { finish() }
     }
@@ -82,7 +69,6 @@ class AddFoodActivity : FoodView, AppCompatActivity() {
 
         buttonAddProduct.setOnClickListener {
             val intent = Intent(this, SearchProductActivity::class.java)
-            //TODO added product yet
             startActivityForResult(intent, GET_PRODUCT)
         }
 
@@ -95,10 +81,10 @@ class AddFoodActivity : FoodView, AppCompatActivity() {
     @SuppressLint("InflateParams")
     private fun addEditContentOnView() {
         addEditButton()
-        val productsContainer = inflater?.inflate(R.layout.item_products_container, null)
-        val addRowButton = inflater?.inflate(R.layout.item_add_product, null)
-        val howDoFoodView = inflater?.inflate(R.layout.item_edit_how_cook, null)
-        val energyFoodView = inflater?.inflate(R.layout.item_edit_energy, null)
+        val productsContainer = layoutInflater.inflate(R.layout.item_products_container, null)
+        val addRowButton = layoutInflater.inflate(R.layout.item_add_product, null)
+        val howDoFoodView = layoutInflater.inflate(R.layout.item_edit_how_cook, null)
+        val energyFoodView = layoutInflater.inflate(R.layout.item_edit_energy, null)
 
         foodInfoLayout.addView(productsContainer)
         foodInfoLayout.addView(addRowButton)
@@ -108,7 +94,7 @@ class AddFoodActivity : FoodView, AppCompatActivity() {
 
     @SuppressLint("InflateParams")
     private fun addEditButton() {
-        val buttonEdit = inflater?.inflate(R.layout.button_edit, null)
+        val buttonEdit = layoutInflater.inflate(R.layout.button_edit, null)
         buttonEdit?.setOnClickListener {
             foodNameTextView.requestFocus()
             showKeyboard(this)
@@ -165,7 +151,7 @@ class AddFoodActivity : FoodView, AppCompatActivity() {
     private fun addProduct(data: Intent?) {
         //TODO Product product = (Product implements Serializable) intent.getSerializableExtra(PRODUCT);
         //data?.getStringExtra(ExtraName.PRODUCT) to item_product
-        val product = inflater?.inflate(R.layout.item_product, null)
+        val product = layoutInflater.inflate(R.layout.item_product, null)
         productContainer.addView(product)
         setSupportColorTextView(productsLabel, R.color.colorPrimary)
     }
@@ -182,5 +168,10 @@ class AddFoodActivity : FoodView, AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             textView.setTextColor(getColor(id))
         }
+    }
+
+    companion object {
+        val GET_PRODUCT = 1
+        val PICK_IMAGE = 2
     }
 }

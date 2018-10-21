@@ -1,88 +1,76 @@
 package com.sugar.steptofood.ui.fragment.recipes
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import com.mancj.materialsearchbar.MaterialSearchBar
 import com.sugar.steptofood.R
 import com.sugar.steptofood.model.Food
 import com.sugar.steptofood.ui.fragment.BaseFragment
 import com.sugar.steptofood.ui.view.FoodView
-import kotlinx.android.synthetic.main.button_like.*
-import kotlinx.android.synthetic.main.button_remove.*
 import kotlinx.android.synthetic.main.fragment_recipes.*
+import com.sugar.steptofood.adapter.RecipeAdapter
+import com.sugar.steptofood.ui.activity.AnotherUserActivity
+import com.sugar.steptofood.ui.activity.FoodActivity
 
 open class RecipesFragment : FoodView, BaseFragment() {
+    private var adapter: RecipeAdapter? = null
 
     companion object {
         fun getInstance() = RecipesFragment()
     }
 
     override fun initView(view: View, savedInstanceState: Bundle?) {
-        initSearch()
-        initAllFoodCards(view)
+        initHeader()
+        initContent()
     }
 
     override fun getLayout() = R.layout.fragment_recipes
 
     open fun getRecipes() {
-        //TODO recipes for cards
+        //TODO presenter.getRecommendedFood()
     }
 
     @SuppressLint("InflateParams")
-    private fun initSearch() {
+    open fun initHeader() {
         val search = inflater?.inflate(R.layout.item_search, null) as MaterialSearchBar
         search.setHint(getString(R.string.search_food))
         search.setPlaceHolder(getString(R.string.search_food))
-        underTabContainer.addView(search)
+        tittleTabContainer.addView(search)
     }
 
-    protected fun initAllFoodCards(view: View) {
-        /* TODO
-        for with pagination food in foods
-        addFoodCard(contentContainer, food)
-        */
-        addFoodCard(contentContainer) //TODO test
+    open fun initContent() {
+        adapter = RecipeAdapter(this.context!!,
+                ::onFoodImageClickListener,
+                ::onUserNameClickListener,
+                ::onRemoveClickListener,
+                ::onLikeClickListener)
+        recycler.adapter = adapter
+        getRecipes()
     }
 
     override fun refreshFoods(foods: List<Food>) {
+        adapter?.addAll(foods)
     }
 
-    private fun addFoodCard(container: ViewGroup) {
-        //TODO user, food
-        //TODO replace on adapter
-        /*val foodCard = CardViewFactory.createFoodCardView(inflater)
-        container.addView(foodCard)
-        addButtonInCornerListener()
-
-        foodImageView.setOnClickListener {
-            val intent = Intent(activity, FoodActivity::class.java)
-            //TODO putExtra(food)
-            startActivity(intent)
-        }
-
-        textUserNameView.setOnClickListener {
-            val intent = Intent(activity, AnotherUserActivity::class.java)
-            //TODO putExtra(user)
-            startActivity(intent)
-        }*/
+    fun onFoodImageClickListener(food: Food) {
+        val intent = Intent(activity, FoodActivity::class.java)
+        //TODO putExtra(food)
+        startActivity(intent)
     }
 
-    private fun addButtonInCornerListener() {
-        addLikeListenerIfButtonExists()
-        addRemoveListenerIfButtonExists()
+    fun onUserNameClickListener(food: Food) {
+        val intent = Intent(activity, AnotherUserActivity::class.java)
+        //TODO putExtra(user)
+        startActivity(intent)
     }
 
-    private fun addLikeListenerIfButtonExists() {
-        buttonLike?.setOnCheckedChangeListener { buttonView, isChecked ->
-            //TODO add/remove from db
-        }
+    fun onRemoveClickListener(food: Food) {
+        //TODO remove from db
     }
 
-    private fun addRemoveListenerIfButtonExists() {
-        buttonRemove?.setOnClickListener {
-            //TODO remove from db
-        }
+    fun onLikeClickListener(food: Food, hasLike: Boolean) {
+        //TODO add/remove from db
     }
 }

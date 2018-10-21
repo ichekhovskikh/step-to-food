@@ -3,5 +3,5 @@ package com.sugar.steptofood.ui.view
 import com.sugar.steptofood.model.Product
 
 interface ProductView : BaseView {
-    fun refreshProducts(food: List<Product>)
+    fun refreshProducts(products: List<Product>)
 }

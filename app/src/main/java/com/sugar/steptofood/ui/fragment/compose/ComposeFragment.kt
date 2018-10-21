@@ -7,61 +7,63 @@ import android.view.View
 import android.widget.AdapterView
 import com.sugar.steptofood.R
 import com.sugar.steptofood.adapter.HandwrittenListAdapter
+import com.sugar.steptofood.extension.getAll
+import com.sugar.steptofood.model.Product
 import com.sugar.steptofood.ui.activity.SearchProductActivity
 import kotlinx.android.synthetic.main.fragment_compose.*
 import com.sugar.steptofood.ui.activity.TabsActivity
 import com.sugar.steptofood.ui.fragment.BaseFragment
+import com.sugar.steptofood.ui.fragment.recipes.ComposedFoodFragment
 import com.sugar.steptofood.utils.ExtraName.PRODUCT
+import com.sugar.steptofood.utils.ExtraName.PRODUCTS
 
 class ComposeFragment : BaseFragment() {
 
-    private var productListAdapter: HandwrittenListAdapter? = null
-
-    companion object {
-        val GET_PRODUCT = 1
-
-        fun getInstance() = ComposeFragment()
-    }
+    private var adapter: HandwrittenListAdapter<Product>? = null
 
     override fun initView(view: View, savedInstanceState: Bundle?) {
         initProductList(view)
-        initAddButton(view)
-        initSearchButton(view)
+        initAddButton()
+        initSearchButton()
     }
 
     override fun getLayout(): Int = R.layout.fragment_compose
 
     private fun initProductList(view: View) {
-        productListAdapter = HandwrittenListAdapter(view.context)
-        productListView.adapter = productListAdapter
+        adapter = HandwrittenListAdapter(view.context)
+        productListView.adapter = adapter
 
-        productListView.onItemClickListener = AdapterView.OnItemClickListener { adapterView: AdapterView<*>, parent: View, position: Int, id: Long ->
-            productListAdapter?.remove(productListAdapter?.getItem(position))
+        productListView.onItemClickListener = AdapterView.OnItemClickListener { adapterView, parent, position, id ->
+            adapter?.remove(adapter?.getItem(position))
         }
     }
 
-    private fun initAddButton(view: View) {
+    private fun initAddButton() {
         addProductButton.setOnClickListener {
             val intent = Intent(activity, SearchProductActivity::class.java)
-            //TODO added product yet
             startActivityForResult(intent, GET_PRODUCT)
         }
     }
 
-    private fun initSearchButton(view: View) {
+    private fun initSearchButton() {
         searchRecipesButton.setOnClickListener {
-            /*TODO activity?.intent?.putExtra(PRODUCTS, productListAdapter?.getAllItems())*/
+            activity?.intent?.putExtra(PRODUCTS, adapter?.getAll()?.toTypedArray())
             val tabsActivity = (activity as TabsActivity)
             tabsActivity.sectionsPageAdapter?.replace(this, ComposedFoodFragment.getInstance())
-
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == GET_PRODUCT && resultCode == RESULT_OK) {
-            //TODO Product product = (Product implements Serializable) intent.getSerializableExtra(PRODUCT);
-            productListAdapter?.add(data?.getStringExtra(PRODUCT))
+            val product = data?.getSerializableExtra(PRODUCT) as Product
+            adapter?.add(product)
         }
+    }
+
+    companion object {
+        val GET_PRODUCT = 1
+
+        fun getInstance() = ComposeFragment()
     }
 }

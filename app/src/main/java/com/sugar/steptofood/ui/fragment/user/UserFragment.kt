@@ -26,9 +26,9 @@ open class UserFragment : UserView, BaseFragment() {
 
     override fun initView(view: View, savedInstanceState: Bundle?) {
         initMenuItems(view)
-        initUserImage(view)
 
-        /*TODO set user name*/
+        //TODO activity extra user
+        //TODO presenter image, name
         setUserName(view, "Иван Чеховских")
     }
 
@@ -47,10 +47,6 @@ open class UserFragment : UserView, BaseFragment() {
 
     override fun setUserName(name: String) {
 
-    }
-
-    private fun initUserImage(view: View) {
-        /*TODO set user img*/
     }
 
     private fun setUserName(view: View, userName: String) {
