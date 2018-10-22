@@ -21,6 +21,10 @@ interface ApiService {
               @Field("password") password: String): Single<BaseResponse<User>>
 
     @FormUrlEncoded
+    @POST("/login")
+    fun login(@Field("token") token: String): Single<BaseResponse<User>>
+
+    @FormUrlEncoded
     @POST("/changePassword")
     fun changePassword(@Field("password") password: String,
                        @Field("new_password") newPassword: String): Single<BaseResponse<Int>>

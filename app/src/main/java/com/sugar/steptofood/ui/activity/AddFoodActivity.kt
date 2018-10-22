@@ -177,6 +177,10 @@ class AddFoodActivity : FoodView, AppCompatActivity() {
         }
     }
 
+    override fun onShowError(error: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     companion object {
         val GET_PRODUCT = 1
         val PICK_IMAGE = 2

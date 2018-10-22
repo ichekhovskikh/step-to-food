@@ -3,23 +3,36 @@ package com.sugar.steptofood.ui.fragment.auth
 import android.os.Bundle
 import android.view.View
 import com.sugar.steptofood.R
+import com.sugar.steptofood.ui.activity.StartActivity
 import com.sugar.steptofood.ui.fragment.BaseFragment
+import com.sugar.steptofood.ui.view.BaseView
+import com.sugar.steptofood.utils.validateTextView
 import kotlinx.android.synthetic.main.fragment_registration.*
 
-class RegistrationFragment : BaseFragment() {
+class RegistrationFragment : BaseView, BaseFragment() {
 
     companion object {
         fun getInstance() = RegistrationFragment()
     }
 
     override fun initView(view: View, savedInstanceState: Bundle?) {
-        buttonRegistration.setOnClickListener { register() }
+        buttonRegister.setOnClickListener { register() }
     }
 
     override fun getLayout(): Int = R.layout.fragment_registration
 
-    fun register() {
-        //TODO enter if login, pass not exist in db -> login
-        fragmentManager?.popBackStack()
+    private fun register() {
+        if (validateTextView(nameRegText) && validateTextView(loginRegText) && validateTextView(passRegText)) {
+            errorRegMsg.visibility = View.INVISIBLE
+            (activity as StartActivity).register(
+                    nameRegText.text.toString(),
+                    loginRegText.text.toString(),
+                    passRegText.text.toString())
+        } else onShowError(getString(R.string.error_text_input))
+    }
+
+    override fun onShowError(error: String) {
+        errorRegMsg.text = error
+        errorRegMsg.visibility = View.VISIBLE
     }
 }

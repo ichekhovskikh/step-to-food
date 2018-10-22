@@ -52,4 +52,8 @@ class FoodActivity : FoodView, AppCompatActivity() {
         imageActionContainer.addView(buttonLike)
         //TODO set initial value
     }
+
+    override fun onShowError(error: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }

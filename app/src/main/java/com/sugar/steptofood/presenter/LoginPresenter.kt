@@ -27,4 +27,19 @@ class LoginPresenter(view: LoginView,
                     view.login()
                 }, defaultError())
     }
+
+    fun login(onUnsuccessful: (String) -> Unit = defaultError()) {
+        //view.onShowLoading()
+        if (session.token.isEmpty()) {
+            //view.onHideLoading()
+            onUnsuccessful.invoke("Token is absent")
+            return
+        }
+
+        api.login(session.token)
+                .customSubscribe({
+                    //view.onHideLoading()
+                    view.login()
+                }, defaultError())
+    }
 }

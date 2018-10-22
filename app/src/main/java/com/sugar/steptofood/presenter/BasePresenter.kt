@@ -7,8 +7,8 @@ open class BasePresenter<V : BaseView>(protected open val view: V,
                                        protected open val api: ApiService) {
 
     protected fun defaultError(block: () -> Unit = {}) = { error: String ->
-        /*view.onHideLoading()
+        //view.onHideLoading()
         view.onShowError(error)
-        block.invoke()*/
+        //block.invoke()
     }
 }

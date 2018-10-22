@@ -8,10 +8,13 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
 import com.sugar.steptofood.R
 import com.sugar.steptofood.ui.activity.StartActivity
+import com.sugar.steptofood.ui.activity.StartActivity.Companion.REG_TAG
 import com.sugar.steptofood.ui.fragment.BaseFragment
+import com.sugar.steptofood.ui.view.BaseView
+import com.sugar.steptofood.utils.validateTextView
 import kotlinx.android.synthetic.main.fragment_login.*
 
-class LoginFragment : BaseFragment() {
+class LoginFragment : BaseView, BaseFragment() {
 
     companion object {
         fun getInstance() = LoginFragment()
@@ -25,8 +28,11 @@ class LoginFragment : BaseFragment() {
     override fun getLayout(): Int = R.layout.fragment_login
 
     private fun login() {
-        //TODO logic enter if login, pass -> success
-        (activity as StartActivity).login()
+        if (validateTextView(loginLogText) && validateTextView(passLogText)) {
+            errorLogMsg.visibility = View.INVISIBLE
+            (activity as StartActivity).checkLoginAndPassword(
+                    loginLogText.text.toString(), passLogText.text.toString())
+        } else onShowError(getString(R.string.error_text_input))
     }
 
     private fun toRegistration() {
@@ -35,7 +41,7 @@ class LoginFragment : BaseFragment() {
         setTransitionAnimation(this)
 
         getTransactionWithSharedElements()
-                .replace(R.id.fragmentContainer, registration)
+                .replace(R.id.fragmentContainer, registration, REG_TAG)
                 .addToBackStack(this.tag)
                 .commit()
     }
@@ -53,5 +59,10 @@ class LoginFragment : BaseFragment() {
         fragment.sharedElementEnterTransition = ChangeBounds()
         fragment.enterTransition = Fade()
         fragment.exitTransition = Fade()
+    }
+
+    override fun onShowError(error: String) {
+        errorLogMsg.text = error
+        errorLogMsg.visibility = View.VISIBLE
     }
 }

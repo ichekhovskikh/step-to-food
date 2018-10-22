@@ -83,4 +83,8 @@ open class RecipesFragment : FoodView, BaseFragment() {
     fun onLikeClickListener(food: Food, hasLike: Boolean) {
         presenter.setLikeFood(food.id!!, hasLike)
     }
+
+    override fun onShowError(error: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }
