@@ -41,6 +41,9 @@ interface ApiService {
     @GET("/food?foodId={foodId}")
     fun getFood(@Path("foodId") foodId: Int): Single<BaseResponse<Food>>
 
+    @GET("/user_avatar?userId={foodId}")
+    fun getFoodImage(@Path("foodId") foodId: Int): Single<BaseResponse<ResponseBody>>
+
     @GET("/product?productId={productId}")
     fun getProduct(@Path("productId") productId: Int): Single<BaseResponse<Product>>
 

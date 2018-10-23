@@ -12,7 +12,7 @@ data class Product(
 
         @SerializedName("foods")
         @Expose
-        var foods: List<Food>? = null,
+        var foods: List<Food>? = mutableListOf(),
 
         @SerializedName("weight")
         @Expose

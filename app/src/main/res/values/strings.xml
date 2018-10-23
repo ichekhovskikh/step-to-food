@@ -31,9 +31,10 @@
     <string name="fat_label">Жиры</string>
     <string name="protein_label">Белки</string>
     <string name="carbohydrates_label">Углеводы</string>
-    <string name="add_products">Добавьте продукты...</string>
-    <string name="add_description">Добавьте описание...</string>
+    <string name="add_products">Добавьте продукты…</string>
+    <string name="add_description">Добавьте описание…</string>
     <string name="gram">г.</string>
+    <string name="add_food_success">Рецепт успешно добавлен</string>
 
     <string name="select_products">ВЫБЕРИТЕ ПРОДУКТЫ</string>
 

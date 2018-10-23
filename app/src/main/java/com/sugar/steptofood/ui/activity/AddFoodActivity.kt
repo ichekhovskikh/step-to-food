@@ -7,15 +7,17 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.net.Uri
-import android.os.Build
-import android.support.annotation.ColorRes
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import com.sugar.steptofood.App
 import com.sugar.steptofood.R
+import com.sugar.steptofood.model.Food
+import com.sugar.steptofood.model.Product
 import com.sugar.steptofood.presenter.FoodPresenter
 import com.sugar.steptofood.rest.ApiService
 import com.sugar.steptofood.ui.view.FoodView
+import com.sugar.steptofood.utils.ExtraName.PRODUCT
 import kotlinx.android.synthetic.main.activity_food.*
 import kotlinx.android.synthetic.main.item_add_product.*
 import kotlinx.android.synthetic.main.item_edit_energy.*
@@ -42,11 +44,6 @@ class AddFoodActivity : FoodView, AppCompatActivity() {
         initEditFoodView()
     }
 
-    //TODO
-    fun showNotificationAndExit() {
-
-    }
-
     private fun initActionBar() {
         supportActionBar?.setDisplayShowHomeEnabled(false)
         supportActionBar?.setDisplayShowTitleEnabled(false)
@@ -55,10 +52,33 @@ class AddFoodActivity : FoodView, AppCompatActivity() {
         setActionOnClickButtons()
     }
 
+    private fun getCreatedFood(): Food {
+        val food = Food()
+        food.name = foodNameTextView.text.toString()
+        food.image = imageUri.toString()
+        food.description = descriptionTextView.text.toString()
+        food.calorie =  calorieTextView.text.toString().toDouble()
+        food.protein = proteinTextView.text.toString().toDouble()
+        food.fat = fatTextView.text.toString().toDouble()
+        food.carbohydrates = carbohydratesTextView.text.toString().toDouble()
+
+        for (i in 0 until productContainer.childCount) {
+            val view = productContainer.getChildAt(i)
+            val weightEditText: EditText = view.findViewById(R.id.weightEditText)
+
+            val product = Product()
+            product.id = view.tag.toString().toInt()
+            product.weight = weightEditText.text.toString().toInt()
+
+            (food.products as MutableList).add(product)
+        }
+        return food
+    }
+
     private fun setActionOnClickButtons() {
         buttonDone.setOnClickListener {
             if (allFieldsAreFilled())
-                finish() //TODO replace on presenter
+                presenter.addFood(getCreatedFood(), ::showSuccessToastAndExit)
         }
         buttonCancel.setOnClickListener { finish() }
     }
@@ -112,7 +132,7 @@ class AddFoodActivity : FoodView, AppCompatActivity() {
     private fun allFieldsAreFilled(): Boolean {
         val errorMsg = getString(R.string.error_text_input)
 
-        return (validateImage() &&
+        return (validateImage(errorMsg) &&
                 validateProductsList(errorMsg) &&
                 validateTextView(descriptionTextView, errorMsg) &&
                 validateTextView(calorieTextView, errorMsg) &&
@@ -121,9 +141,9 @@ class AddFoodActivity : FoodView, AppCompatActivity() {
                 validateTextView(carbohydratesTextView, errorMsg))
     }
 
-    private fun validateImage(): Boolean {
+    private fun validateImage(errorMsg: String): Boolean {
         if (imageUri == null) {
-            setSupportColorTextView(userNameTextView, R.color.red)
+            userNameTextView.error = errorMsg
             return false
         }
         return true
@@ -131,7 +151,7 @@ class AddFoodActivity : FoodView, AppCompatActivity() {
 
     private fun validateProductsList(errorMsg: String): Boolean {
         if (productContainer.childCount == 0) {
-            setSupportColorTextView(productsLabel, R.color.red)
+            productsLabel.error = errorMsg
             return false
         } else {
             for (i in 0 until productContainer.childCount) {
@@ -155,26 +175,26 @@ class AddFoodActivity : FoodView, AppCompatActivity() {
     }
 
     @SuppressLint("InflateParams")
-    private fun addProduct(data: Intent?) {
-        //TODO Product product = (Product implements Serializable) intent.getSerializableExtra(PRODUCT);
-        //data?.getStringExtra(ExtraName.PRODUCT) to item_product
-        val product = layoutInflater.inflate(R.layout.item_product, null)
-        productContainer.addView(product)
-        setSupportColorTextView(productsLabel, R.color.colorPrimary)
+    private fun addProduct(intent: Intent?) {
+        val product: Product = intent?.getSerializableExtra(PRODUCT) as Product
+        val productItem = layoutInflater.inflate(R.layout.item_edit_product, null)
+        val productNameView: TextView = productItem.findViewById(R.id.productNameTextView)
+        productItem.tag = product.id
+        productNameView.text = product.name
+        productContainer.addView(productItem)
+        productsLabel.error = null
     }
 
-    private fun addPhoto(data: Intent?) {
-        imageUri = data!!.data
+    private fun addPhoto(intent: Intent?) {
+        imageUri = intent!!.data
         userImageView.setImageURI(imageUri)
         foodImageView.setImageURI(imageUri)
-        setSupportColorTextView(userNameTextView, R.color.white)
-        //val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri)
+        userNameTextView.error = null
     }
 
-    private fun setSupportColorTextView(textView: TextView, @ColorRes id: Int) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            textView.setTextColor(getColor(id))
-        }
+    fun showSuccessToastAndExit() {
+        Toast.makeText(this, getString(R.string.add_food_success), Toast.LENGTH_LONG).show()
+        finish()
     }
 
     override fun onShowError(error: String) {
