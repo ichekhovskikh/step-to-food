@@ -111,4 +111,13 @@ class FoodPresenter(view: FoodView,
                     onSuccess.invoke()
                 }, defaultError())
     }
+
+    fun getFoodAuthorAvatar(userId: Int, onSuccess: (bitmap: Bitmap) -> Unit) {
+        //view.onShowLoading()
+        api.getUserAvatar(userId)
+                .customSubscribe({
+                    val bitmap = BitmapFactory.decodeStream(it.byteStream())
+                    //view.onHideLoading()
+                }, defaultError())
+    }
 }

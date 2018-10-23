@@ -60,7 +60,7 @@ class FoodActivity : FoodView, AppCompatActivity() {
         carbohydratesTextView.text = food.carbohydrates.toString()
 
         presenter.getFoodImage(food.id!!, ::setFoodImage)
-        //TODO presenter.getUserImage(food.id!!, ::setUserAvatar)
+        presenter.getFoodAuthorAvatar(food.author?.id!!, ::setFoodAuthorImage)
     }
 
     @SuppressLint("InflateParams")
@@ -115,6 +115,10 @@ class FoodActivity : FoodView, AppCompatActivity() {
 
     private fun setFoodImage(bitmap: Bitmap) {
         foodImageView.setImageBitmap(bitmap)
+    }
+
+    private fun setFoodAuthorImage(bitmap: Bitmap) {
+        userImageView.setImageBitmap(bitmap)
     }
 
     override fun onShowError(error: String) {
