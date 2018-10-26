@@ -3,7 +3,7 @@ package com.sugar.steptofood.ui.fragment.recipes
 import android.annotation.SuppressLint
 import android.widget.TextView
 import com.sugar.steptofood.R
-import com.sugar.steptofood.ui.activity.UserItemActivity
+import com.sugar.steptofood.utils.FoodType
 import kotlinx.android.synthetic.main.fragment_recipes.*
 
 class UserRecipesFragment : RecipesFragment() {
@@ -12,10 +12,7 @@ class UserRecipesFragment : RecipesFragment() {
         fun getInstance() = UserRecipesFragment()
     }
 
-    override fun getRecipes() {
-        val userId = (activity as UserItemActivity).userId
-        presenter.getAddedFoods(userId!!)
-    }
+    override fun getFoodType() = FoodType.ADDED
 
     @SuppressLint("InflateParams")
     override fun initHeader() {

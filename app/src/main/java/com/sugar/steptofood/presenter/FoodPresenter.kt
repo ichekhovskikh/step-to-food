@@ -2,13 +2,13 @@ package com.sugar.steptofood.presenter
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import com.sugar.steptofood.extension.applySingleSchedulers
 import com.sugar.steptofood.extension.customSubscribe
 import com.sugar.steptofood.extension.uploadSubscribe
 import com.sugar.steptofood.model.Food
 import com.sugar.steptofood.model.Product
 import com.sugar.steptofood.rest.ApiService
 import com.sugar.steptofood.ui.view.FoodView
+import com.sugar.steptofood.utils.FoodType
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -17,27 +17,27 @@ import java.io.File
 class FoodPresenter(view: FoodView,
                     api: ApiService) : BasePresenter<FoodView>(view, api) {
 
-    fun getRecommendedFoods() {
+    fun getRecommendedFoods(userId: Int, start: Int, size: Int) {
         //view.onShowLoading()
-        api.getRecommendedFood()
+        api.getFoodAll(userId, FoodType.RECOMMENDED, start, size)
                 .customSubscribe({
                     //view.onHideLoading()
                     view.refreshFoods(it)
                 }, defaultError())
     }
 
-    fun getLikeFoods(userId: Int) {
+    fun getLikeFoods(userId: Int, start: Int, size: Int) {
         //view.onShowLoading()
-        api.getLikeFood(userId)
+        api.getFoodAll(userId, FoodType.LIKE, start, size)
                 .customSubscribe({
                     //view.onHideLoading()
                     view.refreshFoods(it)
                 }, defaultError())
     }
 
-    fun getAddedFoods(userId: Int) {
+    fun getAddedFoods(userId: Int, start: Int, size: Int) {
         //view.onShowLoading()
-        api.getAddedFood(userId)
+        api.getFoodAll(userId, FoodType.ADDED, start, size)
                 .customSubscribe({
                     //view.onHideLoading()
                     view.refreshFoods(it)

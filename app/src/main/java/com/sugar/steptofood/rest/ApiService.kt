@@ -2,6 +2,7 @@ package com.sugar.steptofood.rest
 
 import com.sugar.steptofood.model.*
 import com.sugar.steptofood.rest.response.*
+import com.sugar.steptofood.utils.FoodType
 import io.reactivex.Single
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
@@ -41,6 +42,12 @@ interface ApiService {
     @GET("/food?foodId={foodId}")
     fun getFood(@Path("foodId") foodId: Int): Single<BaseResponse<Food>>
 
+    @GET("/foods?userId={userId}&type={type}&start={start}&size={size}")
+    fun getFoodAll(@Path("userId") userId: Int,
+                   @Path("type") type: FoodType,
+                   @Path("start") start: Int,
+                   @Path("size") size: Int): Single<BaseResponse<List<Food>>>
+
     @GET("/user_avatar?userId={foodId}")
     fun getFoodImage(@Path("foodId") foodId: Int): Single<BaseResponse<ResponseBody>>
 
@@ -53,20 +60,11 @@ interface ApiService {
     @GET("/productsByFood?foodId={foodId}")
     fun getProductsByFood(@Path("foodId") foodId: Int): Single<BaseResponse<List<Product>>>
 
-    @GET("/likeFoods?userId={userId}")
-    fun getLikeFood(@Path("userId") userId: Int): Single<BaseResponse<List<Food>>>
-
-    @GET("/addedFoods?userId={userId}")
-    fun getAddedFood(@Path("userId") userId: Int): Single<BaseResponse<List<Food>>>
-
-    @GET("/recommendedFoods")
-    fun getRecommendedFood(): Single<BaseResponse<List<Food>>>
-
     @GET("/searchFoods?search={name}")
-    fun searchFoods(@Field("name") name: String): Single<BaseResponse<List<Food>>>
+    fun searchFoods(@Path("name") name: String): Single<BaseResponse<List<Food>>>
 
     @GET("/searchProducts?search={name}")
-    fun searchProducts(@Field("name") name: String): Single<BaseResponse<List<Product>>>
+    fun searchProducts(@Path("name") name: String): Single<BaseResponse<List<Product>>>
 
     @FormUrlEncoded
     @POST("/searchFoodsByProduct")
@@ -77,11 +75,11 @@ interface ApiService {
     fun addFood(@Field("food") food: Food): Single<BaseResponse<Int>>
 
     @GET("/removeFood?foodId={foodId}")
-    fun removeFood(@Field("foodId") foodId: Int): Single<BaseResponse<Int>>
+    fun removeFood(@Path("foodId") foodId: Int): Single<BaseResponse<Int>>
 
     @GET("/setLike?foodId={foodId}&like={hasLike}")
-    fun setLike(@Field("foodId") foodId: Int,
-                @Field("hasLike") hasLike: Boolean): Single<BaseResponse<Int>>
+    fun setLike(@Path("foodId") foodId: Int,
+                @Path("hasLike") hasLike: Boolean): Single<BaseResponse<Int>>
 
     @FormUrlEncoded
     @POST("/updateFood")

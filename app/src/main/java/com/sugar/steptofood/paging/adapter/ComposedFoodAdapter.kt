@@ -1,36 +1,38 @@
-package com.sugar.steptofood.adapter
+package com.sugar.steptofood.paging.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
+import android.support.v7.util.DiffUtil
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.LinearLayout
+import android.widget.TextView
 import com.sugar.steptofood.R
-import com.sugar.steptofood.adapter.holder.ComposedFoodViewHolder
 import com.sugar.steptofood.model.Food
 import com.sugar.steptofood.model.Product
 
-class ComposedFoodAdapter(context: Context,
+class ComposedFoodAdapter(diffCallback: DiffUtil.ItemCallback<Food>,
+                          context: Context,
                           onFoodImageClick: ((Food) -> Unit)? = {},
                           onUserNameClick: ((Food) -> Unit)? = {},
                           onRemoveClick: ((Food) -> Unit)? = {},
                           onLikeClick: ((Food, Boolean) -> Unit)? = { food, hasLike -> })
-    : BaseFoodAdapter<ComposedFoodViewHolder>(context, onFoodImageClick, onUserNameClick, onRemoveClick, onLikeClick) {
+    : BaseRecipeAdapter(diffCallback, context, onFoodImageClick, onUserNameClick, onRemoveClick, onLikeClick) {
 
-    @SuppressLint("InflateParams")
-    override fun onCreateViewHolder(container: ViewGroup, viewType: Int): ComposedFoodViewHolder {
+    override fun onCreateViewHolder(container: ViewGroup, viewType: Int): FoodViewHolder {
         return ComposedFoodViewHolder(createItemView(viewType))
     }
 
-    @SuppressLint("InflateParams")
-    override fun onBindViewHolder(holder: ComposedFoodViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: FoodViewHolder, position: Int) {
         bindFoodViewHolder(holder, position)
         setFoodViewListeners(holder)
 
-        val products = items[position].products!!.sortedWith(compareBy { it.includedInSearch })
-        for (product in products) {
-            holder.productContainer.addView(createProductView(product))
+        if (holder is ComposedFoodViewHolder) {
+            val products = getItem(position)!!.products!!.sortedWith(compareBy { it.includedInSearch })
+            for (product in products) {
+                holder.productContainer.addView(createProductView(product))
+            }
         }
     }
 
@@ -45,5 +47,9 @@ class ComposedFoodAdapter(context: Context,
         if (!product.includedInSearch)
             productNameView.setTextColor(Color.RED)
         return productView
+    }
+
+    class ComposedFoodViewHolder(view: View) : FoodViewHolder(view) {
+        val productContainer: LinearLayout = itemView.findViewById(R.id.productContainer)
     }
 }

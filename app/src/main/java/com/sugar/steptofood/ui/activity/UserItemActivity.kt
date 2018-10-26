@@ -10,6 +10,7 @@ import com.sugar.steptofood.ui.fragment.recipes.UserLikeFragment
 import com.sugar.steptofood.ui.fragment.recipes.UserRecipesFragment
 import com.sugar.steptofood.utils.ExtraName.ITEM_TYPE
 import com.sugar.steptofood.utils.ExtraName.UID
+import com.sugar.steptofood.utils.FoodType
 import javax.inject.Inject
 
 class UserItemActivity : AppCompatActivity() {
@@ -25,14 +26,16 @@ class UserItemActivity : AppCompatActivity() {
         App.appComponent.inject(this)
         setContentView(R.layout.activity_user_item)
         userId = intent.getIntExtra(UID, -1)
-        val type = intent.getSerializableExtra(ITEM_TYPE) as ItemType
+        val type = intent.getSerializableExtra(ITEM_TYPE) as FoodType
         selectFragment(type)
     }
 
-    private fun selectFragment(type: ItemType) {
+    private fun selectFragment(type: FoodType) {
         when (type) {
-            ItemType.ADDED -> setFragment(UserRecipesFragment.getInstance())
-            ItemType.LIKE -> setFragment(UserLikeFragment.getInstance())
+            FoodType.ADDED -> setFragment(UserRecipesFragment.getInstance())
+            FoodType.LIKE -> setFragment(UserLikeFragment.getInstance())
+            else -> {
+            }
         }
     }
 
@@ -41,10 +44,5 @@ class UserItemActivity : AppCompatActivity() {
                 .beginTransaction()
                 .add(R.id.fragmentContainer, fragment)
                 .commit()
-    }
-
-    enum class ItemType {
-        LIKE,
-        ADDED
     }
 }

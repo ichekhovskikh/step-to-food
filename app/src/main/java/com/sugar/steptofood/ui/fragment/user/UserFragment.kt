@@ -19,6 +19,7 @@ import com.sugar.steptofood.ui.fragment.BaseFragment
 import com.sugar.steptofood.ui.view.UserView
 import com.sugar.steptofood.utils.ExtraName.ITEM_TYPE
 import com.sugar.steptofood.utils.ExtraName.UID
+import com.sugar.steptofood.utils.FoodType
 import com.sugar.steptofood.utils.showExitDialog
 import kotlinx.android.synthetic.main.fragment_user.*
 import javax.inject.Inject
@@ -84,7 +85,7 @@ open class UserFragment : UserView, BaseFragment() {
         button.setOnClickListener {
             val intent = Intent(activity, UserItemActivity::class.java)
             intent.putExtra(UID, userId)
-            intent.putExtra(ITEM_TYPE, UserItemActivity.ItemType.ADDED)
+            intent.putExtra(ITEM_TYPE, FoodType.ADDED)
             startActivity(intent)
         }
         container.addView(button)
@@ -99,7 +100,7 @@ open class UserFragment : UserView, BaseFragment() {
         button.setOnClickListener {
             val intent = Intent(activity, UserItemActivity::class.java)
             intent.putExtra(UID, userId)
-            intent.putExtra(ITEM_TYPE, UserItemActivity.ItemType.LIKE)
+            intent.putExtra(ITEM_TYPE, FoodType.LIKE)
             startActivity(intent)
         }
         container.addView(button)

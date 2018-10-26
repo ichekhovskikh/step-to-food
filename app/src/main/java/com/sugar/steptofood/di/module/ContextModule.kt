@@ -6,6 +6,7 @@ import com.sugar.steptofood.Session
 import com.sugar.steptofood.db.SQLiteHelper
 import dagger.Module
 import dagger.Provides
+import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Singleton
 
 @Module
@@ -22,4 +23,9 @@ class ContextModule(private val app: Application) {
     @Provides
     @Singleton
     fun provideDbHelper(context: Context): SQLiteHelper = SQLiteHelper(context)
+
+    @Provides
+    fun provideCompositeDisposable(): CompositeDisposable = CompositeDisposable()
+
+
 }

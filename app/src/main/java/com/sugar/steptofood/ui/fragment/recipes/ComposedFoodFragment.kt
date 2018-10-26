@@ -1,39 +1,37 @@
 package com.sugar.steptofood.ui.fragment.recipes
 
-import com.sugar.steptofood.adapter.ComposedFoodAdapter
-import com.sugar.steptofood.model.Food
+import android.arch.paging.DataSource
 import kotlinx.android.synthetic.main.fragment_recipes.*
 import android.view.ViewGroup
+import com.sugar.steptofood.model.Food
 import com.sugar.steptofood.model.Product
+import com.sugar.steptofood.paging.FoodDiffUtilCallback
+import com.sugar.steptofood.paging.adapter.BaseRecipeAdapter
+import com.sugar.steptofood.paging.adapter.FoodAdapter
+import com.sugar.steptofood.paging.factory.ComposedFoodSourceFactory
 import com.sugar.steptofood.utils.ExtraName.PRODUCTS
+import com.sugar.steptofood.utils.FoodType
 
 class ComposedFoodFragment : RecipesFragment() {
-    private var adapter: ComposedFoodAdapter? = null
-
     companion object {
         fun getInstance() = ComposedFoodFragment()
-    }
-
-    override fun getRecipes() {
-        val product = activity!!.intent.getSerializableExtra(PRODUCTS) as List<Product>
-        presenter.searchFoodsByProduct(product)
     }
 
     override fun initHeader() {
         (header.parent as ViewGroup).removeView(header)
     }
 
-    override fun initContent() {
-        adapter = ComposedFoodAdapter(this.context!!,
-                ::onFoodImageClickListener,
-                ::onUserNameClickListener,
-                ::onRemoveClickListener,
-                ::onLikeClickListener)
-        recycler.adapter = adapter
-        getRecipes()
+    override fun getFoodSourceFactory(): DataSource.Factory<Int, Food> {
+        val products = activity!!.intent.getSerializableExtra(PRODUCTS) as List<Product>
+        return ComposedFoodSourceFactory(api, compositeDisposable, products)
     }
 
-    override fun refreshFoods(foods: List<Food>) {
-        adapter?.addAll(foods)
-    }
+    override fun getFoodType() = FoodType.COMPOSED
+
+    override fun createFoodAdapter(): BaseRecipeAdapter? =
+            FoodAdapter(FoodDiffUtilCallback(), this.context!!,
+                    ::onFoodImageClickListener,
+                    ::onUserNameClickListener,
+                    ::onRemoveClickListener,
+                    ::onLikeClickListener)
 }
