@@ -45,6 +45,7 @@ dependencies {
     implementation 'com.github.mancj:MaterialSearchBar:0.7.6'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation "android.arch.paging:runtime:1.0.1"
+    implementation 'com.github.ybq:AndroidSpinKit:v1.0.0'
 
     implementation 'com.j256.ormlite:ormlite-android:5.1'
 

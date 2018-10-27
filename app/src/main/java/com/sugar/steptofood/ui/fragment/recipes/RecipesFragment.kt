@@ -22,6 +22,7 @@ import android.arch.paging.PagedList
 import android.arch.paging.LivePagedListBuilder
 import android.arch.lifecycle.Observer
 import android.arch.paging.DataSource
+import android.widget.Toast
 import com.sugar.steptofood.Session
 import com.sugar.steptofood.db.SQLiteHelper
 import com.sugar.steptofood.paging.FoodDiffUtilCallback
@@ -120,7 +121,15 @@ open class RecipesFragment : FoodView, BaseFragment() {
         presenter.setLikeFood(food.id!!, hasLike)
     }
 
+    override fun onShowLoading() {
+        progressBar.visibility = View.VISIBLE
+    }
+
+    override fun onHideLoading() {
+        progressBar.visibility = View.GONE
+    }
+
     override fun onShowError(error: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Toast.makeText(context, error, Toast.LENGTH_LONG).show()
     }
 }

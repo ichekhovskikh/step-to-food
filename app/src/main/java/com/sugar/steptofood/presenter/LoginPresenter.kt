@@ -10,35 +10,36 @@ class LoginPresenter(view: LoginView,
                      private val session: Session) : BasePresenter<LoginView>(view, api) {
 
     fun register(name: String, login: String, password: String) {
-        //view.onShowLoading()
+        view.onShowLoading()
         api.register(name, login, password)
                 .customSubscribe({
+                    view.onHideLoading()
                     login(name, password)
                 }, defaultError())
     }
 
     fun login(login: String, password: String) {
-        //view.onShowLoading()
+        view.onShowLoading()
         api.login(login, password)
                 .customSubscribe({ response ->
                     session.token = response.token
                     session.userId = response.id!!
-                    //view.onHideLoading()
+                    view.onHideLoading()
                     view.login()
                 }, defaultError())
     }
 
     fun login(onUnsuccessful: (String) -> Unit = defaultError()) {
-        //view.onShowLoading()
+        view.onShowLoading()
         if (session.token.isEmpty()) {
-            //view.onHideLoading()
+            view.onHideLoading()
             onUnsuccessful.invoke("Token is absent")
             return
         }
 
         api.login(session.token)
                 .customSubscribe({
-                    //view.onHideLoading()
+                    view.onHideLoading()
                     view.login()
                 }, defaultError())
     }

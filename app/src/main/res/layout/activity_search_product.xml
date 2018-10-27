@@ -18,6 +18,12 @@
         android:textColor="@color/colorPrimary"
         android:textSize="18sp" />
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+
     <ListView
         android:id="@+id/searchResultListView"
         style="@style/ListView.Search"

@@ -1,4 +1,4 @@
-package com.sugar.steptofood.db.dao
+package com.sugar.steptofood.db
 
 import com.j256.ormlite.dao.BaseDaoImpl
 import com.j256.ormlite.support.ConnectionSource

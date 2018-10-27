@@ -5,7 +5,6 @@ import android.database.sqlite.SQLiteDatabase
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper
 import com.j256.ormlite.support.ConnectionSource
 import com.j256.ormlite.table.TableUtils
-import com.sugar.steptofood.db.dao.EntityDao
 import com.sugar.steptofood.model.*
 import javax.inject.Inject
 
@@ -21,6 +20,7 @@ class SQLiteHelper @Inject constructor(context: Context) : OrmLiteSqliteOpenHelp
     val productDao: EntityDao<Product> by lazy { EntityDao(getConnectionSource(), Product::class.java) }
     val userFoodDao: EntityDao<UserFood> by lazy { EntityDao(getConnectionSource(), UserFood::class.java) }
     val productFoodDao: EntityDao<ProductFood> by lazy { EntityDao(getConnectionSource(), ProductFood::class.java) }
+    val foodBusinessObject: FoodBusinessObject by lazy { FoodBusinessObject(this) }
 
     override fun onCreate(database: SQLiteDatabase?, connectionSource: ConnectionSource?) {
         TableUtils.createTableIfNotExists(connectionSource, User::class.java)

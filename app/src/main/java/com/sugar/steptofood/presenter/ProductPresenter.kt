@@ -8,10 +8,19 @@ class ProductPresenter(view: ProductView,
                        api: ApiService) : BasePresenter<ProductView>(view, api) {
 
     fun getAllProducts() {
-        //view.onShowLoading()
+        view.onShowLoading()
         api.getAllProducts()
                 .customSubscribe({
-                    //view.onHideLoading()
+                    view.onHideLoading()
+                    view.refreshProducts(it)
+                }, defaultError())
+    }
+
+    fun searchProducts(name: String) {
+        view.onShowLoading()
+        api.searchProducts(name)
+                .customSubscribe({
+                    view.onHideLoading()
                     view.refreshProducts(it)
                 }, defaultError())
     }

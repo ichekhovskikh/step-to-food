@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.net.Uri
+import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
@@ -192,17 +193,25 @@ class AddFoodActivity : FoodView, AppCompatActivity() {
         userNameTextView.error = null
     }
 
-    fun showSuccessToastAndExit() {
+    private fun showSuccessToastAndExit() {
         Toast.makeText(this, getString(R.string.add_food_success), Toast.LENGTH_LONG).show()
         finish()
     }
 
+    override fun onShowLoading() {
+        progressBar.visibility = View.VISIBLE
+    }
+
+    override fun onHideLoading() {
+        progressBar.visibility = View.GONE
+    }
+
     override fun onShowError(error: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Toast.makeText(this, error, Toast.LENGTH_LONG).show()
     }
 
     companion object {
-        val GET_PRODUCT = 1
-        val PICK_IMAGE = 2
+        const val GET_PRODUCT = 1
+        const val PICK_IMAGE = 2
     }
 }

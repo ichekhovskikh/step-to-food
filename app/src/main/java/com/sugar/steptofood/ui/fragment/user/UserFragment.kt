@@ -1,13 +1,16 @@
 package com.sugar.steptofood.ui.fragment.user
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import com.sugar.steptofood.R
 import android.support.annotation.Nullable
+import android.widget.Toast
 import com.sugar.steptofood.App
 import com.sugar.steptofood.Session
 import com.sugar.steptofood.presenter.UserPresenter
@@ -36,11 +39,18 @@ open class UserFragment : UserView, BaseFragment() {
 
     companion object {
         fun getInstance() = UserFragment()
+
+        const val PICK_IMAGE = 0
     }
 
     override fun initView(view: View, savedInstanceState: Bundle?) {
         App.appComponent.inject(this)
-        //TODO set onclick userImage
+
+        userImageView.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+            startActivityForResult(intent, PICK_IMAGE)
+        }
+
         initMenuItems(view)
         userId = activity!!.intent.getIntExtra(UID, session.userId)
         presenter.getUserName(userId!!)
@@ -133,7 +143,23 @@ open class UserFragment : UserView, BaseFragment() {
         startActivity(intent)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
+        if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK) {
+            val uri = intent?.data!!
+            userImageView.setImageURI(uri)
+            presenter.setAvatar(uri.toString())
+        }
+    }
+
+    override fun onShowLoading() {
+        progressBar.visibility = View.VISIBLE
+    }
+
+    override fun onHideLoading() {
+        progressBar.visibility = View.GONE
+    }
+
     override fun onShowError(error: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Toast.makeText(context, error, Toast.LENGTH_LONG).show()
     }
 }

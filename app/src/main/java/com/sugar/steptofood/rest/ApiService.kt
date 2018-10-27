@@ -39,6 +39,9 @@ interface ApiService {
     @GET("/user_avatar?userId={userId}")
     fun getUserAvatar(@Path("userId") userId: Int): Single<BaseResponse<ResponseBody>>
 
+    @GET("/set_user_avatar?uri={uri}")
+    fun setUserAvatar(@Path("uri") uri: String): Single<BaseResponse<Int>>
+
     @GET("/food?foodId={foodId}")
     fun getFood(@Path("foodId") foodId: Int): Single<BaseResponse<Food>>
 

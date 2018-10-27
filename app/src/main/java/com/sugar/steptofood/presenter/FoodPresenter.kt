@@ -16,26 +16,26 @@ class FoodPresenter(view: FoodView,
                     api: ApiService) : BasePresenter<FoodView>(view, api) {
 
     fun getFoodImage(foodId: Int, onSuccess: (image: Bitmap) -> Unit) {
-        //view.onShowLoading()
+        view.onShowLoading()
         api.getFoodImage(foodId)
                 .customSubscribe({
-                    //view.onHideLoading()
+                    view.onHideLoading()
                     val bitmap = BitmapFactory.decodeStream(it.byteStream())
                     onSuccess.invoke(bitmap)
                 }, defaultError())
     }
 
     fun getFood(foodId: Int, onSuccess: (food: Food) -> Unit) {
-        //view.onShowLoading()
+        view.onShowLoading()
         api.getFood(foodId)
                 .customSubscribe({
-                    //view.onHideLoading()
+                    view.onHideLoading()
                     onSuccess.invoke(it)
                 }, defaultError())
     }
 
     fun addFood(food: Food, onSuccess: () -> Unit) {
-        //view.onShowLoading()
+        view.onShowLoading()
         uploadFoodPhotoAndContent(food, onSuccess)
     }
 
@@ -60,17 +60,18 @@ class FoodPresenter(view: FoodView,
     private fun uploadFoodContent(food: Food, onSuccess: () -> Unit) {
         api.addFood(food)
                 .customSubscribe({
-                    //view.onHideLoading()
+                    view.onHideLoading()
                     onSuccess.invoke()
                 }, defaultError())
     }
 
     fun getFoodAuthorAvatar(userId: Int, onSuccess: (bitmap: Bitmap) -> Unit) {
-        //view.onShowLoading()
+        view.onShowLoading()
         api.getUserAvatar(userId)
                 .customSubscribe({
                     val bitmap = BitmapFactory.decodeStream(it.byteStream())
-                    //view.onHideLoading()
+                    onSuccess.invoke(bitmap)
+                    view.onHideLoading()
                 }, defaultError())
     }
 }

@@ -7,6 +7,7 @@ import android.support.transition.*
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
 import com.sugar.steptofood.R
+import com.sugar.steptofood.presenter.LoginPresenter
 import com.sugar.steptofood.ui.activity.StartActivity
 import com.sugar.steptofood.ui.activity.StartActivity.Companion.REG_TAG
 import com.sugar.steptofood.ui.fragment.BaseFragment
@@ -20,6 +21,8 @@ class LoginFragment : BaseView, BaseFragment() {
         fun getInstance() = LoginFragment()
     }
 
+    private val startActivity by lazy { activity as StartActivity }
+
     override fun initView(view: View, savedInstanceState: Bundle?) {
         buttonRegistration.setOnClickListener { toRegistration() }
         buttonLogin.setOnClickListener { login() }
@@ -30,7 +33,7 @@ class LoginFragment : BaseView, BaseFragment() {
     private fun login() {
         if (validateTextView(loginLogText) && validateTextView(passLogText)) {
             errorLogMsg.visibility = View.INVISIBLE
-            (activity as StartActivity).checkLoginAndPassword(
+            startActivity.checkLoginAndPassword(
                     loginLogText.text.toString(), passLogText.text.toString())
         } else onShowError(getString(R.string.error_text_input))
     }
@@ -59,6 +62,14 @@ class LoginFragment : BaseView, BaseFragment() {
         fragment.sharedElementEnterTransition = ChangeBounds()
         fragment.enterTransition = Fade()
         fragment.exitTransition = Fade()
+    }
+
+    override fun onShowLoading() {
+        startActivity.onShowLoading()
+    }
+
+    override fun onHideLoading() {
+        startActivity.onHideLoading()
     }
 
     override fun onShowError(error: String) {

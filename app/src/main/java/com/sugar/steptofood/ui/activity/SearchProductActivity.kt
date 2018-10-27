@@ -7,7 +7,9 @@ import android.widget.ArrayAdapter
 import com.sugar.steptofood.R
 import kotlinx.android.synthetic.main.activity_search_product.*
 import android.app.Activity
+import android.view.View
 import android.widget.AdapterView
+import android.widget.Toast
 import com.sugar.steptofood.App
 import com.sugar.steptofood.extension.afterTextChanged
 import com.sugar.steptofood.model.Product
@@ -32,7 +34,7 @@ class SearchProductActivity : ProductView, AppCompatActivity() {
         setContentView(R.layout.activity_search_product)
         initSearch()
         initProductList()
-        //TODO presenter getAll
+        presenter.getAllProducts()
     }
 
     override fun refreshProducts(products: List<Product>) {
@@ -41,8 +43,8 @@ class SearchProductActivity : ProductView, AppCompatActivity() {
     }
 
     private fun initSearch() {
-        search.afterTextChanged {
-            //TODO presenter.search
+        search.afterTextChanged {name ->
+            presenter.searchProducts(name)
         }
     }
 
@@ -59,7 +61,15 @@ class SearchProductActivity : ProductView, AppCompatActivity() {
                 }
     }
 
+    override fun onShowLoading() {
+        progressBar.visibility = View.VISIBLE
+    }
+
+    override fun onHideLoading() {
+        progressBar.visibility = View.GONE
+    }
+
     override fun onShowError(error: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Toast.makeText(this, error, Toast.LENGTH_LONG).show()
     }
 }

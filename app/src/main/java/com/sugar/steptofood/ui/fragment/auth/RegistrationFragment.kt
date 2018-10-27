@@ -15,6 +15,8 @@ class RegistrationFragment : BaseView, BaseFragment() {
         fun getInstance() = RegistrationFragment()
     }
 
+    private val startActivity by lazy { activity as StartActivity }
+
     override fun initView(view: View, savedInstanceState: Bundle?) {
         buttonRegister.setOnClickListener { register() }
     }
@@ -29,6 +31,14 @@ class RegistrationFragment : BaseView, BaseFragment() {
                     loginRegText.text.toString(),
                     passRegText.text.toString())
         } else onShowError(getString(R.string.error_text_input))
+    }
+
+    override fun onShowLoading() {
+        startActivity.onShowLoading()
+    }
+
+    override fun onHideLoading() {
+        startActivity.onHideLoading()
     }
 
     override fun onShowError(error: String) {

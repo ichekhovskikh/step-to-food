@@ -5,7 +5,9 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import android.widget.ToggleButton
 import com.sugar.steptofood.App
 import com.sugar.steptofood.R
@@ -121,7 +123,15 @@ class FoodActivity : FoodView, AppCompatActivity() {
         userImageView.setImageBitmap(bitmap)
     }
 
+    override fun onShowLoading() {
+        progressBar.visibility = View.VISIBLE
+    }
+
+    override fun onHideLoading() {
+        progressBar.visibility = View.GONE
+    }
+
     override fun onShowError(error: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Toast.makeText(this, error, Toast.LENGTH_LONG).show()
     }
 }
