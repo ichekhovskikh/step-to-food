@@ -40,6 +40,7 @@ open class UserFragment : UserView, BaseFragment() {
 
     override fun initView(view: View, savedInstanceState: Bundle?) {
         App.appComponent.inject(this)
+        //TODO set onclick userImage
         initMenuItems(view)
         userId = activity!!.intent.getIntExtra(UID, session.userId)
         presenter.getUserName(userId!!)

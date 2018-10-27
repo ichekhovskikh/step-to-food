@@ -23,6 +23,7 @@ import android.arch.paging.LivePagedListBuilder
 import android.arch.lifecycle.Observer
 import android.arch.paging.DataSource
 import com.sugar.steptofood.Session
+import com.sugar.steptofood.db.SQLiteHelper
 import com.sugar.steptofood.paging.FoodDiffUtilCallback
 import com.sugar.steptofood.paging.factory.FoodSourceFactory
 import com.sugar.steptofood.paging.adapter.BaseRecipeAdapter
@@ -31,6 +32,9 @@ import com.sugar.steptofood.utils.FoodType
 import io.reactivex.disposables.CompositeDisposable
 
 open class RecipesFragment : FoodView, BaseFragment() {
+
+    @Inject
+    lateinit var dbHelper: SQLiteHelper
 
     @Inject
     lateinit var api: ApiService
@@ -76,7 +80,7 @@ open class RecipesFragment : FoodView, BaseFragment() {
                     ::onLikeClickListener)
 
     open fun getFoodSourceFactory(): DataSource.Factory<Int, Food> =
-            FoodSourceFactory(api, compositeDisposable, getAuthor(), getFoodType())
+            FoodSourceFactory(api, compositeDisposable, getAuthor(), getFoodType(), dbHelper)
 
     private fun getAuthor() = activity!!.intent.getIntExtra(UID, session.userId)
 

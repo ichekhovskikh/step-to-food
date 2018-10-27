@@ -42,10 +42,10 @@ interface ApiService {
     @GET("/food?foodId={foodId}")
     fun getFood(@Path("foodId") foodId: Int): Single<BaseResponse<Food>>
 
-    @GET("/foods?userId={userId}&type={type}&start={start}&size={size}")
+    @GET("/foods?userId={userId}&type={type}&start={startId}&size={size}")
     fun getFoodAll(@Path("userId") userId: Int,
                    @Path("type") type: FoodType,
-                   @Path("start") start: Int,
+                   @Path("startId") startId: Int,
                    @Path("size") size: Int): Single<BaseResponse<List<Food>>>
 
     @GET("/user_avatar?userId={foodId}")
@@ -67,8 +67,10 @@ interface ApiService {
     fun searchProducts(@Path("name") name: String): Single<BaseResponse<List<Product>>>
 
     @FormUrlEncoded
-    @POST("/searchFoodsByProduct")
-    fun searchFoodsByProduct(@Field("products") products: List<Product>): Single<BaseResponse<List<Food>>>
+    @POST("/searchFoodsByProduct?start={startId}&size={size}")
+    fun searchFoodsByProduct(@Field("products") products: List<Product>,
+                             @Path("startId") startId: Int,
+                             @Path("size") size: Int): Single<BaseResponse<List<Food>>>
 
     @FormUrlEncoded
     @POST("/addFood")

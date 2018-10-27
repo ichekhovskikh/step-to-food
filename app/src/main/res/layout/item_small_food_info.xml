@@ -6,7 +6,11 @@
     <ImageView
         android:id="@+id/foodImageView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:contentDescription="@string/todo"
+        android:foreground="@drawable/trending_gradient_shape"
+        android:scaleType="centerCrop"
+        android:src="@color/colorPrimary" />
 
     <TextView
         android:id="@+id/textFoodNameView"

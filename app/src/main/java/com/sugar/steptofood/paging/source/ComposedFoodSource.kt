@@ -1,38 +1,44 @@
 package com.sugar.steptofood.paging.source
 
-import android.arch.paging.PositionalDataSource
+import android.arch.paging.ItemKeyedDataSource
 import com.sugar.steptofood.model.Food
 import com.sugar.steptofood.model.Product
 import com.sugar.steptofood.rest.ApiService
 import io.reactivex.disposables.CompositeDisposable
 
-class ComposedFoodSource internal constructor(private val api: ApiService,
-                                              private val compositeDisposable: CompositeDisposable,
-                                              private val products: List<Product>) : PositionalDataSource<Food>() {
+class ComposedFoodSource(private val api: ApiService,
+                         private val compositeDisposable: CompositeDisposable,
+                         private val products: List<Product>) : ItemKeyedDataSource<Int, Food>() {
 
-    override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<Food>) {
+    override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Food>) {
         compositeDisposable.add(api
-                .searchFoodsByProduct(products)
-                .subscribe({ response ->
-                    if (response.success) {
-                        callback.onResult(response.content!!, params.requestedStartPosition)
-                    } else if (!response.success) {
-                        onError()
-                    }
-                }, { throwable -> onError() }))
-    }
-
-    override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<Food>) {
-        compositeDisposable.add(api
-                .searchFoodsByProduct(products)
+                .searchFoodsByProduct(products, params.requestedInitialKey!!, params.requestedLoadSize)
                 .subscribe({ response ->
                     if (response.success) {
                         callback.onResult(response.content!!)
                     } else if (!response.success) {
                         onError()
                     }
-                }, { throwable -> onError() }))
+                }, { onError() }))
     }
 
-    private fun onError() {}
+    override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Food>) {
+        compositeDisposable.add(api
+                .searchFoodsByProduct(products, params.key, params.requestedLoadSize)
+                .subscribe({ response ->
+                    if (response.success) {
+                        callback.onResult(response.content!!)
+                    } else if (!response.success) {
+                        onError()
+                    }
+                }, { onError() }))
+    }
+
+    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Food>) {}
+
+    override fun getKey(item: Food) = item.id!!
+
+    private fun onError() {
+        //nothing
+    }
 }

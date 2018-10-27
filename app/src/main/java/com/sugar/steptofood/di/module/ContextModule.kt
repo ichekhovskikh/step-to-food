@@ -26,6 +26,4 @@ class ContextModule(private val app: Application) {
 
     @Provides
     fun provideCompositeDisposable(): CompositeDisposable = CompositeDisposable()
-
-
 }
