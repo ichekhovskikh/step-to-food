@@ -4,8 +4,8 @@ import com.j256.ormlite.field.DatabaseField
 import com.j256.ormlite.table.DatabaseTable
 import com.sugar.steptofood.utils.FoodType
 
-@DatabaseTable(tableName = "user_food")
-data class UserFood (
+@DatabaseTable(tableName = "like_food")
+data class LikeFood (
         @DatabaseField(generatedId = true)
         override var id: Int? = null,
 
