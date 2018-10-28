@@ -11,6 +11,7 @@ import android.widget.Toast
 import android.widget.ToggleButton
 import com.sugar.steptofood.App
 import com.sugar.steptofood.R
+import com.sugar.steptofood.Session
 import com.sugar.steptofood.model.Food
 import com.sugar.steptofood.model.Product
 import com.sugar.steptofood.presenter.FoodPresenter
@@ -29,6 +30,9 @@ class FoodActivity : FoodView, AppCompatActivity() {
     @Inject
     lateinit var api: ApiService
 
+    @Inject
+    lateinit var session: Session
+
     private val presenter by lazy { FoodPresenter(this, api) }
 
     public override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +48,7 @@ class FoodActivity : FoodView, AppCompatActivity() {
     fun setFood(food: Food) {
         foodNameTextView.setText(food.name)
 
-        if (!food.isYourAdded) {
+        if (food.author?.id != session.userId) {
             addLikeButton(food)
             userNameTextView.text = food.author?.name
             userNameTextView.setOnClickListener {

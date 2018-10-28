@@ -29,7 +29,9 @@ class ComposedFoodFragment : RecipesFragment() {
     override fun getFoodType() = FoodType.COMPOSED
 
     override fun createFoodAdapter(): BaseRecipeAdapter? =
-            FoodAdapter(FoodDiffUtilCallback(), this.context!!,
+            FoodAdapter(FoodDiffUtilCallback(),
+                    this.context!!,
+                    session,
                     ::onFoodImageClickListener,
                     ::onUserNameClickListener,
                     ::onRemoveClickListener,

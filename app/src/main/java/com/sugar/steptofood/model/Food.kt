@@ -47,10 +47,6 @@ data class Food(
         @Expose
         var products: List<Product>? = mutableListOf(),
 
-        @SerializedName("is_your_added")
-        @Expose
-        var isYourAdded: Boolean = false,
-
         @SerializedName("has_your_like")
         @Expose
         var hasYourLike: Boolean = false

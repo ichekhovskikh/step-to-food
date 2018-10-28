@@ -9,16 +9,18 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.sugar.steptofood.R
+import com.sugar.steptofood.Session
 import com.sugar.steptofood.model.Food
 import com.sugar.steptofood.model.Product
 
 class ComposedFoodAdapter(diffCallback: DiffUtil.ItemCallback<Food>,
                           context: Context,
+                          session: Session,
                           onFoodImageClick: ((Food) -> Unit)? = {},
                           onUserNameClick: ((Food) -> Unit)? = {},
                           onRemoveClick: ((Food) -> Unit)? = {},
                           onLikeClick: ((Food, Boolean) -> Unit)? = { food, hasLike -> })
-    : BaseRecipeAdapter(diffCallback, context, onFoodImageClick, onUserNameClick, onRemoveClick, onLikeClick) {
+    : BaseRecipeAdapter(diffCallback, context, session, onFoodImageClick, onUserNameClick, onRemoveClick, onLikeClick) {
 
     override fun onCreateViewHolder(container: ViewGroup, viewType: Int): FoodViewHolder {
         return ComposedFoodViewHolder(createItemView(viewType))

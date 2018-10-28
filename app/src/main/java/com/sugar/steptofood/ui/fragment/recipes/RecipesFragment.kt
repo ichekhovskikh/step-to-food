@@ -74,7 +74,9 @@ open class RecipesFragment : FoodView, BaseFragment() {
     open fun getFoodType() = FoodType.RECOMMENDED
 
     open fun createFoodAdapter(): BaseRecipeAdapter? =
-            FoodAdapter(FoodDiffUtilCallback(), this.context!!,
+            FoodAdapter(FoodDiffUtilCallback(),
+                    this.context!!,
+                    session,
                     ::onFoodImageClickListener,
                     ::onUserNameClickListener,
                     ::onRemoveClickListener,

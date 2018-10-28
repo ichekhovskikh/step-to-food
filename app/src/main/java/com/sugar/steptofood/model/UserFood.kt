@@ -9,9 +9,6 @@ data class UserFood (
         @DatabaseField(generatedId = true)
         override var id: Int? = null,
 
-        @DatabaseField(columnName = "food_type")
-        var foodType: String = FoodType.ADDED.toString(),
-
         @DatabaseField(foreign = true)
         var food: Food? = null,
 

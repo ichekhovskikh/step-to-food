@@ -10,10 +10,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import com.sugar.steptofood.R
+import com.sugar.steptofood.Session
 import com.sugar.steptofood.model.Food
 
 abstract class BaseRecipeAdapter(diffCallback: DiffUtil.ItemCallback<Food>,
                                  context: Context,
+                                 private val session: Session,
                                  private val onFoodImageClick: ((Food) -> Unit)?,
                                  private val onUserNameClick: ((Food) -> Unit)?,
                                  private val onRemoveClick: ((Food) -> Unit)?,
@@ -61,7 +63,7 @@ abstract class BaseRecipeAdapter(diffCallback: DiffUtil.ItemCallback<Food>,
     }
 
     override fun getItemViewType(position: Int) =
-            if (getItem(position)!!.isYourAdded)
+            if (getItem(position)!!.author?.id == session.userId)
                 YOUR_FOOD
             else ANOTHER_USER_FOOD
 

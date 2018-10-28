@@ -18,7 +18,8 @@ class FoodSource(private val api: ApiService,
                 .getFoodAll(userId, type, params.requestedInitialKey!!, params.requestedLoadSize)
                 .subscribe({ response ->
                     if (response.success) {
-                        dbHelper!!.foodBusinessObject.update(response.content!!, type)
+                        if (type == FoodType.LIKE) dbHelper!!.foodBusinessObject.update(response.content!!, userId)
+                        else dbHelper!!.foodBusinessObject.update(response.content!!)
                         callback.onResult(response.content)
                     } else if (!response.success) {
                         onError(params, callback)
@@ -31,7 +32,8 @@ class FoodSource(private val api: ApiService,
                 .getFoodAll(userId, type, params.key, params.requestedLoadSize)
                 .subscribe({ response ->
                     if (response.success) {
-                        dbHelper!!.foodBusinessObject.update(response.content!!, type)
+                        if (type == FoodType.LIKE) dbHelper!!.foodBusinessObject.update(response.content!!, userId)
+                        else dbHelper!!.foodBusinessObject.update(response.content!!)
                         callback.onResult(response.content)
                     } else if (!response.success) {
                         onError(params, callback)
