@@ -11,16 +11,17 @@ class FoodSource(private val api: ApiService,
                  private val compositeDisposable: CompositeDisposable,
                  private val userId: Int,
                  private val type: FoodType,
-                 private val dbHelper: SQLiteHelper?) : ItemKeyedDataSource<Int, Food>() {
+                 private val dbHelper: SQLiteHelper?,
+                 private val searchName: String) : ItemKeyedDataSource<Int, Food>() {
 
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Food>) {
         compositeDisposable.add(api
-                .getFoodAll(userId, type, params.requestedInitialKey!!, params.requestedLoadSize)
+                .getFoodAll(userId, searchName, type, params.requestedInitialKey!!, params.requestedLoadSize)
                 .subscribe({ response ->
                     if (response.success) {
                         if (type == FoodType.LIKE) dbHelper!!.foodBusinessObject.update(response.content!!, userId)
-                        else dbHelper!!.foodBusinessObject.update(response.content!!)
-                        callback.onResult(response.content)
+                        else if (type == FoodType.ADDED) dbHelper!!.foodBusinessObject.update(response.content!!)
+                        callback.onResult(response.content!!)
                     } else if (!response.success) {
                         onError(params, callback)
                     }
@@ -29,12 +30,12 @@ class FoodSource(private val api: ApiService,
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Food>) {
         compositeDisposable.add(api
-                .getFoodAll(userId, type, params.key, params.requestedLoadSize)
+                .getFoodAll(userId, searchName, type, params.key, params.requestedLoadSize)
                 .subscribe({ response ->
                     if (response.success) {
                         if (type == FoodType.LIKE) dbHelper!!.foodBusinessObject.update(response.content!!, userId)
-                        else dbHelper!!.foodBusinessObject.update(response.content!!)
-                        callback.onResult(response.content)
+                        else if (type == FoodType.ADDED) dbHelper!!.foodBusinessObject.update(response.content!!)
+                        callback.onResult(response.content!!)
                     } else if (!response.success) {
                         onError(params, callback)
                     }
@@ -46,10 +47,10 @@ class FoodSource(private val api: ApiService,
     override fun getKey(item: Food) = item.id!!
 
     private fun onError(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Food>) {
-        callback.onResult(dbHelper!!.foodBusinessObject.getRangeFood(userId, type, params.requestedInitialKey!!, params.requestedLoadSize))
+        callback.onResult(dbHelper!!.foodBusinessObject.getRangeFood(userId, searchName, type, params.requestedInitialKey!!, params.requestedLoadSize))
     }
 
     private fun onError(params: LoadParams<Int>, callback: LoadCallback<Food>) {
-        callback.onResult(dbHelper!!.foodBusinessObject.getRangeFood(userId, type, params.key, params.requestedLoadSize))
+        callback.onResult(dbHelper!!.foodBusinessObject.getRangeFood(userId, searchName, type, params.key, params.requestedLoadSize))
     }
 }

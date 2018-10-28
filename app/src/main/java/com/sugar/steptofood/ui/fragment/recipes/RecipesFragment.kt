@@ -31,7 +31,11 @@ import com.sugar.steptofood.paging.adapter.BaseRecipeAdapter
 import com.sugar.steptofood.paging.adapter.FoodAdapter
 import com.sugar.steptofood.utils.FoodType
 import io.reactivex.disposables.CompositeDisposable
+import android.text.Editable
+import android.text.TextWatcher
 
+
+@SuppressLint("InflateParams")
 open class RecipesFragment : FoodView, BaseFragment() {
 
     @Inject
@@ -49,6 +53,8 @@ open class RecipesFragment : FoodView, BaseFragment() {
     protected val presenter by lazy { FoodPresenter(this, api) }
     private var adapter: BaseRecipeAdapter? = null
 
+    private val search by lazy { inflater?.inflate(R.layout.item_search, null) as MaterialSearchBar }
+
     companion object {
         fun getInstance() = RecipesFragment()
 
@@ -65,9 +71,9 @@ open class RecipesFragment : FoodView, BaseFragment() {
 
     @SuppressLint("InflateParams")
     open fun initHeader() {
-        val search = inflater?.inflate(R.layout.item_search, null) as MaterialSearchBar
         search.setHint(getString(R.string.search_food))
         search.setPlaceHolder(getString(R.string.search_food))
+        search.addTextChangeListener(SearchTextWatcher { initContent() })
         tittleTabContainer.addView(search)
     }
 
@@ -83,7 +89,9 @@ open class RecipesFragment : FoodView, BaseFragment() {
                     ::onLikeClickListener)
 
     open fun getFoodSourceFactory(): DataSource.Factory<Int, Food> =
-            FoodSourceFactory(api, compositeDisposable, getAuthor(), getFoodType(), dbHelper)
+            FoodSourceFactory(api, compositeDisposable, getAuthor(), getFoodType(), dbHelper, getSearchString())
+
+    private fun getSearchString() = search.text
 
     private fun getAuthor() = activity!!.intent.getIntExtra(UID, session.userId)
 
@@ -133,5 +141,16 @@ open class RecipesFragment : FoodView, BaseFragment() {
 
     override fun onShowError(error: String) {
         Toast.makeText(context, error, Toast.LENGTH_LONG).show()
+    }
+
+    private inner class SearchTextWatcher(private val afterTextChanged: () -> Unit) : TextWatcher {
+
+        override fun afterTextChanged(p0: Editable?) {
+            afterTextChanged.invoke()
+        }
+
+        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
     }
 }

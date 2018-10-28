@@ -45,8 +45,9 @@ interface ApiService {
     @GET("/food?foodId={foodId}")
     fun getFood(@Path("foodId") foodId: Int): Single<BaseResponse<Food>>
 
-    @GET("/foods?userId={userId}&type={type}&start={startId}&size={size}")
+    @GET("/foods?userId={userId}&searchName={searchName}&type={type}&start={startId}&size={size}")
     fun getFoodAll(@Path("userId") userId: Int,
+                   @Path("searchName") searchName: String,
                    @Path("type") type: FoodType,
                    @Path("startId") startId: Int,
                    @Path("size") size: Int): Single<BaseResponse<List<Food>>>

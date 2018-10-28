@@ -9,14 +9,14 @@ import kotlin.math.min
 
 class FoodBusinessObject(private val dbHelper: SQLiteHelper) {
 
-    fun getRangeFood(userId: Int, type: FoodType, startId: Int, size: Int) =
+    fun getRangeFood(userId: Int, searchName: String, type: FoodType, startId: Int, size: Int) =
             if (type == FoodType.LIKE)
-                getRangeLikeFood(userId, startId, size)
-            else getRangeAddedFood(userId, startId, size)
+                getRangeLikeFood(userId, searchName, startId, size)
+            else getRangeAddedFood(userId, searchName, startId, size)
 
-    fun getRangeLikeFood(userId: Int, startId: Int, size: Int): List<Food> {
+    fun getRangeLikeFood(userId: Int, searchName: String, startId: Int, size: Int): List<Food> {
         val userFoods = dbHelper.likeFoodDao.filter { userFood ->
-            isLoadedUserFood(userFood, userId, startId)
+            isLoadedUserFood(userFood, searchName, userId, startId)
         }
 
         val foods = mutableListOf<Food>()
@@ -32,9 +32,9 @@ class FoodBusinessObject(private val dbHelper: SQLiteHelper) {
         return foods
     }
 
-    fun getRangeAddedFood(userId: Int, startId: Int, size: Int): List<Food> {
+    fun getRangeAddedFood(userId: Int, searchName: String, startId: Int, size: Int): List<Food> {
         val addedFoods = dbHelper.foodDao.filter { food ->
-            food.id!! >= startId && food.author?.id == userId
+            food.id!! >= startId && food.author?.id == userId && food.name.contains(searchName)
         }
 
         val foods = mutableListOf<Food>()
@@ -98,8 +98,8 @@ class FoodBusinessObject(private val dbHelper: SQLiteHelper) {
         }
     }
 
-    private fun isLoadedUserFood(likeFood: LikeFood, userId: Int, startId: Int) =
-            likeFood.user?.id == userId && likeFood.food?.id!! >= startId
+    private fun isLoadedUserFood(likeFood: LikeFood, searchName: String, userId: Int, startId: Int) =
+            likeFood.user?.id == userId && likeFood.food?.id!! >= startId && likeFood.food!!.name.contains(searchName)
 
     private fun productFoodContentEquals(food: Food, product: Product, productFood: ProductFood) =
             productFood.food?.id == food.id && productFood.product?.id == product.id
