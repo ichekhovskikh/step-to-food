@@ -16,7 +16,7 @@ class FoodSource(private val api: ApiService,
 
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Food>) {
         compositeDisposable.add(api
-                .getFoodAll(userId, searchName, type, params.requestedInitialKey!!, params.requestedLoadSize)
+                .searchFoods(userId, searchName, type, params.requestedInitialKey!!, params.requestedLoadSize)
                 .subscribe({ response ->
                     if (response.success) {
                         if (type == FoodType.LIKE) dbHelper!!.foodBusinessObject.update(response.content!!, userId)
@@ -30,7 +30,7 @@ class FoodSource(private val api: ApiService,
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Food>) {
         compositeDisposable.add(api
-                .getFoodAll(userId, searchName, type, params.key, params.requestedLoadSize)
+                .searchFoods(userId, searchName, type, params.key, params.requestedLoadSize)
                 .subscribe({ response ->
                     if (response.success) {
                         if (type == FoodType.LIKE) dbHelper!!.foodBusinessObject.update(response.content!!, userId)

@@ -8,11 +8,13 @@ import io.reactivex.disposables.CompositeDisposable
 
 class ComposedFoodSource(private val api: ApiService,
                          private val compositeDisposable: CompositeDisposable,
-                         private val products: List<Product>) : ItemKeyedDataSource<Int, Food>() {
+                         products: List<Product>) : ItemKeyedDataSource<Int, Food>() {
+
+    private val productsId: List<Int> = products.asSequence().map { it.id!! }.toList()
 
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Food>) {
         compositeDisposable.add(api
-                .searchFoodsByProduct(products, params.requestedInitialKey!!, params.requestedLoadSize)
+                .searchFoodsByProducts(productsId, params.requestedInitialKey!!, params.requestedLoadSize)
                 .subscribe({ response ->
                     if (response.success) {
                         callback.onResult(response.content!!)
@@ -24,7 +26,7 @@ class ComposedFoodSource(private val api: ApiService,
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Food>) {
         compositeDisposable.add(api
-                .searchFoodsByProduct(products, params.key, params.requestedLoadSize)
+                .searchFoodsByProducts(productsId, params.key, params.requestedLoadSize)
                 .subscribe({ response ->
                     if (response.success) {
                         callback.onResult(response.content!!)
