@@ -1,6 +1,6 @@
 package com.sugar.steptofood.paging.source
 
-import android.arch.paging.ItemKeyedDataSource
+import android.arch.paging.PositionalDataSource
 import com.sugar.steptofood.db.SQLiteHelper
 import com.sugar.steptofood.model.Food
 import com.sugar.steptofood.rest.ApiService
@@ -12,45 +12,41 @@ class FoodSource(private val api: ApiService,
                  private val userId: Int,
                  private val type: FoodType,
                  private val dbHelper: SQLiteHelper?,
-                 private val searchName: String) : ItemKeyedDataSource<Int, Food>() {
+                 private val searchName: String) : PositionalDataSource<Food>() {
 
-    override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Food>) {
+    override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<Food>) {
         compositeDisposable.add(api
-                .searchFoods(userId, searchName, type, params.requestedInitialKey!!, params.requestedLoadSize)
+                .searchFoods(userId, searchName, type, params.requestedStartPosition, params.requestedLoadSize)
                 .subscribe({ response ->
                     if (response.success) {
-                        if (type == FoodType.LIKE) dbHelper!!.foodBusinessObject.update(response.content!!, userId)
-                        else if (type == FoodType.ADDED) dbHelper!!.foodBusinessObject.update(response.content!!)
-                        callback.onResult(response.content!!)
+                        dbHelper!!.foodBusinessObject.updateDb(response.content!!, type, userId)
+                        callback.onResult(response.content, params.requestedLoadSize + 1)
                     } else if (!response.success) {
                         onError(params, callback)
                     }
                 }, { onError(params, callback) }))
     }
 
-    override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Food>) {
+    override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<Food>) {
         compositeDisposable.add(api
-                .searchFoods(userId, searchName, type, params.key, params.requestedLoadSize)
+                .searchFoods(userId, searchName, type, params.startPosition, params.loadSize)
                 .subscribe({ response ->
                     if (response.success) {
-                        if (type == FoodType.LIKE) dbHelper!!.foodBusinessObject.update(response.content!!, userId)
-                        else if (type == FoodType.ADDED) dbHelper!!.foodBusinessObject.update(response.content!!)
-                        callback.onResult(response.content!!)
+                        dbHelper!!.foodBusinessObject.updateDb(response.content!!, type, userId)
+                        callback.onResult(response.content)
                     } else if (!response.success) {
                         onError(params, callback)
                     }
                 }, { onError(params, callback) }))
     }
 
-    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Food>) {}
-
-    override fun getKey(item: Food) = item.id!!
-
-    private fun onError(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Food>) {
-        callback.onResult(dbHelper!!.foodBusinessObject.getRangeFood(userId, searchName, type, params.requestedInitialKey!!, params.requestedLoadSize))
+    private fun onError(params: LoadInitialParams, callback: LoadInitialCallback<Food>) {
+        callback.onResult(
+                dbHelper!!.foodBusinessObject.getRangeFood(userId, searchName, type, params.requestedStartPosition, params.requestedLoadSize),
+                params.requestedLoadSize + 1)
     }
 
-    private fun onError(params: LoadParams<Int>, callback: LoadCallback<Food>) {
-        callback.onResult(dbHelper!!.foodBusinessObject.getRangeFood(userId, searchName, type, params.key, params.requestedLoadSize))
+    private fun onError(params: LoadRangeParams, callback: LoadRangeCallback<Food>) {
+        callback.onResult(dbHelper!!.foodBusinessObject.getRangeFood(userId, searchName, type, params.startPosition, params.loadSize))
     }
 }

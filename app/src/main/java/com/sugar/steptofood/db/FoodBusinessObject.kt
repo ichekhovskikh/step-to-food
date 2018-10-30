@@ -9,18 +9,18 @@ import kotlin.math.min
 
 class FoodBusinessObject(private val dbHelper: SQLiteHelper) {
 
-    fun getRangeFood(userId: Int, searchName: String, type: FoodType, startId: Int, size: Int) =
+    fun getRangeFood(userId: Int, searchName: String, type: FoodType, start: Int, size: Int) =
             if (type == FoodType.LIKE)
-                getRangeLikeFood(userId, searchName, startId, size)
-            else getRangeAddedFood(userId, searchName, startId, size)
+                getRangeLikeFood(userId, searchName, start, size)
+            else getRangeAddedFood(userId, searchName, start, size)
 
-    fun getRangeLikeFood(userId: Int, searchName: String, startId: Int, size: Int): List<Food> {
-        val userFoods = dbHelper.likeFoodDao.filter { userFood ->
-            isLoadedUserFood(userFood, searchName, userId, startId)
+    fun getRangeLikeFood(userId: Int, searchName: String, start: Int, size: Int): List<Food> {
+        val userFoods = dbHelper.likeFoodDao.filter { likeFood ->
+            likeFood.user?.id == userId && likeFood.food!!.name.contains(searchName)
         }
 
         val foods = mutableListOf<Food>()
-        for (i in 0 until min(userFoods.count(), size)) {
+        for (i in start until min(userFoods.count(), size)) {
             val food = userFoods[i].food!!
             val products = dbHelper.productDao.filter { product ->
                 foodContainsProduct(food, product)
@@ -32,13 +32,13 @@ class FoodBusinessObject(private val dbHelper: SQLiteHelper) {
         return foods
     }
 
-    fun getRangeAddedFood(userId: Int, searchName: String, startId: Int, size: Int): List<Food> {
+    fun getRangeAddedFood(userId: Int, searchName: String, start: Int, size: Int): List<Food> {
         val addedFoods = dbHelper.foodDao.filter { food ->
-            food.id!! >= startId && food.author?.id == userId && food.name.contains(searchName)
+            food.author?.id == userId && food.name.contains(searchName)
         }
 
         val foods = mutableListOf<Food>()
-        for (i in 0 until min(addedFoods.count(), size)) {
+        for (i in start until min(addedFoods.count(), size)) {
             val food = addedFoods[i]
             val products = dbHelper.productDao.filter { product ->
                 foodContainsProduct(food, product)
@@ -48,6 +48,11 @@ class FoodBusinessObject(private val dbHelper: SQLiteHelper) {
             foods.add(food)
         }
         return foods
+    }
+
+    fun updateDb(foods: List<Food>, foodType: FoodType = FoodType.ADDED, putLikeUserId: Int = -1) {
+        if (foodType == FoodType.LIKE) update(foods, putLikeUserId)
+        else if (foodType == FoodType.ADDED) update(foods)
     }
 
     fun update(foods: List<Food>) {
@@ -97,9 +102,6 @@ class FoodBusinessObject(private val dbHelper: SQLiteHelper) {
             dbHelper.productFoodDao.create(ProductFood(null, foodFromDb, productFromDb))
         }
     }
-
-    private fun isLoadedUserFood(likeFood: LikeFood, searchName: String, userId: Int, startId: Int) =
-            likeFood.user?.id == userId && likeFood.food?.id!! >= startId && likeFood.food!!.name.contains(searchName)
 
     private fun productFoodContentEquals(food: Food, product: Product, productFood: ProductFood) =
             productFood.food?.id == food.id && productFood.product?.id == product.id
