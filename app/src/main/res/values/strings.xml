@@ -4,6 +4,8 @@
     <string name="step_to">STEP TO</string>
     <string name="food">FOOD</string>
 
+    <string name="permissions_request_text">Приложению требуется доступ к вашим файлам</string>
+
     <string name="auth">Авторизация</string>
     <string name="enter_pass">Введите пароль</string>
     <string name="enter_login">Введите логин</string>

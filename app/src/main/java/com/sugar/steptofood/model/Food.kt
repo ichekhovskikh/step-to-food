@@ -17,7 +17,7 @@ data class Food(
 
         @DatabaseField(columnName = "image", canBeNull = false)
         @SerializedName("image")
-        var image: String = "",
+        var image: String? = "",
 
         @DatabaseField(columnName = "description", canBeNull = false)
         @SerializedName("description")

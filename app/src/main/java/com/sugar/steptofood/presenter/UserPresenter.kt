@@ -1,27 +1,31 @@
 package com.sugar.steptofood.presenter
 
+import android.content.Context
 import com.sugar.steptofood.extension.customSubscribe
 import com.sugar.steptofood.rest.ApiService
 import android.graphics.BitmapFactory
+import android.net.Uri
+import com.sugar.steptofood.App
 import com.sugar.steptofood.Session
-import com.sugar.steptofood.extension.uploadSubscribe
+import com.sugar.steptofood.extension.downloadSubscribe
 import com.sugar.steptofood.ui.view.UserView
-import okhttp3.MediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
+import com.sugar.steptofood.utils.readBytes
+import okhttp3.*
 import java.io.File
 
 class UserPresenter(view: UserView,
                     api: ApiService,
-                    val session: Session) : BasePresenter<UserView>(view, api) {
+                    val session: Session,
+                    val context: Context) : BasePresenter<UserView>(view, api) {
 
-    fun getUserAvatar(userId: Int) {
+    fun getAvatar(userId: Int) {
         view.onShowLoading()
         api.getUserAvatar(userId)
-                .customSubscribe({
+                .downloadSubscribe({
                     val bitmap = BitmapFactory.decodeStream(it.byteStream())
                     view.onHideLoading()
-                    view.setUserAvatar(bitmap)
+                    if (bitmap != null)
+                        view.setUserAvatar(bitmap)
                 }, defaultError())
     }
 
@@ -34,13 +38,14 @@ class UserPresenter(view: UserView,
                 }, defaultError())
     }
 
-    fun setAvatar(uri: String) {
-        val file = File(uri)
-        val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
-        val body = MultipartBody.Part.createFormData("file", file.name, requestFile)
-        api.uploadFile(body).uploadSubscribe({ link ->
-            api.setUserAvatar(link).customSubscribe({}, defaultError())
-        }, defaultError())
+    fun setAvatar(uri: Uri) {
+        val inputStream = context.contentResolver.openInputStream(uri)
+        val bytes = readBytes(inputStream!!)
+        inputStream.close()
+
+        val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), bytes)
+        val body = MultipartBody.Part.createFormData("image", uri.lastPathSegment, requestFile)
+        api.setUserAvatar(body).customSubscribe({}, defaultError())
     }
 
     fun terminate() {

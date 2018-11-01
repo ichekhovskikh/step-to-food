@@ -19,8 +19,9 @@ class FoodSource(private val api: ApiService,
                 .searchFoods(userId, searchName, type, params.requestedStartPosition, params.requestedLoadSize)
                 .subscribe({ response ->
                     if (response.success) {
-                        dbHelper!!.foodBusinessObject.updateDb(response.content!!, type, userId)
-                        callback.onResult(response.content, params.requestedLoadSize + 1)
+                        //dbHelper!!.foodBusinessObject.updateDb(response.content!!, type, userId)
+                        callback.onResult(response.content!!,
+                                if(response.content.isEmpty()) 0 else params.requestedLoadSize + 1)
                     } else if (!response.success) {
                         onError(params, callback)
                     }
@@ -32,8 +33,8 @@ class FoodSource(private val api: ApiService,
                 .searchFoods(userId, searchName, type, params.startPosition, params.loadSize)
                 .subscribe({ response ->
                     if (response.success) {
-                        dbHelper!!.foodBusinessObject.updateDb(response.content!!, type, userId)
-                        callback.onResult(response.content)
+                        //dbHelper!!.foodBusinessObject.updateDb(response.content!!, type, userId)
+                        callback.onResult(response.content!!)
                     } else if (!response.success) {
                         onError(params, callback)
                     }
@@ -41,12 +42,12 @@ class FoodSource(private val api: ApiService,
     }
 
     private fun onError(params: LoadInitialParams, callback: LoadInitialCallback<Food>) {
-        callback.onResult(
-                dbHelper!!.foodBusinessObject.getRangeFood(userId, searchName, type, params.requestedStartPosition, params.requestedLoadSize),
-                params.requestedLoadSize + 1)
+        //val foods = dbHelper!!.foodBusinessObject.getRangeFood(userId, searchName, type, params.requestedStartPosition, params.requestedLoadSize)
+        //callback.onResult(foods, if (foods.isEmpty()) 0 else params.requestedLoadSize + 1)
     }
 
     private fun onError(params: LoadRangeParams, callback: LoadRangeCallback<Food>) {
-        callback.onResult(dbHelper!!.foodBusinessObject.getRangeFood(userId, searchName, type, params.startPosition, params.loadSize))
+        //val foods = dbHelper!!.foodBusinessObject.getRangeFood(userId, searchName, type, params.startPosition, params.loadSize)
+        //callback.onResult(foods)
     }
 }

@@ -37,11 +37,14 @@ abstract class BaseRecipeAdapter(diffCallback: DiffUtil.ItemCallback<Food>,
         val food = getItem(position)!!
         holder.textFoodNameView.text = food.name
         holder.textCalorieNameView.text = food.calorie.toString()
-        holder.foodImageView.setImageURI(Uri.parse(food.image))
+
+        //TODO get image from server
+        if(food.image != null)
+            holder.foodImageView.setImageURI(Uri.parse(food.image))
 
         if (holder.itemViewType == ANOTHER_USER_FOOD) {
             holder.textUserNameView.text = food.author?.name
-            holder.buttonLike.isChecked = food.hasYourLike
+            holder.buttonLike?.isChecked = food.hasYourLike
         }
     }
 
@@ -54,10 +57,10 @@ abstract class BaseRecipeAdapter(diffCallback: DiffUtil.ItemCallback<Food>,
             holder.textUserNameView.setOnClickListener {
                 onUserNameClick?.invoke(getItem(holder.adapterPosition)!!)
             }
-            holder.buttonRemove.setOnClickListener {
+            holder.buttonRemove?.setOnClickListener {
                 onRemoveClick?.invoke(getItem(holder.adapterPosition)!!)
             }
-        } else holder.buttonLike.setOnCheckedChangeListener { buttonView, hasLike ->
+        } else holder.buttonLike?.setOnCheckedChangeListener { buttonView, hasLike ->
             onLikeClick?.invoke(getItem(holder.adapterPosition)!!, hasLike)
         }
     }
@@ -83,7 +86,7 @@ abstract class BaseRecipeAdapter(diffCallback: DiffUtil.ItemCallback<Food>,
         val textFoodNameView: TextView = itemView.findViewById(R.id.textFoodNameView)
         val textUserNameView: TextView = itemView.findViewById(R.id.textUserNameView)
         val textCalorieNameView: TextView = itemView.findViewById(R.id.textCalorieNameView)
-        val buttonLike: ToggleButton = itemView.findViewById(R.id.buttonLike)
-        val buttonRemove: Button = itemView.findViewById(R.id.buttonRemove)
+        val buttonLike: ToggleButton? = itemView.findViewById(R.id.buttonLike)
+        val buttonRemove: Button? = itemView.findViewById(R.id.buttonRemove)
     }
 }

@@ -27,4 +27,8 @@ data class Product(
         @SerializedName("included_in_search")
         @Expose
         var includedInSearch: Boolean = false
-) : Entity
+) : Entity {
+    override fun toString(): String {
+        return name
+    }
+}

@@ -34,7 +34,7 @@ class AddFoodActivity : FoodView, AppCompatActivity() {
     @Inject
     lateinit var api: ApiService
 
-    private val presenter by lazy { FoodPresenter(this, api) }
+    private val presenter by lazy { FoodPresenter(this, api, this) }
     private var imageUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {

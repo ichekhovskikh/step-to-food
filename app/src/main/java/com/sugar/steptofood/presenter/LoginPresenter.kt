@@ -14,7 +14,7 @@ class LoginPresenter(view: LoginView,
         api.register(name, login, password)
                 .customSubscribe({
                     view.onHideLoading()
-                    login(name, password)
+                    login(login, password)
                 }, defaultError())
     }
 
@@ -29,11 +29,10 @@ class LoginPresenter(view: LoginView,
                 }, defaultError())
     }
 
-    fun login(onUnsuccessful: (String) -> Unit = defaultError()) {
+    fun login() {
         view.onShowLoading()
         if (session.token.isEmpty()) {
             view.onHideLoading()
-            onUnsuccessful.invoke("Token is absent")
             return
         }
 

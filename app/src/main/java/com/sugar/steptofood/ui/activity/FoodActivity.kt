@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.ToggleButton
@@ -33,7 +34,7 @@ class FoodActivity : FoodView, AppCompatActivity() {
     @Inject
     lateinit var session: Session
 
-    private val presenter by lazy { FoodPresenter(this, api) }
+    private val presenter by lazy { FoodPresenter(this, api, this) }
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,12 +52,13 @@ class FoodActivity : FoodView, AppCompatActivity() {
         if (food.author?.id != session.userId) {
             addLikeButton(food)
             userNameTextView.text = food.author?.name
+            presenter.getFoodAuthorAvatar(food.author?.id!!, ::setFoodAuthorImage)
             userNameTextView.setOnClickListener {
                 onUserNameClickListener(food)
             }
         } else addRemoveButton(food)
 
-        for(product in food.products!!)
+        for (product in food.products!!)
             addProduct(product)
 
         descriptionTextView.text = food.description
@@ -66,7 +68,6 @@ class FoodActivity : FoodView, AppCompatActivity() {
         carbohydratesTextView.text = food.carbohydrates.toString()
 
         presenter.getFoodImage(food.id!!, ::setFoodImage)
-        presenter.getFoodAuthorAvatar(food.author?.id!!, ::setFoodAuthorImage)
     }
 
     @SuppressLint("InflateParams")
@@ -119,12 +120,16 @@ class FoodActivity : FoodView, AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun setFoodImage(bitmap: Bitmap) {
-        foodImageView.setImageBitmap(bitmap)
+    private fun setFoodImage(bitmap: Bitmap?) {
+        if (bitmap != null)
+            foodImageView.setImageBitmap(bitmap)
     }
 
-    private fun setFoodAuthorImage(bitmap: Bitmap) {
-        userImageView.setImageBitmap(bitmap)
+    private fun setFoodAuthorImage(bitmap: Bitmap?) {
+        if (bitmap != null) {
+            userImageView?.setImageBitmap(bitmap)
+            userImageView.visibility = View.VISIBLE
+        }
     }
 
     override fun onShowLoading() {

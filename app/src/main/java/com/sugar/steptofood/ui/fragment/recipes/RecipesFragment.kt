@@ -33,7 +33,7 @@ import com.sugar.steptofood.utils.FoodType
 import io.reactivex.disposables.CompositeDisposable
 import android.text.Editable
 import android.text.TextWatcher
-
+import android.view.ViewGroup
 
 @SuppressLint("InflateParams")
 open class RecipesFragment : FoodView, BaseFragment() {
@@ -50,7 +50,7 @@ open class RecipesFragment : FoodView, BaseFragment() {
     @Inject
     lateinit var compositeDisposable: CompositeDisposable
 
-    protected val presenter by lazy { FoodPresenter(this, api) }
+    protected val presenter by lazy { FoodPresenter(this, api, context!!) }
     private var adapter: BaseRecipeAdapter? = null
 
     private val search by lazy { inflater?.inflate(R.layout.item_search, null) as MaterialSearchBar }
@@ -71,6 +71,9 @@ open class RecipesFragment : FoodView, BaseFragment() {
 
     @SuppressLint("InflateParams")
     open fun initHeader() {
+        if (search.parent != null)
+            (search.parent as ViewGroup).removeView(search)
+
         search.setHint(getString(R.string.search_food))
         search.setPlaceHolder(getString(R.string.search_food))
         search.addTextChangeListener(SearchTextWatcher { initContent() })

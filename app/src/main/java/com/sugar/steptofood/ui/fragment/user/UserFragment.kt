@@ -2,6 +2,7 @@ package com.sugar.steptofood.ui.fragment.user
 
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
@@ -23,6 +24,8 @@ import com.sugar.steptofood.ui.view.UserView
 import com.sugar.steptofood.utils.ExtraName.ITEM_TYPE
 import com.sugar.steptofood.utils.ExtraName.UID
 import com.sugar.steptofood.utils.FoodType
+import com.sugar.steptofood.utils.hasPermissions
+import com.sugar.steptofood.utils.requestPermissions
 import com.sugar.steptofood.utils.showExitDialog
 import kotlinx.android.synthetic.main.fragment_user.*
 import javax.inject.Inject
@@ -34,27 +37,27 @@ open class UserFragment : UserView, BaseFragment() {
     @Inject
     lateinit var api: ApiService
 
-    private val presenter by lazy { UserPresenter(this, api, session) }
+    private val presenter by lazy { UserPresenter(this, api, session, context!!) }
     protected var userId: Int? = null
 
     companion object {
         fun getInstance() = UserFragment()
 
         const val PICK_IMAGE = 0
+        const val PERMISSIONS_REQUEST_CODE = 1
     }
 
     override fun initView(view: View, savedInstanceState: Bundle?) {
         App.appComponent.inject(this)
 
         userImageView.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
-            startActivityForResult(intent, PICK_IMAGE)
+            chooseImageIfHasPermissions()
         }
 
         initMenuItems(view)
         userId = activity!!.intent.getIntExtra(UID, session.userId)
         presenter.getUserName(userId!!)
-        presenter.getUserAvatar(userId!!)
+        presenter.getAvatar(userId!!)
     }
 
     override fun getLayout(): Int = R.layout.fragment_user
@@ -143,11 +146,28 @@ open class UserFragment : UserView, BaseFragment() {
         startActivity(intent)
     }
 
+    private fun chooseImageIfHasPermissions() {
+        if (hasPermissions(activity!!)) {
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+            startActivityForResult(intent, PICK_IMAGE)
+        } else {
+            requestPermissions(activity!!, PERMISSIONS_REQUEST_CODE)
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == PERMISSIONS_REQUEST_CODE && hasPermissions(activity!!)) {
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+            startActivityForResult(intent, PICK_IMAGE)
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
         if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK) {
             val uri = intent?.data!!
             userImageView.setImageURI(uri)
-            presenter.setAvatar(uri.toString())
+            presenter.setAvatar(uri)
         }
     }
 

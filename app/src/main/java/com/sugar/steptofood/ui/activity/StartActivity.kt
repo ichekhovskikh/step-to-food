@@ -30,7 +30,8 @@ class StartActivity : LoginView, AppCompatActivity() {
         super.onCreate(savedInstanceState)
         App.appComponent.inject(this)
         setContentView(R.layout.activity_start)
-        presenter.login(::openLoginWindow)
+        openLoginWindow()
+        presenter.login()
     }
 
     private fun setFragment(fragment: Fragment) {
@@ -40,11 +41,8 @@ class StartActivity : LoginView, AppCompatActivity() {
                 .commit()
     }
 
-    private fun openLoginWindow(error: String) {
+    private fun openLoginWindow() {
         setFragment(LoginFragment.getInstance())
-
-        if (!session.token.isEmpty())
-            onShowError(error)
     }
 
     fun register(name: String, login: String, pass: String) {
@@ -71,12 +69,12 @@ class StartActivity : LoginView, AppCompatActivity() {
     }
 
     override fun onShowError(error: String) {
-        val showingView = supportFragmentManager.findFragmentByTag(operationTag) as BaseView
-        showingView.onShowError(error)
+        val showingView = supportFragmentManager.findFragmentByTag(operationTag) as BaseView?
+        showingView?.onShowError(error)
     }
 
     companion object {
-        val LOG_TAG = "login"
-        val REG_TAG = "registration"
+        const val LOG_TAG = "login"
+        const val REG_TAG = "registration"
     }
 }

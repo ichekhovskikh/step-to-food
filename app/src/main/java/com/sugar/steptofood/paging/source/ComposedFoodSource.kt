@@ -17,7 +17,8 @@ class ComposedFoodSource(private val api: ApiService,
                 .searchFoodsByProducts(productsId, params.requestedStartPosition, params.requestedLoadSize)
                 .subscribe({ response ->
                     if (response.success) {
-                        callback.onResult(response.content!!, params.requestedLoadSize + 1)
+                        callback.onResult(response.content!!,
+                                if(response.content.isEmpty()) 0 else params.requestedLoadSize + 1)
                     } else if (!response.success) {
                         onError()
                     }
