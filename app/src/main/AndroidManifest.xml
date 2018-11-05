@@ -34,7 +34,7 @@
 
         <activity
             android:name=".ui.activity.AnotherUserActivity"
-            android:theme="@style/AppTheme.ColoredActionBar"/>
+            android:theme="@style/AppTheme.ColoredStatusBar"/>
 
         <activity
             android:name=".ui.activity.AddFoodActivity"

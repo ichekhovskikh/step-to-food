@@ -1,6 +1,5 @@
 package com.sugar.steptofood.paging.source
 
-import android.arch.paging.PositionalDataSource
 import com.sugar.steptofood.model.Food
 import com.sugar.steptofood.model.Product
 import com.sugar.steptofood.rest.ApiService
@@ -8,7 +7,7 @@ import io.reactivex.disposables.CompositeDisposable
 
 class ComposedFoodSource(private val api: ApiService,
                          private val compositeDisposable: CompositeDisposable,
-                         products: List<Product>) : PositionalDataSource<Food>() {
+                         products: List<Product>) : BaseRecipeSource(api) {
 
     private val productsId: List<Int> = products.asSequence().map { it.id!! }.toList()
 

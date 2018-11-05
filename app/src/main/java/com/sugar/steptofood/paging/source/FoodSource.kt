@@ -1,6 +1,5 @@
 package com.sugar.steptofood.paging.source
 
-import android.arch.paging.PositionalDataSource
 import com.sugar.steptofood.db.SQLiteHelper
 import com.sugar.steptofood.model.Food
 import com.sugar.steptofood.rest.ApiService
@@ -12,7 +11,7 @@ class FoodSource(private val api: ApiService,
                  private val userId: Int,
                  private val type: FoodType,
                  private val dbHelper: SQLiteHelper?,
-                 private val searchName: String) : PositionalDataSource<Food>() {
+                 private val searchName: String) : BaseRecipeSource(api) {
 
     override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<Food>) {
         compositeDisposable.add(api

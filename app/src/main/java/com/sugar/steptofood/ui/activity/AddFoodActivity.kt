@@ -85,8 +85,9 @@ class AddFoodActivity : FoodView, AppCompatActivity() {
     }
 
     private fun initEditFoodView() {
-        addEditContentOnView()
+        addEditContainersOnView()
 
+        userImageView.visibility = View.VISIBLE
         foodNameTextView.hint = getString(R.string.input_food_name)
         userNameTextView.text = getString(R.string.select_food_image)
 
@@ -107,7 +108,7 @@ class AddFoodActivity : FoodView, AppCompatActivity() {
     }
 
     @SuppressLint("InflateParams")
-    private fun addEditContentOnView() {
+    private fun addEditContainersOnView() {
         addEditButton()
         val productsContainer = layoutInflater.inflate(R.layout.item_products_container, null)
         val addRowButton = layoutInflater.inflate(R.layout.item_add_product, null)

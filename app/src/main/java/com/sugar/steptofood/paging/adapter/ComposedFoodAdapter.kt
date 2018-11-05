@@ -12,15 +12,18 @@ import com.sugar.steptofood.R
 import com.sugar.steptofood.Session
 import com.sugar.steptofood.model.Food
 import com.sugar.steptofood.model.Product
+import com.sugar.steptofood.rest.ApiService
 
-class ComposedFoodAdapter(diffCallback: DiffUtil.ItemCallback<Food>,
-                          context: Context,
+class ComposedFoodAdapter(context: Context,
+                          api: ApiService,
                           session: Session,
                           onFoodImageClick: ((Food) -> Unit)? = {},
                           onUserNameClick: ((Food) -> Unit)? = {},
                           onRemoveClick: ((Food) -> Unit)? = {},
                           onLikeClick: ((Food, Boolean) -> Unit)? = { food, hasLike -> })
-    : BaseRecipeAdapter(diffCallback, context, session, onFoodImageClick, onUserNameClick, onRemoveClick, onLikeClick) {
+    : BaseRecipeAdapter(context, api, session, onFoodImageClick, onUserNameClick, onRemoveClick, onLikeClick) {
+
+    override fun getFoodCardLayout() = R.layout.item_products_card
 
     override fun onCreateViewHolder(container: ViewGroup, viewType: Int): FoodViewHolder {
         return ComposedFoodViewHolder(createItemView(viewType))
@@ -31,7 +34,7 @@ class ComposedFoodAdapter(diffCallback: DiffUtil.ItemCallback<Food>,
         setFoodViewListeners(holder)
 
         if (holder is ComposedFoodViewHolder) {
-            val products = getItem(position)!!.products!!.sortedWith(compareBy { it.includedInSearch })
+            val products = getItem(position)!!.products!!.sortedWith(compareBy { !it.includedInSearch })
             for (product in products) {
                 holder.productContainer.addView(createProductView(product))
             }

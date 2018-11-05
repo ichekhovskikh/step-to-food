@@ -19,13 +19,10 @@ import com.sugar.steptofood.utils.ExtraName.FOOD_ID
 import com.sugar.steptofood.utils.ExtraName.UID
 import javax.inject.Inject
 import android.arch.paging.PagedList
-import android.arch.paging.LivePagedListBuilder
 import android.arch.lifecycle.Observer
-import android.arch.paging.DataSource
 import android.widget.Toast
 import com.sugar.steptofood.Session
 import com.sugar.steptofood.db.SQLiteHelper
-import com.sugar.steptofood.paging.FoodDiffUtilCallback
 import com.sugar.steptofood.paging.factory.FoodSourceFactory
 import com.sugar.steptofood.paging.adapter.BaseRecipeAdapter
 import com.sugar.steptofood.paging.adapter.FoodAdapter
@@ -34,6 +31,8 @@ import io.reactivex.disposables.CompositeDisposable
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.ViewGroup
+import com.sugar.steptofood.paging.PagedFoodRepository
+import com.sugar.steptofood.paging.factory.BaseRecipeFactory
 
 @SuppressLint("InflateParams")
 open class RecipesFragment : FoodView, BaseFragment() {
@@ -51,14 +50,14 @@ open class RecipesFragment : FoodView, BaseFragment() {
     lateinit var compositeDisposable: CompositeDisposable
 
     protected val presenter by lazy { FoodPresenter(this, api, context!!) }
+    private var pagedFoodRepository: PagedFoodRepository? = null
     private var adapter: BaseRecipeAdapter? = null
+    private lateinit var adapterObserver: Observer<PagedList<Food>>
 
     private val search by lazy { inflater?.inflate(R.layout.item_search, null) as MaterialSearchBar }
 
     companion object {
         fun getInstance() = RecipesFragment()
-
-        const val PAGE_SIZE = 10
     }
 
     override fun initView(view: View, savedInstanceState: Bundle?) {
@@ -76,22 +75,24 @@ open class RecipesFragment : FoodView, BaseFragment() {
 
         search.setHint(getString(R.string.search_food))
         search.setPlaceHolder(getString(R.string.search_food))
-        search.addTextChangeListener(SearchTextWatcher { initContent() })
+        search.addTextChangeListener(SearchTextWatcher {
+            pagedFoodRepository?.refreshData(getFoodSourceFactory())
+        })
         tittleTabContainer.addView(search)
     }
 
     open fun getFoodType() = FoodType.RECOMMENDED
 
     open fun createFoodAdapter(): BaseRecipeAdapter? =
-            FoodAdapter(FoodDiffUtilCallback(),
-                    this.context!!,
+            FoodAdapter(this.context!!,
+                    api,
                     session,
                     ::onFoodImageClickListener,
                     ::onUserNameClickListener,
                     ::onRemoveClickListener,
                     ::onLikeClickListener)
 
-    open fun getFoodSourceFactory(): DataSource.Factory<Int, Food> =
+    open fun getFoodSourceFactory(): BaseRecipeFactory =
             FoodSourceFactory(api, compositeDisposable, getAuthor(), getFoodType(), dbHelper, getSearchString())
 
     private fun getSearchString() = search.text
@@ -99,19 +100,15 @@ open class RecipesFragment : FoodView, BaseFragment() {
     private fun getAuthor() = activity!!.intent.getIntExtra(UID, session.userId)
 
     private fun initContent() {
-        val sourceFactory = getFoodSourceFactory()
-        val config = PagedList.Config.Builder()
-                .setEnablePlaceholders(false)
-                .setPageSize(PAGE_SIZE)
-                .build()
-
-        val pagedListLiveData = LivePagedListBuilder(sourceFactory, config).build()
-
         adapter = createFoodAdapter()
-        pagedListLiveData.observe(this, Observer<PagedList<Food>> { foods ->
+        adapterObserver = Observer { foods ->
             adapter?.submitList(foods)
-        })
+        }
         recycler.adapter = adapter
+
+        val sourceFactory = getFoodSourceFactory()
+        pagedFoodRepository = PagedFoodRepository(sourceFactory)
+        pagedFoodRepository?.observe(this, adapterObserver)
     }
 
     fun onFoodImageClickListener(food: Food) {
@@ -127,7 +124,7 @@ open class RecipesFragment : FoodView, BaseFragment() {
     }
 
     fun onRemoveClickListener(food: Food) {
-        presenter.removeFood(food.id!!)
+        pagedFoodRepository?.removeItem(food.id!!)
     }
 
     fun onLikeClickListener(food: Food, hasLike: Boolean) {
@@ -148,9 +145,7 @@ open class RecipesFragment : FoodView, BaseFragment() {
 
     private inner class SearchTextWatcher(private val afterTextChanged: () -> Unit) : TextWatcher {
 
-        override fun afterTextChanged(p0: Editable?) {
-            afterTextChanged.invoke()
-        }
+        override fun afterTextChanged(p0: Editable?) = afterTextChanged.invoke()
 
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 

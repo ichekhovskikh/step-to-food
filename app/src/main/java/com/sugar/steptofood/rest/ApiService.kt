@@ -74,9 +74,8 @@ interface ApiService {
     @GET("/product/search/name")
     fun searchProducts(@Query("search") search: String): Single<BaseResponse<List<Product>>>
 
-    @FormUrlEncoded
     @POST("/food/search/products")
-    fun searchFoodsByProducts(@Field("productIds") products: List<Int>,
+    fun searchFoodsByProducts(@Body products: List<Int>,
                               @Query("start") start: Int,
                               @Query("size") size: Int): Single<BaseResponse<List<Food>>>
 

@@ -47,7 +47,7 @@ data class Food(
         @Expose
         var products: List<Product>? = mutableListOf(),
 
-        @SerializedName("has_your_like")
+        @SerializedName("hasYourLike")
         @Expose
         var hasYourLike: Boolean = false
 ) : Entity

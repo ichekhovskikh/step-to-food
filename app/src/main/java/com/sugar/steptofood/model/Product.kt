@@ -24,7 +24,7 @@ data class Product(
         @Expose
         var foods: List<Food>? = mutableListOf(),
 
-        @SerializedName("included_in_search")
+        @SerializedName("includedInSearch")
         @Expose
         var includedInSearch: Boolean = false
 ) : Entity {

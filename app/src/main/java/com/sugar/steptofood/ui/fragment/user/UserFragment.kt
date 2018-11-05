@@ -142,7 +142,7 @@ open class UserFragment : UserView, BaseFragment() {
     private fun exit() {
         val intent = Intent(activity, StartActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        presenter.terminate()
+        session.reset()
         startActivity(intent)
     }
 
