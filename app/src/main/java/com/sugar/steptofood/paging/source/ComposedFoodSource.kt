@@ -1,42 +1,26 @@
 package com.sugar.steptofood.paging.source
 
+import com.sugar.steptofood.extension.customSubscribe
 import com.sugar.steptofood.model.Food
 import com.sugar.steptofood.model.Product
 import com.sugar.steptofood.rest.ApiService
-import io.reactivex.disposables.CompositeDisposable
 
 class ComposedFoodSource(private val api: ApiService,
-                         private val compositeDisposable: CompositeDisposable,
                          products: List<Product>) : BaseRecipeSource(api) {
 
     private val productsId: List<Int> = products.asSequence().map { it.id!! }.toList()
 
     override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<Food>) {
-        compositeDisposable.add(api
-                .searchFoodsByProducts(productsId, params.requestedStartPosition, params.requestedLoadSize)
-                .subscribe({ response ->
-                    if (response.success) {
-                        callback.onResult(response.content!!,
-                                if(response.content.isEmpty()) 0 else params.requestedLoadSize + 1)
-                    } else if (!response.success) {
-                        onError()
-                    }
-                }, { onError() }))
+        api.searchFoodsByProducts(productsId, params.requestedStartPosition, params.requestedLoadSize)
+                .customSubscribe({foods ->
+                    callback.onResult(foods, if (foods.isEmpty()) 0 else params.requestedLoadSize + 1)
+                })
     }
 
     override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<Food>) {
-        compositeDisposable.add(api
-                .searchFoodsByProducts(productsId, params.startPosition, params.loadSize)
-                .subscribe({ response ->
-                    if (response.success) {
-                        callback.onResult(response.content!!)
-                    } else if (!response.success) {
-                        onError()
-                    }
-                }, { onError() }))
-    }
-
-    private fun onError() {
-        //nothing
+        api.searchFoodsByProducts(productsId, params.startPosition, params.loadSize)
+                .customSubscribe({foods ->
+                    callback.onResult(foods)
+                })
     }
 }

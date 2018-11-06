@@ -9,7 +9,7 @@ import io.reactivex.schedulers.Schedulers
 import retrofit2.Response
 
 fun <T> Single<BaseResponse<T>>.customSubscribe(onSuccess: (T) -> Unit,
-                                                onError: (String) -> Unit) {
+                                                onError: (String) -> Unit = {}) {
     this.compose(applySingleSchedulers())
             .subscribe({ response ->
                 if (response.success && response.content != null) {
@@ -23,7 +23,7 @@ fun <T> Single<BaseResponse<T>>.customSubscribe(onSuccess: (T) -> Unit,
 }
 
 fun <T> Single<Response<T>>.downloadSubscribe(onSuccess: (T) -> Unit,
-                                            onError: (String) -> Unit) {
+                                            onError: (String) -> Unit = {}) {
     this.compose(applySingleSchedulers())
             .subscribe({ response ->
                 if (response.isSuccessful && response.body() != null) {
@@ -37,7 +37,7 @@ fun <T> Single<Response<T>>.downloadSubscribe(onSuccess: (T) -> Unit,
 }
 
 fun Single<UploadResponse>.uploadSubscribe(onSuccess: (String) -> Unit,
-                                                onError: (String) -> Unit) {
+                                                onError: (String) -> Unit = {}) {
     this.compose(applySingleSchedulers())
             .subscribe({ response ->
                 if (response.success) {

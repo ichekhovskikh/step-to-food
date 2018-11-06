@@ -13,6 +13,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.sugar.steptofood.App
 import com.sugar.steptofood.R
+import com.sugar.steptofood.extension.validate
 import com.sugar.steptofood.model.Food
 import com.sugar.steptofood.model.Product
 import com.sugar.steptofood.presenter.FoodPresenter
@@ -25,7 +26,6 @@ import kotlinx.android.synthetic.main.item_edit_energy.*
 import kotlinx.android.synthetic.main.item_edit_how_cook.*
 import kotlinx.android.synthetic.main.item_products_container.*
 import com.sugar.steptofood.utils.showKeyboard
-import com.sugar.steptofood.utils.validateTextView
 import kotlinx.android.synthetic.main.action_bar_edit.*
 import javax.inject.Inject
 
@@ -136,11 +136,11 @@ class AddFoodActivity : FoodView, AppCompatActivity() {
 
         return (validateImage(errorMsg) &&
                 validateProductsList(errorMsg) &&
-                validateTextView(descriptionTextView, errorMsg) &&
-                validateTextView(calorieTextView, errorMsg) &&
-                validateTextView(proteinTextView, errorMsg) &&
-                validateTextView(fatTextView, errorMsg) &&
-                validateTextView(carbohydratesTextView, errorMsg))
+                descriptionTextView.validate(errorMsg) &&
+                calorieTextView.validate(errorMsg) &&
+                proteinTextView.validate(errorMsg) &&
+                fatTextView.validate(errorMsg) &&
+                carbohydratesTextView.validate(errorMsg))
     }
 
     private fun validateImage(errorMsg: String): Boolean {
@@ -159,7 +159,7 @@ class AddFoodActivity : FoodView, AppCompatActivity() {
             for (i in 0 until productContainer.childCount) {
                 val view = productContainer.getChildAt(i)
                 val weightEditText: EditText = view.findViewById(R.id.weightEditText)
-                if (!validateTextView(weightEditText, errorMsg)) {
+                if (!weightEditText.validate(errorMsg)) {
                     return false
                 }
             }

@@ -109,7 +109,6 @@ class FoodActivity : FoodView, AppCompatActivity() {
         buttonRemove.setOnClickListener {
             presenter.removeFood(food.id!!)
             finish()
-            //TODO what happens on remove?
         }
         imageActionContainer.addView(buttonRemove)
     }

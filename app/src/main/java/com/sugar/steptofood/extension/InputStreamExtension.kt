@@ -1,17 +1,17 @@
-package com.sugar.steptofood.utils
+package com.sugar.steptofood.extension
 
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
 
-fun readBytes(inputStream: InputStream): ByteArray {
+fun InputStream.readBytes(): ByteArray {
     val byteBuffer = ByteArrayOutputStream()
     val bufferSize = 1024
     val buffer = ByteArray(bufferSize)
 
-    var len = inputStream.read(buffer)
+    var len = this.read(buffer)
     while (len != -1) {
         byteBuffer.write(buffer, 0, len)
-        len = inputStream.read(buffer)
+        len = this.read(buffer)
     }
     return byteBuffer.toByteArray()
 }

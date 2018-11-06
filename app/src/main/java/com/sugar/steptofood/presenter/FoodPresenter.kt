@@ -6,10 +6,10 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import com.sugar.steptofood.extension.customSubscribe
 import com.sugar.steptofood.extension.downloadSubscribe
+import com.sugar.steptofood.extension.readBytes
 import com.sugar.steptofood.model.Food
 import com.sugar.steptofood.rest.ApiService
 import com.sugar.steptofood.ui.view.FoodView
-import com.sugar.steptofood.utils.readBytes
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -61,7 +61,7 @@ class FoodPresenter(view: FoodView,
 
     private fun uploadFoodImage(foodId: Int, uri: Uri, onSuccess: () -> Unit) {
         val inputStream = context.contentResolver.openInputStream(uri)
-        val bytes = readBytes(inputStream!!)
+        val bytes = inputStream!!.readBytes()
         inputStream.close()
 
         val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), bytes)

@@ -21,7 +21,7 @@ class ComposedFoodFragment : RecipesFragment() {
 
     override fun getFoodSourceFactory(): BaseRecipeFactory {
         val products = activity!!.intent.getSerializableExtra(PRODUCTS) as List<Product>
-        return ComposedFoodSourceFactory(api, compositeDisposable, products)
+        return ComposedFoodSourceFactory(api, products)
     }
 
     override fun getFoodType() = FoodType.COMPOSED

@@ -27,27 +27,23 @@ import com.sugar.steptofood.paging.factory.FoodSourceFactory
 import com.sugar.steptofood.paging.adapter.BaseRecipeAdapter
 import com.sugar.steptofood.paging.adapter.FoodAdapter
 import com.sugar.steptofood.utils.FoodType
-import io.reactivex.disposables.CompositeDisposable
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.ViewGroup
+import com.sugar.steptofood.extension.afterTextChanged
 import com.sugar.steptofood.paging.PagedFoodRepository
 import com.sugar.steptofood.paging.factory.BaseRecipeFactory
+import com.sugar.steptofood.utils.isNetworkAvailable
 
 @SuppressLint("InflateParams")
 open class RecipesFragment : FoodView, BaseFragment() {
 
     @Inject
-    lateinit var dbHelper: SQLiteHelper
+    protected lateinit var dbHelper: SQLiteHelper
 
     @Inject
-    lateinit var api: ApiService
+    protected lateinit var api: ApiService
 
     @Inject
-    lateinit var session: Session
-
-    @Inject
-    lateinit var compositeDisposable: CompositeDisposable
+    protected lateinit var session: Session
 
     protected val presenter by lazy { FoodPresenter(this, api, context!!) }
     private var pagedFoodRepository: PagedFoodRepository? = null
@@ -62,6 +58,10 @@ open class RecipesFragment : FoodView, BaseFragment() {
 
     override fun initView(view: View, savedInstanceState: Bundle?) {
         App.appComponent.inject(this)
+
+        if (isNetworkAvailable(context!!))
+            dbHelper.foodBusinessObject.removeAll()
+
         initHeader()
         initContent()
     }
@@ -75,9 +75,9 @@ open class RecipesFragment : FoodView, BaseFragment() {
 
         search.setHint(getString(R.string.search_food))
         search.setPlaceHolder(getString(R.string.search_food))
-        search.addTextChangeListener(SearchTextWatcher {
+        search.afterTextChanged {
             pagedFoodRepository?.refreshData(getFoodSourceFactory())
-        })
+        }
         tittleTabContainer.addView(search)
     }
 
@@ -93,7 +93,7 @@ open class RecipesFragment : FoodView, BaseFragment() {
                     ::onLikeClickListener)
 
     open fun getFoodSourceFactory(): BaseRecipeFactory =
-            FoodSourceFactory(api, compositeDisposable, getAuthor(), getFoodType(), dbHelper, getSearchString())
+            FoodSourceFactory(api, session, getAuthor(), getFoodType(), dbHelper, getSearchString())
 
     private fun getSearchString() = search.text
 
@@ -141,14 +141,5 @@ open class RecipesFragment : FoodView, BaseFragment() {
 
     override fun onShowError(error: String) {
         Toast.makeText(context, error, Toast.LENGTH_LONG).show()
-    }
-
-    private inner class SearchTextWatcher(private val afterTextChanged: () -> Unit) : TextWatcher {
-
-        override fun afterTextChanged(p0: Editable?) = afterTextChanged.invoke()
-
-        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-
-        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
     }
 }

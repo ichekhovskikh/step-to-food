@@ -5,13 +5,11 @@ import com.sugar.steptofood.extension.customSubscribe
 import com.sugar.steptofood.rest.ApiService
 import android.graphics.BitmapFactory
 import android.net.Uri
-import com.sugar.steptofood.App
 import com.sugar.steptofood.Session
 import com.sugar.steptofood.extension.downloadSubscribe
+import com.sugar.steptofood.extension.readBytes
 import com.sugar.steptofood.ui.view.UserView
-import com.sugar.steptofood.utils.readBytes
 import okhttp3.*
-import java.io.File
 
 class UserPresenter(view: UserView,
                     api: ApiService,
@@ -40,7 +38,7 @@ class UserPresenter(view: UserView,
 
     fun setAvatar(uri: Uri) {
         val inputStream = context.contentResolver.openInputStream(uri)
-        val bytes = readBytes(inputStream!!)
+        val bytes = inputStream!!.readBytes()
         inputStream.close()
 
         val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), bytes)

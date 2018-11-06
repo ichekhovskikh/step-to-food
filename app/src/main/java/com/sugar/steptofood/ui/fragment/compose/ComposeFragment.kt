@@ -62,7 +62,7 @@ class ComposeFragment : BaseFragment() {
     }
 
     companion object {
-        val GET_PRODUCT = 1
+        const val GET_PRODUCT = 1
 
         fun getInstance() = ComposeFragment()
     }

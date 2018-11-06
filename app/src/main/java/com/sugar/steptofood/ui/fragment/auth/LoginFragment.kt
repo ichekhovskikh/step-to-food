@@ -7,12 +7,11 @@ import android.support.transition.*
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
 import com.sugar.steptofood.R
-import com.sugar.steptofood.presenter.LoginPresenter
+import com.sugar.steptofood.extension.validate
 import com.sugar.steptofood.ui.activity.StartActivity
 import com.sugar.steptofood.ui.activity.StartActivity.Companion.REG_TAG
 import com.sugar.steptofood.ui.fragment.BaseFragment
 import com.sugar.steptofood.ui.view.BaseView
-import com.sugar.steptofood.utils.validateTextView
 import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginFragment : BaseView, BaseFragment() {
@@ -31,7 +30,7 @@ class LoginFragment : BaseView, BaseFragment() {
     override fun getLayout(): Int = R.layout.fragment_login
 
     private fun login() {
-        if (validateTextView(loginLogText) && validateTextView(passLogText)) {
+        if (loginLogText.validate() && passLogText.validate()) {
             errorLogMsg.visibility = View.INVISIBLE
             startActivity.checkLoginAndPassword(
                     loginLogText.text.toString(), passLogText.text.toString())

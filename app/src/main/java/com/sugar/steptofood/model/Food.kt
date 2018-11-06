@@ -27,7 +27,7 @@ data class Food(
         @SerializedName("calorie")
         var calorie: Double? = null,
 
-        @DatabaseField(columnName = "image", canBeNull = false)
+        @DatabaseField(columnName = "protein", canBeNull = false)
         @SerializedName("protein")
         var protein: Double? = null,
 

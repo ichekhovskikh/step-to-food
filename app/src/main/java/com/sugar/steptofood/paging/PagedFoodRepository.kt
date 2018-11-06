@@ -22,7 +22,7 @@ class PagedFoodRepository(private var sourceFactory: BaseRecipeFactory) {
                 .build()
 
         dataSource = sourceFactory.currentDataSource
-        pagedList = LivePagedListBuilder(sourceFactory, config).build()
+        pagedList = buildPagedList()
     }
 
     fun observe(owner: LifecycleOwner, observer: Observer<PagedList<Food>>) {
@@ -55,7 +55,7 @@ class PagedFoodRepository(private var sourceFactory: BaseRecipeFactory) {
         observers.keys.forEach { owner ->
             pagedList.removeObservers(owner)
         }
-        pagedList = LivePagedListBuilder(sourceFactory, config).build()
+        pagedList =  buildPagedList()
 
         observers.keys.forEach { owner ->
             observers[owner]?.forEach { observer ->
@@ -63,6 +63,10 @@ class PagedFoodRepository(private var sourceFactory: BaseRecipeFactory) {
             }
         }
     }
+
+    private fun buildPagedList() = LivePagedListBuilder(sourceFactory, config)
+            .setBoundaryCallback(sourceFactory.getNetworkSwapCallback())
+            .build()
 
     private fun observerAlreadyAdded(owner: LifecycleOwner, observer: Observer<PagedList<Food>>) =
             observers.containsKey(owner) && (!observers.containsKey(owner) || observers[owner]!!.contains(observer))
