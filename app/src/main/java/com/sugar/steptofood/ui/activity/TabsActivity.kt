@@ -20,7 +20,8 @@ class TabsActivity : AppCompatActivity() {
     @Inject
     lateinit var session: Session
 
-    var sectionsPageAdapter: SectionsPageAdapter? = null
+    lateinit var sectionsPageAdapter: SectionsPageAdapter
+        private set
 
     private var recipesFragment: RecipesFragment? = null
     private var composeFragment: ComposeFragment? = null
@@ -45,22 +46,22 @@ class TabsActivity : AppCompatActivity() {
 
     private fun setupViewPager(viewPager: ViewPager?) {
         sectionsPageAdapter = SectionsPageAdapter(this.supportFragmentManager)
-        sectionsPageAdapter?.addFragment(recipesFragment!!, this.getString(R.string.tabRecipesText))
-        sectionsPageAdapter?.addFragment(composeFragment!!, this.getString(R.string.tabComposeText))
-        sectionsPageAdapter?.addFragment(userFragment!!, this.getString(R.string.tabUserText))
+        sectionsPageAdapter.addFragment(recipesFragment!!, this.getString(R.string.tabRecipesText))
+        sectionsPageAdapter.addFragment(composeFragment!!, this.getString(R.string.tabComposeText))
+        sectionsPageAdapter.addFragment(userFragment!!, this.getString(R.string.tabUserText))
         viewPager?.adapter = sectionsPageAdapter
     }
 
     override fun onBackPressed() {
         if (currentTabIsComposedFood()) {
-            sectionsPageAdapter?.replace(COMPOSE_TAB, composeFragment!!)
+            sectionsPageAdapter.replace(COMPOSE_TAB, composeFragment!!)
             pager.adapter?.notifyDataSetChanged()
         } else toHome()
 
     }
 
     private fun currentTabIsComposedFood(): Boolean = pager.currentItem == COMPOSE_TAB
-            && sectionsPageAdapter?.getItem(COMPOSE_TAB) !is ComposeFragment
+            && sectionsPageAdapter.getItem(COMPOSE_TAB) !is ComposeFragment
 
     private fun toHome() {
         val intent = Intent(Intent.ACTION_MAIN)
@@ -69,8 +70,8 @@ class TabsActivity : AppCompatActivity() {
     }
 
     companion object {
-        val RECIPES_TAB = 0
-        val COMPOSE_TAB = 1
-        val USER_TAB = 2
+        const val RECIPES_TAB = 0
+        const val COMPOSE_TAB = 1
+        const val USER_TAB = 2
     }
 }

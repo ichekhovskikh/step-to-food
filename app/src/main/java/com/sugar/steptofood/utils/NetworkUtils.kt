@@ -7,7 +7,9 @@ import com.sugar.steptofood.App
 
 
 fun isNetworkAvailable(context: Context): Boolean {
-    val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    val activeNetworkInfo: NetworkInfo = connectivityManager.activeNetworkInfo
-    return activeNetworkInfo.isConnected
+    val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE)
+    return if (connectivityManager is ConnectivityManager) {
+        val networkInfo: NetworkInfo? = connectivityManager.activeNetworkInfo
+        networkInfo?.isConnected ?: false
+    } else false
 }

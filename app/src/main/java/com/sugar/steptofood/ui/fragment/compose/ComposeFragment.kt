@@ -19,7 +19,7 @@ import com.sugar.steptofood.utils.ExtraName.PRODUCTS
 
 class ComposeFragment : BaseFragment() {
 
-    private var adapter: HandwrittenListAdapter<Product>? = null
+    private lateinit var adapter: HandwrittenListAdapter<Product>
 
     override fun initView(view: View, savedInstanceState: Bundle?) {
         initProductList(view)
@@ -34,7 +34,7 @@ class ComposeFragment : BaseFragment() {
         productListView.adapter = adapter
 
         productListView.onItemClickListener = AdapterView.OnItemClickListener { adapterView, parent, position, id ->
-            adapter?.remove(adapter?.getItem(position))
+            adapter.remove(adapter.getItem(position))
         }
     }
 
@@ -47,9 +47,9 @@ class ComposeFragment : BaseFragment() {
 
     private fun initSearchButton() {
         searchRecipesButton.setOnClickListener {
-            activity?.intent?.putExtra(PRODUCTS, adapter?.getAll())
+            activity?.intent?.putExtra(PRODUCTS, adapter.getAll())
             val tabsActivity = (activity as TabsActivity)
-            tabsActivity.sectionsPageAdapter?.replace(this, ComposedFoodFragment.getInstance())
+            tabsActivity.sectionsPageAdapter.replace(this, ComposedFoodFragment.getInstance())
         }
     }
 
@@ -57,7 +57,7 @@ class ComposeFragment : BaseFragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == GET_PRODUCT && resultCode == RESULT_OK) {
             val product = data?.getSerializableExtra(PRODUCT) as Product
-            adapter?.add(product)
+            adapter.add(product)
         }
     }
 

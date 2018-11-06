@@ -22,7 +22,7 @@ class FoodSource(private val api: ApiService,
         } else {
             val foods = dbHelper.foodBusinessObject.getRangeFood(type, session.userId,
                     userId, searchName, params.requestedStartPosition, params.requestedLoadSize)
-            callback.onResult(foods, foods.count())
+            callback.onResult(foods, 0)
         }
     }
 
@@ -31,14 +31,21 @@ class FoodSource(private val api: ApiService,
             searchInNetworkWithoutCachingResult(params.startPosition, params.loadSize) { foods: List<Food>, _: Int ->
                 callback.onResult(foods)
             }
-        } else callback.onResult(dbHelper.foodBusinessObject.getRangeFood(type,
-                session.userId, userId, searchName, params.startPosition, params.loadSize))
+        } else {
+            val foods = dbHelper.foodBusinessObject.getRangeFood(type,
+                    session.userId, userId, searchName, params.startPosition, params.loadSize)
+            callback.onResult(foods)
+        }
     }
 
     private fun searchInNetworkWithoutCachingResult(start: Int, size: Int, callback: (List<Food>, Int) -> Unit) {
         api.searchFoods(userId, searchName, type, start, size)
                 .customSubscribe({ foods ->
-                    callback.invoke(foods, if (foods.isEmpty()) 0 else size + 1)
+                    callback.invoke(foods, 0)
+                }, {
+                    val foods = dbHelper.foodBusinessObject.getRangeFood(type,
+                            session.userId, userId, searchName, start, size)
+                    callback.invoke(foods, 0)
                 })
     }
 }

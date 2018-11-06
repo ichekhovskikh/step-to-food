@@ -129,6 +129,7 @@ open class RecipesFragment : FoodView, BaseFragment() {
 
     fun onLikeClickListener(food: Food, hasLike: Boolean) {
         presenter.setLikeFood(food.id!!, hasLike)
+        dbHelper.foodBusinessObject.setOrRemoveLike(food, session.userId, hasLike)
     }
 
     override fun onShowLoading() {

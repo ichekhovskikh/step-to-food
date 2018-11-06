@@ -15,7 +15,7 @@ data class Food(
         @SerializedName("name")
         var name: String = "",
 
-        @DatabaseField(columnName = "image", canBeNull = false)
+        @DatabaseField(columnName = "image")
         @SerializedName("image")
         var image: String? = "",
 
@@ -39,7 +39,7 @@ data class Food(
         @SerializedName("carbohydrates")
         var carbohydrates: Double? = null,
 
-        @DatabaseField(foreign = true)
+        @DatabaseField(foreignAutoRefresh = true, foreign = true)
         @SerializedName("author")
         var author: User? = null,
 

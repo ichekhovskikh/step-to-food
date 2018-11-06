@@ -1,9 +1,6 @@
 package com.sugar.steptofood.db
 
-import com.sugar.steptofood.model.Food
-import com.sugar.steptofood.model.Product
-import com.sugar.steptofood.model.ProductFood
-import com.sugar.steptofood.model.UserFood
+import com.sugar.steptofood.model.*
 import com.sugar.steptofood.utils.FoodType
 import kotlin.math.min
 
@@ -38,9 +35,9 @@ class FoodBusinessObject(private val dbHelper: SQLiteHelper) {
                 getRangeAddedFood(yourId, otherUserId, searchName, start, size)
             else getRangeUserFood(type, yourId, otherUserId, searchName, start, size)
 
-    fun addFoods(foods: List<Food>, foodType: FoodType = FoodType.ADDED, hasUserLike: Int = -1) {
+    fun addFoods(foods: List<Food>, foodType: FoodType = FoodType.ADDED, yourId: Int = -1, userId: Int = -1) {
         if (foodType == FoodType.ADDED) putAddedFood(foods)
-        else putUserFood(foodType, foods, hasUserLike)
+        else putUserFood(foodType, foods, yourId, userId)
     }
 
     fun putAddedFood(foods: List<Food>) {
@@ -49,20 +46,32 @@ class FoodBusinessObject(private val dbHelper: SQLiteHelper) {
         }
     }
 
-    fun putUserFood(foodType: FoodType, foods: List<Food>, putLikeUserId: Int) {
+    fun putUserFood(foodType: FoodType, foods: List<Food>, yourId: Int, userId: Int) {
         for (food in foods) {
             createOrUpdateFood(food)
-            createUserFood(foodType, food, putLikeUserId)
+            createUserFood(foodType, food, userId)
+            setOrRemoveLike(food, yourId, food.hasYourLike)
+        }
+    }
+
+    fun setOrRemoveLike(food: Food, userId: Int, hasLike: Boolean) {
+        if (hasLike)
+            createUserFood(FoodType.LIKE, food, userId)
+        else if (hasUserLike(userId, food.id!!)) {
+            val likeFood = dbHelper.userFoodDao.first {
+                userFoodContentEquals(FoodType.LIKE, food, userId, it)
+            }
+            dbHelper.userFoodDao.remove(likeFood.id!!)
         }
     }
 
     fun foodContainsProduct(food: Food, product: Product) =
-            dbHelper.productFoodDao.none { productFood ->
+            dbHelper.productFoodDao.any { productFood ->
                 productFood.food?.id == food.id && productFood.product?.id == product.id
             }
 
     fun hasUserLike(userId: Int, foodId: Int) =
-            dbHelper.userFoodDao.none { likeFood ->
+            dbHelper.userFoodDao.any { likeFood ->
                 likeFood.food?.id == foodId
                         && likeFood.user?.id == userId
                         && likeFood.type == FoodType.LIKE.toString()
@@ -128,9 +137,10 @@ class FoodBusinessObject(private val dbHelper: SQLiteHelper) {
 
     private fun createUserFood(foodType: FoodType, food: Food, userId: Int) {
         if (dbHelper.userFoodDao.none { userFood -> userFoodContentEquals(foodType, food, userId, userFood) }) {
+            dbHelper.userDao.createIfNotExists(User(userId))
             val foodFromDb = dbHelper.foodDao.queryForId(food.id)
-            val authorFromDb = dbHelper.userDao.queryForId(food.author?.id)
-            dbHelper.userFoodDao.create(UserFood(null, foodFromDb, authorFromDb, foodType.toString()))
+            val userFromDb = dbHelper.userDao.queryForId(userId)
+            dbHelper.userFoodDao.create(UserFood(null, foodFromDb, userFromDb, foodType.toString()))
         }
     }
 

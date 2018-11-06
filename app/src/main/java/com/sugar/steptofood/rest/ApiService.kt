@@ -1,7 +1,6 @@
 package com.sugar.steptofood.rest
 
 import com.sugar.steptofood.model.*
-import com.sugar.steptofood.rest.response.*
 import com.sugar.steptofood.utils.FoodType
 import io.reactivex.Single
 import okhttp3.MultipartBody
@@ -15,44 +14,44 @@ interface ApiService {
     @POST("/user/register")
     fun register(@Field("name") name: String,
                  @Field("login") login: String,
-                 @Field("password") password: String): Single<BaseResponse<Int>>
+                 @Field("password") password: String): Single<CustomResponse<Int>>
 
     @FormUrlEncoded
     @POST("/user/login")
     fun login(@Field("login") login: String,
-              @Field("password") password: String): Single<BaseResponse<User>>
+              @Field("password") password: String): Single<CustomResponse<User>>
 
     @FormUrlEncoded
     @POST("/user/check")
-    fun login(@Field("token") token: String): Single<BaseResponse<User>>
+    fun login(@Field("token") token: String): Single<CustomResponse<User>>
 
     @FormUrlEncoded
     @POST("/user/update/password")
     fun changePassword(@Field("password") password: String,
-                       @Field("newPassword") newPassword: String): Single<BaseResponse<Int>>
+                       @Field("newPassword") newPassword: String): Single<CustomResponse<Int>>
 
     @GET("/user/terminate")
-    fun terminate(): Single<BaseResponse<Int>>
+    fun terminate(): Single<CustomResponse<Int>>
 
     @GET("/user")
-    fun getUser(@Query("userId") userId: Int): Single<BaseResponse<User>>
+    fun getUser(@Query("userId") userId: Int): Single<CustomResponse<User>>
 
     @GET("/user/get/avatar")
     fun getUserAvatar(@Query("userId") userId: Int): Single<Response<ResponseBody>>
 
     @Multipart
     @POST("/user/set/avatar")
-    fun setUserAvatar(@Part file: MultipartBody.Part): Single<BaseResponse<Int>>
+    fun setUserAvatar(@Part file: MultipartBody.Part): Single<CustomResponse<Int>>
 
     @GET("/food")
-    fun getFood(@Query("foodId") foodId: Int): Single<BaseResponse<Food>>
+    fun getFood(@Query("foodId") foodId: Int): Single<CustomResponse<Food>>
 
     @GET("/food/search")
     fun searchFoods(@Query("userId") userId: Int,
                     @Query("searchName") searchName: String,
                     @Query("foodType") type: FoodType,
                     @Query("start") start: Int,
-                    @Query("size") size: Int): Single<BaseResponse<List<Food>>>
+                    @Query("size") size: Int): Single<CustomResponse<List<Food>>>
 
     @GET("/food/get/image")
     fun getFoodImage(@Query("foodId") foodId: Int): Single<Response<ResponseBody>>
@@ -60,40 +59,40 @@ interface ApiService {
     @Multipart
     @POST("/food/set/image")
     fun setFoodImage(@Query("foodId") foodId: Int,
-                     @Part file: MultipartBody.Part): Single<BaseResponse<Int>>
+                     @Part file: MultipartBody.Part): Single<CustomResponse<Int>>
 
     @GET("/product")
-    fun getProduct(@Query("productId") productId: Int): Single<BaseResponse<Product>>
+    fun getProduct(@Query("productId") productId: Int): Single<CustomResponse<Product>>
 
     @GET("/product/all")
-    fun getAllProducts(): Single<BaseResponse<List<Product>>>
+    fun getAllProducts(): Single<CustomResponse<List<Product>>>
 
     @GET("/product/search/food")
-    fun getProductsByFood(@Query("search") search: Int): Single<BaseResponse<List<Product>>>
+    fun getProductsByFood(@Query("search") search: Int): Single<CustomResponse<List<Product>>>
 
     @GET("/product/search/name")
-    fun searchProducts(@Query("search") search: String): Single<BaseResponse<List<Product>>>
+    fun searchProducts(@Query("search") search: String): Single<CustomResponse<List<Product>>>
 
     @POST("/food/search/products")
     fun searchFoodsByProducts(@Body products: List<Int>,
                               @Query("start") start: Int,
-                              @Query("size") size: Int): Single<BaseResponse<List<Food>>>
+                              @Query("size") size: Int): Single<CustomResponse<List<Food>>>
 
     @POST("/food/add")
-    fun addFood(@Body food: Food): Single<BaseResponse<Int>>
+    fun addFood(@Body food: Food): Single<CustomResponse<Int>>
 
     @GET("/food/remove")
-    fun removeFood(@Query("foodId") foodId: Int): Single<BaseResponse<Int>>
+    fun removeFood(@Query("foodId") foodId: Int): Single<CustomResponse<Int>>
 
     @GET("/food/like")
     fun setLike(@Query("foodId") foodId: Int,
-                @Query("hasLike") hasLike: Boolean): Single<BaseResponse<Int>>
+                @Query("hasLike") hasLike: Boolean): Single<CustomResponse<Int>>
 
     @FormUrlEncoded
     @POST("/food/update")
-    fun updateFood(@Field("food") food: Food): Single<BaseResponse<Int>>
+    fun updateFood(@Field("food") food: Food): Single<CustomResponse<Int>>
 
     @FormUrlEncoded
     @POST("/user/update/name")
-    fun updateUserName(@Field("name") name: String): Single<BaseResponse<Int>>
+    fun updateUserName(@Field("name") name: String): Single<CustomResponse<Int>>
 }

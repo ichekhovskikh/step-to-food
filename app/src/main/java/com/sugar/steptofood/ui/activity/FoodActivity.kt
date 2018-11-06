@@ -6,13 +6,13 @@ import android.graphics.Bitmap
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.ToggleButton
 import com.sugar.steptofood.App
 import com.sugar.steptofood.R
 import com.sugar.steptofood.Session
+import com.sugar.steptofood.db.SQLiteHelper
 import com.sugar.steptofood.model.Food
 import com.sugar.steptofood.model.Product
 import com.sugar.steptofood.presenter.FoodPresenter
@@ -20,6 +20,7 @@ import com.sugar.steptofood.rest.ApiService
 import com.sugar.steptofood.ui.view.FoodView
 import com.sugar.steptofood.utils.ExtraName.FOOD_ID
 import com.sugar.steptofood.utils.ExtraName.UID
+import com.sugar.steptofood.utils.isNetworkAvailable
 import kotlinx.android.synthetic.main.activity_food.*
 import kotlinx.android.synthetic.main.item_energy.*
 import kotlinx.android.synthetic.main.item_how_cook.*
@@ -27,6 +28,9 @@ import kotlinx.android.synthetic.main.item_products_container.*
 import javax.inject.Inject
 
 class FoodActivity : FoodView, AppCompatActivity() {
+
+    @Inject
+    lateinit var dbHelper: SQLiteHelper
 
     @Inject
     lateinit var api: ApiService
@@ -43,7 +47,7 @@ class FoodActivity : FoodView, AppCompatActivity() {
         initFoodView()
 
         val foodId = intent.getIntExtra(FOOD_ID, -1)
-        presenter.getFood(foodId, ::setFood)
+        getFoodFromApiOrCacheIfNoInternet(foodId)
     }
 
     fun setFood(food: Food) {
@@ -68,6 +72,16 @@ class FoodActivity : FoodView, AppCompatActivity() {
         carbohydratesTextView.text = food.carbohydrates.toString()
 
         presenter.getFoodImage(food.id!!, ::setFoodImage)
+    }
+
+    private fun getFoodFromApiOrCacheIfNoInternet(foodId: Int) {
+        if (isNetworkAvailable(this))
+            presenter.getFood(foodId, ::setFood)
+        else {
+            val food = dbHelper.foodDao.queryForId(foodId)
+            if (food != null) setFood(food)
+            else onShowError(getString(R.string.error_no_internet))
+        }
     }
 
     @SuppressLint("InflateParams")
@@ -99,6 +113,7 @@ class FoodActivity : FoodView, AppCompatActivity() {
         buttonLike.isChecked = food.hasYourLike
         buttonLike.setOnCheckedChangeListener { button, hasLike ->
             presenter.setLikeFood(food.id!!, hasLike)
+            dbHelper.foodBusinessObject.setOrRemoveLike(food, session.userId, hasLike)
         }
         imageActionContainer.addView(buttonLike)
     }
@@ -108,6 +123,7 @@ class FoodActivity : FoodView, AppCompatActivity() {
         val buttonRemove = layoutInflater.inflate(R.layout.button_remove, null)
         buttonRemove.setOnClickListener {
             presenter.removeFood(food.id!!)
+            dbHelper.foodBusinessObject.cascadeRemove(food.id!!)
             finish()
         }
         imageActionContainer.addView(buttonRemove)

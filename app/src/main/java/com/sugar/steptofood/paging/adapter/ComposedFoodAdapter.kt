@@ -3,7 +3,6 @@ package com.sugar.steptofood.paging.adapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
-import android.support.v7.util.DiffUtil
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -20,7 +19,7 @@ class ComposedFoodAdapter(context: Context,
                           onFoodImageClick: ((Food) -> Unit)? = {},
                           onUserNameClick: ((Food) -> Unit)? = {},
                           onRemoveClick: ((Food) -> Unit)? = {},
-                          onLikeClick: ((Food, Boolean) -> Unit)? = { food, hasLike -> })
+                          onLikeClick: ((Food, Boolean) -> Unit)? = { _, _ -> })
     : BaseRecipeAdapter(context, api, session, onFoodImageClick, onUserNameClick, onRemoveClick, onLikeClick) {
 
     override fun getFoodCardLayout() = R.layout.item_products_card

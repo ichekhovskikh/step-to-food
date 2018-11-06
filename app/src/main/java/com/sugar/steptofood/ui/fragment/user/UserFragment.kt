@@ -2,7 +2,6 @@ package com.sugar.steptofood.ui.fragment.user
 
 import android.app.Activity
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
@@ -21,12 +20,9 @@ import com.sugar.steptofood.ui.activity.StartActivity
 import com.sugar.steptofood.ui.activity.UserItemActivity
 import com.sugar.steptofood.ui.fragment.BaseFragment
 import com.sugar.steptofood.ui.view.UserView
+import com.sugar.steptofood.utils.*
 import com.sugar.steptofood.utils.ExtraName.ITEM_TYPE
 import com.sugar.steptofood.utils.ExtraName.UID
-import com.sugar.steptofood.utils.FoodType
-import com.sugar.steptofood.utils.hasPermissions
-import com.sugar.steptofood.utils.requestPermissions
-import com.sugar.steptofood.utils.showExitDialog
 import kotlinx.android.synthetic.main.fragment_user.*
 import javax.inject.Inject
 
@@ -44,7 +40,6 @@ open class UserFragment : UserView, BaseFragment() {
         fun getInstance() = UserFragment()
 
         const val PICK_IMAGE = 0
-        const val PERMISSIONS_REQUEST_CODE = 1
     }
 
     override fun initView(view: View, savedInstanceState: Bundle?) {
@@ -147,17 +142,17 @@ open class UserFragment : UserView, BaseFragment() {
     }
 
     private fun chooseImageIfHasPermissions() {
-        if (hasPermissions(activity!!)) {
+        if (hasStoragePermissions(activity!!)) {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
             startActivityForResult(intent, PICK_IMAGE)
         } else {
-            requestPermissions(activity!!, PERMISSIONS_REQUEST_CODE)
+            requestStoragePermissions(activity!!, STORAGE_PERMISSIONS_REQUEST_CODE)
         }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == PERMISSIONS_REQUEST_CODE && hasPermissions(activity!!)) {
+        if (requestCode == STORAGE_PERMISSIONS_REQUEST_CODE && hasStoragePermissions(activity!!)) {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
             startActivityForResult(intent, PICK_IMAGE)
         }

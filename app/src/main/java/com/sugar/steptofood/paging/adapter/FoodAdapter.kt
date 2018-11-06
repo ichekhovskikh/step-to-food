@@ -1,7 +1,6 @@
 package com.sugar.steptofood.paging.adapter
 
 import android.content.Context
-import android.support.v7.util.DiffUtil
 import android.view.ViewGroup
 import com.sugar.steptofood.R
 import com.sugar.steptofood.Session

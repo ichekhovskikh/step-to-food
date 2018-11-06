@@ -35,8 +35,10 @@ class FoodSourceFactory(private val api: ApiService,
                 val start = dbHelper.foodBusinessObject.foodCount(type, userId)
                 api.searchFoods(userId, searchName, type, start, NETWORK_PAGE_SIZE)
                         .customSubscribe({ foods ->
-                            dbHelper.foodBusinessObject.addFoods(foods, type, userId)
-                            currentDataSource.value?.invalidate()
+                            if (!foods.isEmpty()) {
+                                dbHelper.foodBusinessObject.addFoods(foods, type, session.userId, userId)
+                                currentDataSource.value?.invalidate()
+                            }
                         })
             }
         }

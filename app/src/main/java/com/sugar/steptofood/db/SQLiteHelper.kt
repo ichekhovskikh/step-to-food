@@ -12,7 +12,7 @@ class SQLiteHelper @Inject constructor(context: Context) : OrmLiteSqliteOpenHelp
 
     companion object {
         const val DB_NAME = "steptofood.db"
-        const val DB_VERSION = 3
+        const val DB_VERSION = 5
     }
 
     val userDao: EntityDao<User> by lazy { EntityDao(getConnectionSource(), User::class.java) }
