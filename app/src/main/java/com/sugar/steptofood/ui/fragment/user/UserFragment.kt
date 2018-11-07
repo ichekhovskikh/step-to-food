@@ -68,8 +68,9 @@ open class UserFragment : UserView, BaseFragment() {
         userNameTextView.text = name
     }
 
-    override fun setUserAvatar(image: Bitmap) {
-        userImageView.setImageBitmap(image)
+    override fun setUserAvatar(image: Bitmap?) {
+        if (image != null)
+            userImageView.setImageBitmap(image)
     }
 
     fun initAddFood(container: ViewGroup) {

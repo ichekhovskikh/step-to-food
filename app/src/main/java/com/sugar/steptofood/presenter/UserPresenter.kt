@@ -22,8 +22,7 @@ class UserPresenter(view: UserView,
                 .downloadSubscribe({
                     val bitmap = BitmapFactory.decodeStream(it.byteStream())
                     view.onHideLoading()
-                    if (bitmap != null)
-                        view.setUserAvatar(bitmap)
+                    view.setUserAvatar(bitmap)
                 }, defaultError())
     }
 

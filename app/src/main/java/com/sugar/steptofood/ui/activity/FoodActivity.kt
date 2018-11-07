@@ -55,11 +55,7 @@ class FoodActivity : FoodView, AppCompatActivity() {
 
         if (food.author?.id != session.userId) {
             addLikeButton(food)
-            userNameTextView.text = food.author?.name
-            presenter.getFoodAuthorAvatar(food.author?.id!!, ::setFoodAuthorImage)
-            userNameTextView.setOnClickListener {
-                onUserNameClickListener(food)
-            }
+            setAuthor(food)
         } else addRemoveButton(food)
 
         for (product in food.products!!)
@@ -95,6 +91,17 @@ class FoodActivity : FoodView, AppCompatActivity() {
         foodInfoLayout.addView(energyFoodView)
 
         foodNameTextView.keyListener = null
+    }
+
+    private fun setAuthor(food: Food) {
+        userNameTextView.text = food.author?.name
+        presenter.getFoodAuthorAvatar(food.author?.id!!, ::setFoodAuthorImage)
+        userNameTextView.setOnClickListener {
+            onUserNameClickListener(food)
+        }
+        foodImageView.setOnClickListener {
+            onUserNameClickListener(food)
+        }
     }
 
     @SuppressLint("InflateParams")
@@ -143,8 +150,10 @@ class FoodActivity : FoodView, AppCompatActivity() {
     private fun setFoodAuthorImage(bitmap: Bitmap?) {
         if (bitmap != null) {
             userImageView?.setImageBitmap(bitmap)
-            userImageView.visibility = View.VISIBLE
+        } else {
+            userImageView?.setImageDrawable(getDrawable(R.drawable.avatar))
         }
+        userImageView.visibility = View.VISIBLE
     }
 
     override fun onShowLoading() {
