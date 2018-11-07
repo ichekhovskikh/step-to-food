@@ -15,6 +15,7 @@ import com.sugar.steptofood.Session
 import com.sugar.steptofood.db.SQLiteHelper
 import com.sugar.steptofood.model.Food
 import com.sugar.steptofood.model.Product
+import com.sugar.steptofood.model.User
 import com.sugar.steptofood.presenter.FoodPresenter
 import com.sugar.steptofood.rest.ApiService
 import com.sugar.steptofood.ui.view.FoodView
@@ -55,7 +56,7 @@ class FoodActivity : FoodView, AppCompatActivity() {
 
         if (food.author?.id != session.userId) {
             addLikeButton(food)
-            setAuthor(food)
+            setAuthor(food.author!!)
         } else addRemoveButton(food)
 
         for (product in food.products!!)
@@ -93,14 +94,14 @@ class FoodActivity : FoodView, AppCompatActivity() {
         foodNameTextView.keyListener = null
     }
 
-    private fun setAuthor(food: Food) {
-        userNameTextView.text = food.author?.name
-        presenter.getFoodAuthorAvatar(food.author?.id!!, ::setFoodAuthorImage)
+    private fun setAuthor(author: User) {
+        userNameTextView.text = author.name
+        presenter.getFoodAuthorAvatar(author.id!!, ::setFoodAuthorImage)
         userNameTextView.setOnClickListener {
-            onUserNameClickListener(food)
+            onUserNameClickListener(author)
         }
         foodImageView.setOnClickListener {
-            onUserNameClickListener(food)
+            onUserNameClickListener(author)
         }
     }
 
@@ -136,9 +137,9 @@ class FoodActivity : FoodView, AppCompatActivity() {
         imageActionContainer.addView(buttonRemove)
     }
 
-    private fun onUserNameClickListener(food: Food) {
+    private fun onUserNameClickListener(author: User) {
         val intent = Intent(this, AnotherUserActivity::class.java)
-        intent.putExtra(UID, food.author?.id)
+        intent.putExtra(UID, author.id)
         startActivity(intent)
     }
 
