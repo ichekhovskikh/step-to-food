@@ -29,8 +29,7 @@ class StartActivity : LoginView, AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         App.appComponent.inject(this)
-        setContentView(R.layout.activity_start)
-        openLoginWindow()
+        setContentView(R.layout.splash_fragment)
         presenter.login()
     }
 
@@ -70,6 +69,10 @@ class StartActivity : LoginView, AppCompatActivity() {
 
     override fun onShowError(error: String) {
         val showingView = supportFragmentManager.findFragmentByTag(operationTag) as BaseView?
+        if (showingView == null) {
+            setContentView(R.layout.activity_start)
+            openLoginWindow()
+        }
         showingView?.onShowError(error)
     }
 

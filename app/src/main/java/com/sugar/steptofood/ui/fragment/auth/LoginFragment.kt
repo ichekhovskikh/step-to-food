@@ -72,7 +72,7 @@ class LoginFragment : BaseView, BaseFragment() {
     }
 
     override fun onShowError(error: String) {
-        errorLogMsg.text = error
-        errorLogMsg.visibility = View.VISIBLE
+        errorLogMsg?.text = error
+        errorLogMsg?.visibility = View.VISIBLE
     }
 }

@@ -7,7 +7,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.support.v4.content.ContextCompat
 
-const val STORAGE_PERMISSIONS_REQUEST_CODE = 1
+const val OPEN_GALLERY_PERMISSIONS_REQUEST_CODE = 1
 
 fun hasStoragePermissions(activity: Activity) = Build.VERSION.SDK_INT < 23 ||
         ContextCompat.checkSelfPermission(activity,

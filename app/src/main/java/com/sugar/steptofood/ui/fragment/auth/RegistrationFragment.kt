@@ -42,7 +42,7 @@ class RegistrationFragment : BaseView, BaseFragment() {
     }
 
     override fun onShowError(error: String) {
-        errorRegMsg.text = error
-        errorRegMsg.visibility = View.VISIBLE
+        errorRegMsg?.text = error
+        errorRegMsg?.visibility = View.VISIBLE
     }
 }

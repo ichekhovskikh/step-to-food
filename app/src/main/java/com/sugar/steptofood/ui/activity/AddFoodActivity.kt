@@ -19,13 +19,13 @@ import com.sugar.steptofood.model.Product
 import com.sugar.steptofood.presenter.FoodPresenter
 import com.sugar.steptofood.rest.ApiService
 import com.sugar.steptofood.ui.view.FoodView
+import com.sugar.steptofood.utils.*
 import com.sugar.steptofood.utils.ExtraName.PRODUCT
 import kotlinx.android.synthetic.main.activity_food.*
 import kotlinx.android.synthetic.main.item_add_product.*
 import kotlinx.android.synthetic.main.item_edit_energy.*
 import kotlinx.android.synthetic.main.item_edit_how_cook.*
 import kotlinx.android.synthetic.main.item_products_container.*
-import com.sugar.steptofood.utils.showKeyboard
 import kotlinx.android.synthetic.main.action_bar_edit.*
 import javax.inject.Inject
 
@@ -102,8 +102,12 @@ class AddFoodActivity : FoodView, AppCompatActivity() {
         }
 
         userImageView.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
-            startActivityForResult(intent, PICK_IMAGE)
+            if (hasStoragePermissions(this)) {
+                val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+                startActivityForResult(intent, PICK_IMAGE)
+            } else {
+                requestStoragePermissions(this, OPEN_GALLERY_PERMISSIONS_REQUEST_CODE)
+            }
         }
     }
 
@@ -165,6 +169,14 @@ class AddFoodActivity : FoodView, AppCompatActivity() {
             }
         }
         return true
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == OPEN_GALLERY_PERMISSIONS_REQUEST_CODE && hasStoragePermissions(this)) {
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+            startActivityForResult(intent, PICK_IMAGE)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

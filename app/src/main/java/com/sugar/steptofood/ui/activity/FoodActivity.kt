@@ -52,8 +52,10 @@ class FoodActivity : FoodView, AppCompatActivity() {
     }
 
     fun setFood(food: Food) {
-        foodNameTextView.setText(food.name)
+        if (foodNameTextView == null)
+            return
 
+        foodNameTextView.setText(food.name)
         if (food.author?.id != session.userId) {
             addLikeButton(food)
             setAuthor(food.author!!)
@@ -95,7 +97,7 @@ class FoodActivity : FoodView, AppCompatActivity() {
     }
 
     private fun setAuthor(author: User) {
-        userNameTextView.text = author.name
+        userNameTextView?.text = author.name
         presenter.getFoodAuthorAvatar(author.id!!, ::setFoodAuthorImage)
         userNameTextView.setOnClickListener {
             onUserNameClickListener(author)
@@ -145,16 +147,16 @@ class FoodActivity : FoodView, AppCompatActivity() {
 
     private fun setFoodImage(bitmap: Bitmap?) {
         if (bitmap != null)
-            foodImageView.setImageBitmap(bitmap)
+            foodImageView?.setImageBitmap(bitmap)
     }
 
     private fun setFoodAuthorImage(bitmap: Bitmap?) {
         if (bitmap != null) {
             userImageView?.setImageBitmap(bitmap)
         } else {
-            userImageView?.setImageDrawable(getDrawable(R.drawable.avatar))
+            userImageView?.setImageDrawable(getDrawable(R.mipmap.avatar))
         }
-        userImageView.visibility = View.VISIBLE
+        userImageView?.visibility = View.VISIBLE
     }
 
     override fun onShowLoading() {

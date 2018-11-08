@@ -33,7 +33,7 @@ class LoginPresenter(view: LoginView,
         view.onShowLoading()
         if (session.token.isEmpty()) {
             view.onHideLoading()
-            return
+            defaultError()
         }
 
         api.login(session.token)

@@ -19,10 +19,8 @@ class FoodPresenter(view: FoodView,
                     private val context: Context) : BasePresenter<FoodView>(view, api) {
 
     fun getFoodImage(foodId: Int, onSuccess: (image: Bitmap?) -> Unit) {
-        view.onShowLoading()
         api.getFoodImage(foodId)
                 .downloadSubscribe({
-                    view.onHideLoading()
                     val bitmap: Bitmap? = BitmapFactory.decodeStream(it.byteStream())
                     onSuccess.invoke(bitmap)
                 }, defaultError())
@@ -75,12 +73,10 @@ class FoodPresenter(view: FoodView,
     }
 
     fun getFoodAuthorAvatar(userId: Int, onSuccess: (bitmap: Bitmap?) -> Unit) {
-        view.onShowLoading()
         api.getUserAvatar(userId)
                 .downloadSubscribe({
                     val bitmap: Bitmap? = BitmapFactory.decodeStream(it.byteStream())
                     onSuccess.invoke(bitmap)
-                    view.onHideLoading()
                 }, defaultError())
     }
 }

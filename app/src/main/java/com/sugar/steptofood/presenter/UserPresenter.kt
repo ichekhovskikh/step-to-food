@@ -17,11 +17,9 @@ class UserPresenter(view: UserView,
                     val context: Context) : BasePresenter<UserView>(view, api) {
 
     fun getAvatar(userId: Int) {
-        view.onShowLoading()
         api.getUserAvatar(userId)
                 .downloadSubscribe({
                     val bitmap = BitmapFactory.decodeStream(it.byteStream())
-                    view.onHideLoading()
                     view.setUserAvatar(bitmap)
                 }, defaultError())
     }

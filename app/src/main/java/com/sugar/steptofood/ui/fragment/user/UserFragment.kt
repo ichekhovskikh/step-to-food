@@ -69,12 +69,12 @@ open class UserFragment : UserView, BaseFragment() {
     }
 
     override fun setUserName(name: String) {
-        userNameTextView.text = name
+        userNameTextView?.text = name
     }
 
     override fun setUserAvatar(image: Bitmap?) {
         if (image != null)
-            userImageView.setImageBitmap(image)
+            userImageView?.setImageBitmap(image)
     }
 
     fun initAddFood(container: ViewGroup) {
@@ -151,15 +151,7 @@ open class UserFragment : UserView, BaseFragment() {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
             startActivityForResult(intent, PICK_IMAGE)
         } else {
-            requestStoragePermissions(activity!!, STORAGE_PERMISSIONS_REQUEST_CODE)
-        }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == STORAGE_PERMISSIONS_REQUEST_CODE && hasStoragePermissions(activity!!)) {
-            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
-            startActivityForResult(intent, PICK_IMAGE)
+            requestStoragePermissions(activity!!, OPEN_GALLERY_PERMISSIONS_REQUEST_CODE)
         }
     }
 

@@ -11,7 +11,7 @@
         android:contentDescription="@string/todo"
         android:scaleType="fitXY"
         app:layout_constraintHeight_percent="0.5"
-        app:srcCompat="@drawable/login" />
+        app:srcCompat="@mipmap/login" />
 
     <TextView
         android:id="@+id/stepTextView"
