@@ -13,4 +13,8 @@ class AnotherUserFragment : UserFragment() {
         initAddedRecipes(itemMenuContainer)
         initLikeRecipes(itemMenuContainer)
     }
+
+    override fun userAvatarClickListener() {
+        //nothing
+    }
 }

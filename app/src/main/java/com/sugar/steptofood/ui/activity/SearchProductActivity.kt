@@ -62,11 +62,11 @@ class SearchProductActivity : ProductView, AppCompatActivity() {
     }
 
     override fun onShowLoading() {
-        progressBar.visibility = View.VISIBLE
+        progressBar?.visibility = View.VISIBLE
     }
 
     override fun onHideLoading() {
-        progressBar.visibility = View.GONE
+        progressBar?.visibility = View.GONE
     }
 
     override fun onShowError(error: String) {

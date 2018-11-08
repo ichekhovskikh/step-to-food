@@ -11,7 +11,6 @@ import com.sugar.steptofood.paging.source.BaseRecipeSource
 
 class PagedFoodRepository(private var sourceFactory: BaseRecipeFactory) {
     private val config: PagedList.Config
-    private val dataSource: LiveData<BaseRecipeSource>
     private var pagedList: LiveData<PagedList<Food>>
     private val observers = HashMap<LifecycleOwner, MutableSet<Observer<PagedList<Food>>>>()
 
@@ -20,8 +19,6 @@ class PagedFoodRepository(private var sourceFactory: BaseRecipeFactory) {
                 .setEnablePlaceholders(false)
                 .setPageSize(PAGE_SIZE)
                 .build()
-
-        dataSource = sourceFactory.currentDataSource
         pagedList = buildPagedList()
     }
 
@@ -46,8 +43,11 @@ class PagedFoodRepository(private var sourceFactory: BaseRecipeFactory) {
         refreshPagedList()
     }
 
-    fun removeItem(foodId: Int) = dataSource.value?.removeItem(foodId) {
-        refreshPagedList()
+    fun removeItem(foodId: Int) {
+        val dataSource = sourceFactory.currentDataSource.value
+        dataSource?.removeItem(foodId) {
+            refreshPagedList()
+        }
     }
 
     private fun refreshPagedList() {
@@ -55,7 +55,7 @@ class PagedFoodRepository(private var sourceFactory: BaseRecipeFactory) {
         observers.keys.forEach { owner ->
             pagedList.removeObservers(owner)
         }
-        pagedList =  buildPagedList()
+        pagedList = buildPagedList()
 
         observers.keys.forEach { owner ->
             observers[owner]?.forEach { observer ->

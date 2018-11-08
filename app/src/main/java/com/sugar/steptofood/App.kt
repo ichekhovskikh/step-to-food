@@ -16,6 +16,6 @@ class App : Application() {
     companion object {
         lateinit var appComponent: AppComponent
 
-        const val BASE_URL = "https://steptofoodserver-rueyowwgee.now.sh"
+        const val BASE_URL = "https://steptofoodserver-nplmwvwjii.now.sh"
     }
 }

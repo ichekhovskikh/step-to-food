@@ -46,13 +46,17 @@ open class UserFragment : UserView, BaseFragment() {
         App.appComponent.inject(this)
 
         userImageView.setOnClickListener {
-            chooseImageIfHasPermissions()
+            userAvatarClickListener()
         }
 
         initMenuItems(view)
         userId = activity!!.intent.getIntExtra(UID, session.userId)
         presenter.getUserName(userId!!)
         presenter.getAvatar(userId!!)
+    }
+
+    open fun userAvatarClickListener() {
+        chooseImageIfHasPermissions()
     }
 
     override fun getLayout(): Int = R.layout.fragment_user
@@ -168,11 +172,11 @@ open class UserFragment : UserView, BaseFragment() {
     }
 
     override fun onShowLoading() {
-        progressBar.visibility = View.VISIBLE
+        progressBar?.visibility = View.VISIBLE
     }
 
     override fun onHideLoading() {
-        progressBar.visibility = View.GONE
+        progressBar?.visibility = View.GONE
     }
 
     override fun onShowError(error: String) {
