@@ -3,7 +3,7 @@ package com.sugar.steptofood.di
 import com.sugar.steptofood.di.module.ContextModule
 import com.sugar.steptofood.di.module.NetworkModule
 import com.sugar.steptofood.ui.activity.*
-import com.sugar.steptofood.ui.fragment.recipes.RecipeFragment
+import com.sugar.steptofood.ui.fragment.recipe.RecipeFragment
 import com.sugar.steptofood.ui.fragment.user.UserFragment
 import dagger.Component
 import javax.inject.Singleton

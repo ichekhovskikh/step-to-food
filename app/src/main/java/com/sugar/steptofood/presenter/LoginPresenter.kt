@@ -5,6 +5,7 @@ import com.sugar.steptofood.extension.customSubscribe
 import com.sugar.steptofood.rest.ApiService
 import com.sugar.steptofood.ui.view.LoginView
 
+@Deprecated("using repository")
 class LoginPresenter(view: LoginView,
                      api: ApiService,
                      private val session: Session) : BasePresenter<LoginView>(view, api) {

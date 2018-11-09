@@ -43,7 +43,7 @@ abstract class BaseRecipeAdapter(context: Context,
         holder.textRecipeNameView.text = recipe.name
         holder.textCalorieNameView.text = recipe.calorie.toString()
 
-        //TODO
+        //TODO move to data source
         api.getRecipeImage(recipe.id!!)
                 .downloadSubscribe({
                     val bitmap: Bitmap? = BitmapFactory.decodeStream(it.byteStream())

@@ -1,4 +1,4 @@
-package com.sugar.steptofood.ui.fragment.recipes
+package com.sugar.steptofood.ui.fragment.recipe
 
 import kotlinx.android.synthetic.main.fragment_recipe_list.*
 import android.view.ViewGroup

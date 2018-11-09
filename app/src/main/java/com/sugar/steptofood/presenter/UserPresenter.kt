@@ -11,6 +11,7 @@ import com.sugar.steptofood.extension.readBytes
 import com.sugar.steptofood.ui.view.UserView
 import okhttp3.*
 
+@Deprecated("using repository")
 class UserPresenter(view: UserView,
                     api: ApiService,
                     val session: Session,

@@ -4,6 +4,7 @@ import com.sugar.steptofood.extension.customSubscribe
 import com.sugar.steptofood.rest.ApiService
 import com.sugar.steptofood.ui.view.ProductView
 
+@Deprecated("using repository")
 class ProductPresenter(view: ProductView,
                        api: ApiService) : BasePresenter<ProductView>(view, api) {
 

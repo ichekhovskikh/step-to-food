@@ -1,4 +1,4 @@
-package com.sugar.steptofood.presenter
+package com.sugar.steptofood.repository
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
@@ -11,15 +11,12 @@ import com.sugar.steptofood.extension.downloadSubscribe
 import com.sugar.steptofood.extension.readBytes
 import com.sugar.steptofood.model.Recipe
 import com.sugar.steptofood.rest.ApiService
-import com.sugar.steptofood.ui.view.RecipeView
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
-@Deprecated("using repository")
-class RecipePresenter(view: RecipeView,
-                      api: ApiService,
-                      private val context: Context) : BasePresenter<RecipeView>(view, api) {
+class RecipeRepository(private val api: ApiService,
+                       private val context: Context) : BaseRepository() {
 
     fun getRecipeImage(recipeId: Int): LiveData<Bitmap?> {
         val image = MutableLiveData<Bitmap?>()
@@ -27,41 +24,51 @@ class RecipePresenter(view: RecipeView,
                 .downloadSubscribe({
                     val bitmap: Bitmap? = BitmapFactory.decodeStream(it.byteStream())
                     image.postValue(bitmap)
-                }, defaultError())
+                }, { errorMessage.postValue(it) })
         return image
     }
 
     fun getRecipe(recipeId: Int): LiveData<Recipe> {
-        view.onShowLoading()
+        liveStatus.postValue(LoadingStatus.LOADING)
         val liveRecipe = MutableLiveData<Recipe>()
         api.getRecipe(recipeId)
                 .customSubscribe({
-                    view.onHideLoading()
+                    liveStatus.postValue(LoadingStatus.LOADED)
                     liveRecipe.postValue(it)
-                }, defaultError())
+                }, { errorMessage.postValue(it) })
         return liveRecipe
     }
 
-    fun addRecipe(recipe: Recipe, onSuccess: () -> Unit) {
-        view.onShowLoading()
-        uploadContentAndRecipePhoto(recipe, onSuccess)
-    }
-
     fun removeRecipe(recipeId: Int) {
-        api.removeRecipe(recipeId).customSubscribe({}, defaultError())
+        api.removeRecipe(recipeId).customSubscribe({}, { errorMessage.postValue(it) })
     }
 
     fun setLikeRecipe(recipeId: Int, hasLike: Boolean) {
-        api.setLike(recipeId, hasLike).customSubscribe({}, defaultError())
+        api.setLike(recipeId, hasLike).customSubscribe({}, { errorMessage.postValue(it) })
+    }
+
+    fun getRecipeAuthorAvatar(userId: Int): LiveData<Bitmap?> {
+        val avatar = MutableLiveData<Bitmap?>()
+        api.getUserAvatar(userId)
+                .downloadSubscribe({
+                    val bitmap: Bitmap? = BitmapFactory.decodeStream(it.byteStream())
+                    avatar.postValue(bitmap)
+                }, { errorMessage.postValue(it) })
+        return avatar
+    }
+
+    fun addRecipe(recipe: Recipe, onSuccess: () -> Unit) {
+        liveStatus.postValue(LoadingStatus.LOADING)
+        uploadContentAndRecipePhoto(recipe, onSuccess)
     }
 
     private fun uploadContentAndRecipePhoto(recipe: Recipe, onSuccess: () -> Unit) {
         val uri = Uri.parse(recipe.image)
         recipe.image = null
         api.addRecipe(recipe)
-                .customSubscribe({addedRecipeId ->
+                .customSubscribe({ addedRecipeId ->
                     uploadRecipeImage(addedRecipeId, uri, onSuccess)
-                }, defaultError())
+                }, { errorMessage.postValue(it) })
     }
 
     private fun uploadRecipeImage(recipeId: Int, uri: Uri, onSuccess: () -> Unit) {
@@ -74,18 +81,8 @@ class RecipePresenter(view: RecipeView,
 
         api.setRecipeImage(recipeId, body)
                 .customSubscribe({
-                    view.onHideLoading()
+                    liveStatus.postValue(LoadingStatus.LOADED)
                     onSuccess.invoke()
-                }, defaultError())
-    }
-
-    fun getRecipeAuthorAvatar(userId: Int): LiveData<Bitmap?> {
-        val avatar = MutableLiveData<Bitmap?>()
-        api.getUserAvatar(userId)
-                .downloadSubscribe({
-                    val bitmap: Bitmap? = BitmapFactory.decodeStream(it.byteStream())
-                    avatar.postValue(bitmap)
-                }, defaultError())
-        return avatar
+                }, { errorMessage.postValue(it) })
     }
 }

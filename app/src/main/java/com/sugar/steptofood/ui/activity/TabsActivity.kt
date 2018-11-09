@@ -9,7 +9,7 @@ import com.sugar.steptofood.App
 import com.sugar.steptofood.ui.fragment.compose.ComposeFragment
 import com.sugar.steptofood.R
 import com.sugar.steptofood.Session
-import com.sugar.steptofood.ui.fragment.recipes.RecipeFragment
+import com.sugar.steptofood.ui.fragment.recipe.RecipeFragment
 import com.sugar.steptofood.ui.fragment.user.UserFragment
 import com.sugar.steptofood.adapter.SectionsPageAdapter
 import com.sugar.steptofood.utils.ExtraName.UID

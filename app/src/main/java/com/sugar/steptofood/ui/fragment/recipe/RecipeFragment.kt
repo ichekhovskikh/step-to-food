@@ -1,4 +1,4 @@
-package com.sugar.steptofood.ui.fragment.recipes
+package com.sugar.steptofood.ui.fragment.recipe
 
 import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer

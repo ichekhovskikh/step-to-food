@@ -5,8 +5,8 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import com.sugar.steptofood.App
 import com.sugar.steptofood.R
-import com.sugar.steptofood.ui.fragment.recipes.LikeRecipeFragment
-import com.sugar.steptofood.ui.fragment.recipes.AddedRecipeFragment
+import com.sugar.steptofood.ui.fragment.recipe.LikeRecipeFragment
+import com.sugar.steptofood.ui.fragment.recipe.AddedRecipeFragment
 import com.sugar.steptofood.utils.ExtraName.ITEM_TYPE
 import com.sugar.steptofood.utils.ExtraName.UID
 import com.sugar.steptofood.utils.RecipeType

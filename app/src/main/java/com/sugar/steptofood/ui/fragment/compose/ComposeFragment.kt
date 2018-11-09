@@ -13,7 +13,7 @@ import com.sugar.steptofood.ui.activity.SearchProductActivity
 import kotlinx.android.synthetic.main.fragment_compose.*
 import com.sugar.steptofood.ui.activity.TabsActivity
 import com.sugar.steptofood.ui.fragment.BaseFragment
-import com.sugar.steptofood.ui.fragment.recipes.ComposedRecipeFragment
+import com.sugar.steptofood.ui.fragment.recipe.ComposedRecipeFragment
 import com.sugar.steptofood.utils.ExtraName.PRODUCT
 import com.sugar.steptofood.utils.ExtraName.PRODUCTS
 
