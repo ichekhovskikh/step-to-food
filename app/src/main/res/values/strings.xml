@@ -27,7 +27,7 @@
     <string name="tabComposeText">Составить</string>
     <string name="tabUserText">Пользователь</string>
 
-    <string name="food_label">ПРОДУКТЫ</string>
+    <string name="products_label">ПРОДУКТЫ</string>
     <string name="how_do_label">КАК ПРИГОТОВИТЬ</string>
     <string name="energy_label">ПИЩЕВАЯ ЦЕННОСТЬ (100 г.)</string>
     <string name="calorie_label">Каллорий</string>
@@ -37,17 +37,17 @@
     <string name="add_products">Добавьте продукты…</string>
     <string name="add_description">Добавьте описание…</string>
     <string name="gram">г.</string>
-    <string name="add_food_success">Рецепт успешно добавлен</string>
+    <string name="add_recipe_success">Рецепт успешно добавлен</string>
 
     <string name="select_products">ВЫБЕРИТЕ ПРОДУКТЫ</string>
 
     <string name="done_label">ГОТОВО</string>
     <string name="cancel_label">ОТМЕНА</string>
-    <string name="input_food_name">ВВЕДИТЕ НАЗВАНИЕ</string>
-    <string name="select_food_image">ВЫБЕРИТЕ ФОТО</string>
+    <string name="input_recipe_name">ВВЕДИТЕ НАЗВАНИЕ</string>
+    <string name="select_recipe_image">ВЫБЕРИТЕ ФОТО</string>
     <string name="select_product">ВЫБЕРИТЕ ПРОДУКТ</string>
 
-    <string name="search_food">Поиск блюда</string>
+    <string name="search_recipe">Поиск рецептов</string>
 
     <string name="added_recipes_tittle">ДОБАВЛЕННЫЕ РЕЦЕПТЫ</string>
     <string name="like_recipes_tittle">ПОНРАВИВШИЕСЯ РЕЦЕПТЫ</string>

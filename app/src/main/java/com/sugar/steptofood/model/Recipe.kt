@@ -5,8 +5,8 @@ import com.google.gson.annotations.SerializedName
 import com.j256.ormlite.field.DatabaseField
 import com.j256.ormlite.table.DatabaseTable
 
-@DatabaseTable(tableName = "food")
-data class Food(
+@DatabaseTable(tableName = "recipe")
+data class Recipe(
         @DatabaseField(columnName = "id", id = true)
         @SerializedName("id")
         override var id: Int? = null,

@@ -20,9 +20,9 @@ data class Product(
         @Expose
         var weight: Int? = null,
 
-        @SerializedName("foods")
+        @SerializedName("recipes")
         @Expose
-        var foods: List<Food>? = mutableListOf(),
+        var recipes: List<Recipe>? = mutableListOf(),
 
         @SerializedName("includedInSearch")
         @Expose

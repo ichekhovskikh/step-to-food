@@ -9,30 +9,30 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.sugar.steptofood.R
 import com.sugar.steptofood.Session
-import com.sugar.steptofood.model.Food
+import com.sugar.steptofood.model.Recipe
 import com.sugar.steptofood.model.Product
 import com.sugar.steptofood.rest.ApiService
 
-class ComposedFoodAdapter(context: Context,
-                          api: ApiService,
-                          session: Session,
-                          onFoodImageClick: ((Food) -> Unit)? = {},
-                          onUserNameClick: ((Food) -> Unit)? = {},
-                          onRemoveClick: ((Food) -> Unit)? = {},
-                          onLikeClick: ((Food, Boolean) -> Unit)? = { _, _ -> })
-    : BaseRecipeAdapter(context, api, session, onFoodImageClick, onUserNameClick, onRemoveClick, onLikeClick) {
+class ComposedRecipeAdapter(context: Context,
+                            api: ApiService,
+                            session: Session,
+                            onRecipeImageClick: ((Recipe) -> Unit)? = {},
+                            onUserNameClick: ((Recipe) -> Unit)? = {},
+                            onRemoveClick: ((Recipe) -> Unit)? = {},
+                            onLikeClick: ((Recipe, Boolean) -> Unit)? = { _, _ -> })
+    : BaseRecipeAdapter(context, api, session, onRecipeImageClick, onUserNameClick, onRemoveClick, onLikeClick) {
 
-    override fun getFoodCardLayout() = R.layout.item_products_card
+    override fun getRecipeCardLayout() = R.layout.item_recipe_with_products_card
 
-    override fun onCreateViewHolder(container: ViewGroup, viewType: Int): FoodViewHolder {
-        return ComposedFoodViewHolder(createItemView(viewType))
+    override fun onCreateViewHolder(container: ViewGroup, viewType: Int): RecipeViewHolder {
+        return ComposedRecipeViewHolder(createItemView(viewType))
     }
 
-    override fun onBindViewHolder(holder: FoodViewHolder, position: Int) {
-        bindFoodViewHolder(holder, position)
-        setFoodViewListeners(holder)
+    override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
+        bindRecipeViewHolder(holder, position)
+        setRecipeViewListeners(holder)
 
-        if (holder is ComposedFoodViewHolder) {
+        if (holder is ComposedRecipeViewHolder) {
             val products = getItem(position)!!.products!!.sortedWith(compareBy { !it.includedInSearch })
             for (product in products) {
                 holder.productContainer.addView(createProductView(product))
@@ -53,7 +53,7 @@ class ComposedFoodAdapter(context: Context,
         return productView
     }
 
-    class ComposedFoodViewHolder(view: View) : FoodViewHolder(view) {
+    class ComposedRecipeViewHolder(view: View) : RecipeViewHolder(view) {
         val productContainer: LinearLayout = itemView.findViewById(R.id.productContainer)
     }
 }

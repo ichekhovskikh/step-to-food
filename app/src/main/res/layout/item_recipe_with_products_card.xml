@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <include layout="@layout/item_small_food_info" />
+        <include layout="@layout/item_small_recipe_info" />
 
         <LinearLayout
             android:id="@+id/productContainer"

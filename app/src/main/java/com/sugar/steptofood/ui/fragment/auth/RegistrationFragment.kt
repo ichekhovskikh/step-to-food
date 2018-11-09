@@ -26,7 +26,7 @@ class RegistrationFragment : BaseView, BaseFragment() {
     private fun register() {
         if (nameRegText.validate() && loginRegText.validate() && passRegText.validate()) {
             errorRegMsg.visibility = View.INVISIBLE
-            (activity as StartActivity).register(
+            startActivity.register(
                     nameRegText.text.toString(),
                     loginRegText.text.toString(),
                     passRegText.text.toString())

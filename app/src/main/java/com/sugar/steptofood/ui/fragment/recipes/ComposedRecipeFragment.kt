@@ -1,36 +1,36 @@
 package com.sugar.steptofood.ui.fragment.recipes
 
-import kotlinx.android.synthetic.main.fragment_recipes.*
+import kotlinx.android.synthetic.main.fragment_recipe_list.*
 import android.view.ViewGroup
 import com.sugar.steptofood.model.Product
 import com.sugar.steptofood.paging.adapter.BaseRecipeAdapter
-import com.sugar.steptofood.paging.adapter.ComposedFoodAdapter
+import com.sugar.steptofood.paging.adapter.ComposedRecipeAdapter
 import com.sugar.steptofood.paging.factory.BaseRecipeFactory
-import com.sugar.steptofood.paging.factory.ComposedFoodSourceFactory
+import com.sugar.steptofood.paging.factory.ComposedRecipeSourceFactory
 import com.sugar.steptofood.utils.ExtraName.PRODUCTS
-import com.sugar.steptofood.utils.FoodType
+import com.sugar.steptofood.utils.RecipeType
 
-class ComposedFoodFragment : RecipesFragment() {
+class ComposedRecipeFragment : RecipeFragment() {
     companion object {
-        fun getInstance() = ComposedFoodFragment()
+        fun getInstance() = ComposedRecipeFragment()
     }
 
     override fun initHeader() {
         (header.parent as ViewGroup).removeView(header)
     }
 
-    override fun getFoodSourceFactory(): BaseRecipeFactory {
+    override fun getRecipeSourceFactory(): BaseRecipeFactory {
         val products = activity!!.intent.getSerializableExtra(PRODUCTS) as List<Product>
-        return ComposedFoodSourceFactory(api, products)
+        return ComposedRecipeSourceFactory(api, products)
     }
 
-    override fun getFoodType() = FoodType.COMPOSED
+    override fun getRecipeType() = RecipeType.COMPOSED
 
-    override fun createFoodAdapter(): BaseRecipeAdapter? =
-            ComposedFoodAdapter(this.context!!,
+    override fun createRecipeAdapter(): BaseRecipeAdapter? =
+            ComposedRecipeAdapter(this.context!!,
                     api,
                     session,
-                    ::onFoodImageClickListener,
+                    ::onRecipeImageClickListener,
                     ::onUserNameClickListener,
                     ::onRemoveClickListener,
                     ::onLikeClickListener)

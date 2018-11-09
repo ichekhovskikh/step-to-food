@@ -1,3 +1,3 @@
 package com.sugar.steptofood.ui.view
 
-interface FoodView : BaseView
+interface RecipeView : BaseView

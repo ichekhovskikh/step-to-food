@@ -9,7 +9,7 @@ import com.sugar.steptofood.App
 import com.sugar.steptofood.ui.fragment.compose.ComposeFragment
 import com.sugar.steptofood.R
 import com.sugar.steptofood.Session
-import com.sugar.steptofood.ui.fragment.recipes.RecipesFragment
+import com.sugar.steptofood.ui.fragment.recipes.RecipeFragment
 import com.sugar.steptofood.ui.fragment.user.UserFragment
 import com.sugar.steptofood.adapter.SectionsPageAdapter
 import com.sugar.steptofood.utils.ExtraName.UID
@@ -26,7 +26,7 @@ class TabsActivity : AppCompatActivity() {
     lateinit var sectionsPageAdapter: SectionsPageAdapter
         private set
 
-    private var recipesFragment: RecipesFragment? = null
+    private var recipeFragment: RecipeFragment? = null
     private var composeFragment: ComposeFragment? = null
     private var userFragment: UserFragment? = null
 
@@ -39,7 +39,7 @@ class TabsActivity : AppCompatActivity() {
 
     private fun initTabs() {
         intent.putExtra(UID, session.userId)
-        recipesFragment = RecipesFragment.getInstance()
+        recipeFragment = RecipeFragment.getInstance()
         composeFragment = ComposeFragment.getInstance()
         userFragment = UserFragment.getInstance()
 
@@ -49,21 +49,21 @@ class TabsActivity : AppCompatActivity() {
 
     private fun setupViewPager(viewPager: ViewPager?) {
         sectionsPageAdapter = SectionsPageAdapter(this.supportFragmentManager)
-        sectionsPageAdapter.addFragment(recipesFragment!!, this.getString(R.string.tabRecipesText))
+        sectionsPageAdapter.addFragment(recipeFragment!!, this.getString(R.string.tabRecipesText))
         sectionsPageAdapter.addFragment(composeFragment!!, this.getString(R.string.tabComposeText))
         sectionsPageAdapter.addFragment(userFragment!!, this.getString(R.string.tabUserText))
         viewPager?.adapter = sectionsPageAdapter
     }
 
     override fun onBackPressed() {
-        if (currentTabIsComposedFood()) {
+        if (currentTabIsComposedRecipe()) {
             sectionsPageAdapter.replace(COMPOSE_TAB, composeFragment!!)
             pager.adapter?.notifyDataSetChanged()
         } else toHome()
 
     }
 
-    private fun currentTabIsComposedFood(): Boolean = pager.currentItem == COMPOSE_TAB
+    private fun currentTabIsComposedRecipe(): Boolean = pager.currentItem == COMPOSE_TAB
             && sectionsPageAdapter.getItem(COMPOSE_TAB) !is ComposeFragment
 
     private fun toHome() {

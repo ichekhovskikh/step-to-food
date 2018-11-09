@@ -29,15 +29,15 @@
             android:theme="@style/AppTheme.ColoredStatusBar"/>
 
         <activity
-            android:name=".ui.activity.FoodActivity"
+            android:name=".ui.activity.RecipeActivity"
             android:theme="@style/AppTheme.TranslucentActionBar" />
 
         <activity
-            android:name=".ui.activity.AnotherUserActivity"
+            android:name=".ui.activity.UserActivity"
             android:theme="@style/AppTheme.ColoredStatusBar"/>
 
         <activity
-            android:name=".ui.activity.AddFoodActivity"
+            android:name=".ui.activity.RecipeCreationActivity"
             android:theme="@style/AppTheme.ColoredActionBar"/>
 
         <activity
@@ -45,7 +45,7 @@
             android:theme="@style/AppTheme.ColoredStatusBar"/>
 
         <activity
-            android:name=".ui.activity.UserItemActivity"
+            android:name=".ui.activity.RecipeListActivity"
             android:theme="@style/AppTheme.ColoredStatusBar"/>
 
     </application>

@@ -15,9 +15,9 @@ import com.sugar.steptofood.App
 import com.sugar.steptofood.Session
 import com.sugar.steptofood.presenter.UserPresenter
 import com.sugar.steptofood.rest.ApiService
-import com.sugar.steptofood.ui.activity.AddFoodActivity
+import com.sugar.steptofood.ui.activity.RecipeCreationActivity
 import com.sugar.steptofood.ui.activity.StartActivity
-import com.sugar.steptofood.ui.activity.UserItemActivity
+import com.sugar.steptofood.ui.activity.RecipeListActivity
 import com.sugar.steptofood.ui.fragment.BaseFragment
 import com.sugar.steptofood.ui.view.UserView
 import com.sugar.steptofood.utils.*
@@ -62,7 +62,7 @@ open class UserFragment : UserView, BaseFragment() {
     override fun getLayout(): Int = R.layout.fragment_user
 
     open fun initMenuItems(view: View) {
-        initAddFood(itemMenuContainer)
+        initAddRecipe(itemMenuContainer)
         initAddedRecipes(itemMenuContainer)
         initLikeRecipes(itemMenuContainer)
         initExit(itemMenuContainer)
@@ -77,14 +77,14 @@ open class UserFragment : UserView, BaseFragment() {
             userImageView?.setImageBitmap(image)
     }
 
-    fun initAddFood(container: ViewGroup) {
+    fun initAddRecipe(container: ViewGroup) {
         val button = createButton(
-                R.layout.button_item_menu,
+                R.layout.button_menu,
                 R.drawable.add_black,
                 R.string.add_recipes_menu_item)
 
         button.setOnClickListener {
-            val intent = Intent(activity, AddFoodActivity::class.java)
+            val intent = Intent(activity, RecipeCreationActivity::class.java)
             startActivity(intent)
         }
         container.addView(button)
@@ -92,14 +92,14 @@ open class UserFragment : UserView, BaseFragment() {
 
     fun initAddedRecipes(container: ViewGroup) {
         val button = createButton(
-                R.layout.button_item_menu,
+                R.layout.button_menu,
                 R.drawable.menu_black,
                 R.string.added_recipes_menu_item)
 
         button.setOnClickListener {
-            val intent = Intent(activity, UserItemActivity::class.java)
+            val intent = Intent(activity, RecipeListActivity::class.java)
             intent.putExtra(UID, userId)
-            intent.putExtra(ITEM_TYPE, FoodType.ADDED)
+            intent.putExtra(ITEM_TYPE, RecipeType.ADDED)
             startActivity(intent)
         }
         container.addView(button)
@@ -107,14 +107,14 @@ open class UserFragment : UserView, BaseFragment() {
 
     fun initLikeRecipes(container: ViewGroup) {
         val button = createButton(
-                R.layout.button_item_menu,
+                R.layout.button_menu,
                 R.drawable.like_black,
                 R.string.like_recipes_menu_item)
 
         button.setOnClickListener {
-            val intent = Intent(activity, UserItemActivity::class.java)
+            val intent = Intent(activity, RecipeListActivity::class.java)
             intent.putExtra(UID, userId)
-            intent.putExtra(ITEM_TYPE, FoodType.LIKE)
+            intent.putExtra(ITEM_TYPE, RecipeType.LIKE)
             startActivity(intent)
         }
         container.addView(button)
@@ -122,7 +122,7 @@ open class UserFragment : UserView, BaseFragment() {
 
     fun initExit(container: ViewGroup) {
         val button = createButton(
-                R.layout.button_item_menu,
+                R.layout.button_menu,
                 R.drawable.arrow_back_black,
                 R.string.exit_menu_item)
 

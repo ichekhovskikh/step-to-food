@@ -6,11 +6,11 @@ import android.support.v7.app.AppCompatActivity
 import com.sugar.steptofood.R
 import com.sugar.steptofood.ui.fragment.user.AnotherUserFragment
 
-class AnotherUserActivity : AppCompatActivity() {
+class UserActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_user_item)
+        setContentView(R.layout.activity_user_recipes)
         setFragment(AnotherUserFragment.getInstance())
     }
 

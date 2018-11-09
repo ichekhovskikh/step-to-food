@@ -2,19 +2,15 @@ package com.sugar.steptofood.model
 
 import com.j256.ormlite.field.DatabaseField
 import com.j256.ormlite.table.DatabaseTable
-import com.sugar.steptofood.utils.FoodType
 
-@DatabaseTable(tableName = "user_food")
-data class UserFood (
+@DatabaseTable(tableName = "product_recipe")
+data class ProductRecipe (
         @DatabaseField(generatedId = true)
         override var id: Int? = null,
 
         @DatabaseField(foreignAutoRefresh = true, foreign = true)
-        var food: Food? = null,
+        var recipe: Recipe? = null,
 
         @DatabaseField(foreignAutoRefresh = true, foreign = true)
-        var user: User? = null,
-
-        @DatabaseField
-        var type: String = FoodType.LIKE.toString()
+        var product: Product? = null
 ) : Entity

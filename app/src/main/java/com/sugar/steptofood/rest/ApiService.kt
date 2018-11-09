@@ -1,7 +1,7 @@
 package com.sugar.steptofood.rest
 
 import com.sugar.steptofood.model.*
-import com.sugar.steptofood.utils.FoodType
+import com.sugar.steptofood.utils.RecipeType
 import io.reactivex.Single
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
@@ -44,22 +44,22 @@ interface ApiService {
     fun setUserAvatar(@Part file: MultipartBody.Part): Single<CustomResponse<Int>>
 
     @GET("/food")
-    fun getFood(@Query("foodId") foodId: Int): Single<CustomResponse<Food>>
+    fun getRecipe(@Query("foodId") recipeId: Int): Single<CustomResponse<Recipe>>
 
     @GET("/food/search")
-    fun searchFoods(@Query("userId") userId: Int,
-                    @Query("searchName") searchName: String,
-                    @Query("foodType") type: FoodType,
-                    @Query("start") start: Int,
-                    @Query("size") size: Int): Single<CustomResponse<List<Food>>>
+    fun searchRecipes(@Query("userId") userId: Int,
+                      @Query("searchName") searchName: String,
+                      @Query("foodType") type: RecipeType,
+                      @Query("start") start: Int,
+                      @Query("size") size: Int): Single<CustomResponse<List<Recipe>>>
 
     @GET("/food/get/image")
-    fun getFoodImage(@Query("foodId") foodId: Int): Single<Response<ResponseBody>>
+    fun getRecipeImage(@Query("foodId") recipeId: Int): Single<Response<ResponseBody>>
 
     @Multipart
     @POST("/food/set/image")
-    fun setFoodImage(@Query("foodId") foodId: Int,
-                     @Part file: MultipartBody.Part): Single<CustomResponse<Int>>
+    fun setRecipeImage(@Query("foodId") recipeId: Int,
+                       @Part file: MultipartBody.Part): Single<CustomResponse<Int>>
 
     @GET("/product")
     fun getProduct(@Query("productId") productId: Int): Single<CustomResponse<Product>>
@@ -68,29 +68,29 @@ interface ApiService {
     fun getAllProducts(): Single<CustomResponse<List<Product>>>
 
     @GET("/product/search/food")
-    fun getProductsByFood(@Query("search") search: Int): Single<CustomResponse<List<Product>>>
+    fun getProductsByRecipe(@Query("search") search: Int): Single<CustomResponse<List<Product>>>
 
     @GET("/product/search/name")
     fun searchProducts(@Query("search") search: String): Single<CustomResponse<List<Product>>>
 
     @POST("/food/search/products")
-    fun searchFoodsByProducts(@Body products: List<Int>,
-                              @Query("start") start: Int,
-                              @Query("size") size: Int): Single<CustomResponse<List<Food>>>
+    fun searchRecipesByProducts(@Body products: List<Int>,
+                                @Query("start") start: Int,
+                                @Query("size") size: Int): Single<CustomResponse<List<Recipe>>>
 
     @POST("/food/add")
-    fun addFood(@Body food: Food): Single<CustomResponse<Int>>
+    fun addRecipe(@Body recipe: Recipe): Single<CustomResponse<Int>>
 
     @GET("/food/remove")
-    fun removeFood(@Query("foodId") foodId: Int): Single<CustomResponse<Int>>
+    fun removeRecipe(@Query("foodId") recipeId: Int): Single<CustomResponse<Int>>
 
     @GET("/food/like")
-    fun setLike(@Query("foodId") foodId: Int,
+    fun setLike(@Query("foodId") recipeId: Int,
                 @Query("hasLike") hasLike: Boolean): Single<CustomResponse<Int>>
 
     @FormUrlEncoded
     @POST("/food/update")
-    fun updateFood(@Field("food") food: Food): Single<CustomResponse<Int>>
+    fun updateRecipe(@Field("recipe") recipe: Recipe): Single<CustomResponse<Int>>
 
     @FormUrlEncoded
     @POST("/user/update/name")

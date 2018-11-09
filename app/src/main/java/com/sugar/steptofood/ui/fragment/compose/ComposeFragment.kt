@@ -13,7 +13,7 @@ import com.sugar.steptofood.ui.activity.SearchProductActivity
 import kotlinx.android.synthetic.main.fragment_compose.*
 import com.sugar.steptofood.ui.activity.TabsActivity
 import com.sugar.steptofood.ui.fragment.BaseFragment
-import com.sugar.steptofood.ui.fragment.recipes.ComposedFoodFragment
+import com.sugar.steptofood.ui.fragment.recipes.ComposedRecipeFragment
 import com.sugar.steptofood.utils.ExtraName.PRODUCT
 import com.sugar.steptofood.utils.ExtraName.PRODUCTS
 
@@ -49,7 +49,7 @@ class ComposeFragment : BaseFragment() {
         searchRecipesButton.setOnClickListener {
             activity?.intent?.putExtra(PRODUCTS, adapter.getAll())
             val tabsActivity = (activity as TabsActivity)
-            tabsActivity.sectionsPageAdapter.replace(this, ComposedFoodFragment.getInstance())
+            tabsActivity.sectionsPageAdapter.replace(this, ComposedRecipeFragment.getInstance())
         }
     }
 

@@ -53,7 +53,7 @@ class SearchProductActivity : ProductView, AppCompatActivity() {
         searchResultListView.adapter = adapter
 
         searchResultListView.onItemClickListener =
-                AdapterView.OnItemClickListener { adapterView, parent, position, id ->
+                AdapterView.OnItemClickListener { _, _, position, _ ->
                     val returnIntent = Intent()
                     returnIntent.putExtra(PRODUCT, adapter?.getItem(position))
                     setResult(Activity.RESULT_OK, returnIntent)

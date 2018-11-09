@@ -6,7 +6,6 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
-import android.net.Uri
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
@@ -14,14 +13,14 @@ import android.widget.Toast
 import com.sugar.steptofood.App
 import com.sugar.steptofood.R
 import com.sugar.steptofood.extension.validate
-import com.sugar.steptofood.model.Food
+import com.sugar.steptofood.model.Recipe
 import com.sugar.steptofood.model.Product
-import com.sugar.steptofood.presenter.FoodPresenter
+import com.sugar.steptofood.presenter.RecipePresenter
 import com.sugar.steptofood.rest.ApiService
-import com.sugar.steptofood.ui.view.FoodView
+import com.sugar.steptofood.ui.view.RecipeView
 import com.sugar.steptofood.utils.*
 import com.sugar.steptofood.utils.ExtraName.PRODUCT
-import kotlinx.android.synthetic.main.activity_food.*
+import kotlinx.android.synthetic.main.activity_recipe.*
 import kotlinx.android.synthetic.main.item_add_product.*
 import kotlinx.android.synthetic.main.item_edit_energy.*
 import kotlinx.android.synthetic.main.item_edit_how_cook.*
@@ -29,20 +28,19 @@ import kotlinx.android.synthetic.main.item_products_container.*
 import kotlinx.android.synthetic.main.action_bar_edit.*
 import javax.inject.Inject
 
-class AddFoodActivity : FoodView, AppCompatActivity() {
+class RecipeCreationActivity : RecipeView, AppCompatActivity() {
 
     @Inject
     lateinit var api: ApiService
 
-    private val presenter by lazy { FoodPresenter(this, api, this) }
-    private var imageUri: Uri? = null
+    private val presenter by lazy { RecipePresenter(this, api, this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         App.appComponent.inject(this)
-        setContentView(R.layout.activity_food)
+        setContentView(R.layout.activity_recipe)
         initActionBar()
-        initEditFoodView()
+        initEditRecipeView()
     }
 
     private fun initActionBar() {
@@ -53,44 +51,69 @@ class AddFoodActivity : FoodView, AppCompatActivity() {
         setActionOnClickButtons()
     }
 
-    private fun getCreatedFood(): Food {
-        val food = Food()
-        food.name = foodNameTextView.text.toString()
-        food.image = imageUri.toString()
-        food.description = descriptionTextView.text.toString()
-        food.calorie =  calorieTextView.text.toString().toDouble()
-        food.protein = proteinTextView.text.toString().toDouble()
-        food.fat = fatTextView.text.toString().toDouble()
-        food.carbohydrates = carbohydratesTextView.text.toString().toDouble()
-
+    private fun getSelectedProducts(): List<Product> {
+        val products = mutableListOf<Product>()
         for (i in 0 until productContainer.childCount) {
+            val product = Product()
+
             val view = productContainer.getChildAt(i)
             val weightEditText: EditText = view.findViewById(R.id.weightEditText)
-
-            val product = Product()
             product.id = view.tag.toString().toInt()
             product.weight = weightEditText.text.toString().toInt()
-
-            (food.products as MutableList).add(product)
+            products.add(product)
         }
-        return food
+        return products
     }
 
     private fun setActionOnClickButtons() {
         buttonDone.setOnClickListener {
-            if (allFieldsAreFilled())
-                presenter.addFood(getCreatedFood(), ::showSuccessToastAndExit)
+            if (validateAllFields())
+                presenter.addRecipe(getCreatedRecipe(), ::showSuccessToastAndExit)
         }
         buttonCancel.setOnClickListener { finish() }
     }
 
-    private fun initEditFoodView() {
+    private fun getCreatedRecipe(): Recipe {
+        val recipe = Recipe()
+        recipe.name = recipeNameTextView.text.toString()
+        recipe.image = recipeImageView.contentDescription.toString()
+        recipe.description = descriptionTextView.text.toString()
+        recipe.calorie = calorieTextView.text.toString().toDouble()
+        recipe.protein = proteinTextView.text.toString().toDouble()
+        recipe.fat = fatTextView.text.toString().toDouble()
+        recipe.carbohydrates = carbohydratesTextView.text.toString().toDouble()
+        recipe.products = getSelectedProducts()
+        return recipe
+    }
+
+    private fun initEditRecipeView() {
         addEditContainersOnView()
+        setLabels()
+        setClickEditButtonListeners()
+        setClickImageListener()
+    }
 
+    @SuppressLint("InflateParams")
+    private fun addEditContainersOnView() {
+        addEditButton()
+        val productsContainer = layoutInflater.inflate(R.layout.item_products_container, null)
+        val addRowButton = layoutInflater.inflate(R.layout.item_add_product, null)
+        val howCookView = layoutInflater.inflate(R.layout.item_edit_how_cook, null)
+        val energyRecipeView = layoutInflater.inflate(R.layout.item_edit_energy, null)
+
+        recipeInfoLayout.addView(productsContainer)
+        recipeInfoLayout.addView(addRowButton)
+        recipeInfoLayout.addView(howCookView)
+        recipeInfoLayout.addView(energyRecipeView)
+    }
+
+    private fun setLabels() {
         userImageView.visibility = View.VISIBLE
-        foodNameTextView.hint = getString(R.string.input_food_name)
-        userNameTextView.text = getString(R.string.select_food_image)
+        recipeNameTextView.hint = getString(R.string.input_recipe_name)
+        userNameTextView.text = getString(R.string.select_recipe_image)
+    }
 
+    private fun setClickEditButtonListeners() {
         buttonEditDescription.setOnClickListener {
             descriptionTextView.requestFocus()
             showKeyboard(this)
@@ -100,7 +123,9 @@ class AddFoodActivity : FoodView, AppCompatActivity() {
             val intent = Intent(this, SearchProductActivity::class.java)
             startActivityForResult(intent, GET_PRODUCT)
         }
+    }
 
+    private fun setClickImageListener() {
         userImageView.setOnClickListener {
             if (hasStoragePermissions(this)) {
                 val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
@@ -112,30 +137,16 @@ class AddFoodActivity : FoodView, AppCompatActivity() {
     }
 
     @SuppressLint("InflateParams")
-    private fun addEditContainersOnView() {
-        addEditButton()
-        val productsContainer = layoutInflater.inflate(R.layout.item_products_container, null)
-        val addRowButton = layoutInflater.inflate(R.layout.item_add_product, null)
-        val howDoFoodView = layoutInflater.inflate(R.layout.item_edit_how_cook, null)
-        val energyFoodView = layoutInflater.inflate(R.layout.item_edit_energy, null)
-
-        foodInfoLayout.addView(productsContainer)
-        foodInfoLayout.addView(addRowButton)
-        foodInfoLayout.addView(howDoFoodView)
-        foodInfoLayout.addView(energyFoodView)
-    }
-
-    @SuppressLint("InflateParams")
     private fun addEditButton() {
         val buttonEdit = layoutInflater.inflate(R.layout.button_edit, null)
         buttonEdit?.setOnClickListener {
-            foodNameTextView.requestFocus()
+            recipeNameTextView.requestFocus()
             showKeyboard(this)
         }
         imageActionContainer.addView(buttonEdit)
     }
 
-    private fun allFieldsAreFilled(): Boolean {
+    private fun validateAllFields(): Boolean {
         val errorMsg = getString(R.string.error_text_input)
 
         return (validateImage(errorMsg) &&
@@ -148,7 +159,7 @@ class AddFoodActivity : FoodView, AppCompatActivity() {
     }
 
     private fun validateImage(errorMsg: String): Boolean {
-        if (imageUri == null) {
+        if (recipeImageView.contentDescription == null) {
             userNameTextView.error = errorMsg
             return false
         }
@@ -200,14 +211,16 @@ class AddFoodActivity : FoodView, AppCompatActivity() {
     }
 
     private fun addPhoto(intent: Intent?) {
-        imageUri = intent!!.data
-        userImageView.setImageURI(imageUri)
-        foodImageView.setImageURI(imageUri)
-        userNameTextView.error = null
+        intent?.data?.let { imageUri ->
+            userImageView.setImageURI(imageUri)
+            recipeImageView.setImageURI(imageUri)
+            recipeImageView.contentDescription = imageUri.toString()
+            userNameTextView.error = null
+        }
     }
 
     private fun showSuccessToastAndExit() {
-        Toast.makeText(this, getString(R.string.add_food_success), Toast.LENGTH_LONG).show()
+        Toast.makeText(this, getString(R.string.add_recipe_success), Toast.LENGTH_LONG).show()
         finish()
     }
 

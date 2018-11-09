@@ -5,14 +5,13 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.Observer
 import android.arch.paging.LivePagedListBuilder
 import android.arch.paging.PagedList
-import com.sugar.steptofood.model.Food
+import com.sugar.steptofood.model.Recipe
 import com.sugar.steptofood.paging.factory.BaseRecipeFactory
-import com.sugar.steptofood.paging.source.BaseRecipeSource
 
-class PagedFoodRepository(private var sourceFactory: BaseRecipeFactory) {
+class PagedRecipeRepository(private var sourceFactory: BaseRecipeFactory) {
     private val config: PagedList.Config
-    private var pagedList: LiveData<PagedList<Food>>
-    private val observers = HashMap<LifecycleOwner, MutableSet<Observer<PagedList<Food>>>>()
+    private var pagedList: LiveData<PagedList<Recipe>>
+    private val observers = HashMap<LifecycleOwner, MutableSet<Observer<PagedList<Recipe>>>>()
 
     init {
         config = PagedList.Config.Builder()
@@ -22,7 +21,7 @@ class PagedFoodRepository(private var sourceFactory: BaseRecipeFactory) {
         pagedList = buildPagedList()
     }
 
-    fun observe(owner: LifecycleOwner, observer: Observer<PagedList<Food>>) {
+    fun observe(owner: LifecycleOwner, observer: Observer<PagedList<Recipe>>) {
         if (!observerAlreadyAdded(owner, observer)){
             if(!observers.containsKey(owner))
                 observers[owner] = mutableSetOf()
@@ -43,15 +42,14 @@ class PagedFoodRepository(private var sourceFactory: BaseRecipeFactory) {
         refreshPagedList()
     }
 
-    fun removeItem(foodId: Int) {
+    fun removeItem(recipeId: Int) {
         val dataSource = sourceFactory.currentDataSource.value
-        dataSource?.removeItem(foodId) {
+        dataSource?.removeItem(recipeId) {
             refreshPagedList()
         }
     }
 
     private fun refreshPagedList() {
-        pagedList.value?.dataSource?.invalidate()
         observers.keys.forEach { owner ->
             pagedList.removeObservers(owner)
         }
@@ -62,13 +60,14 @@ class PagedFoodRepository(private var sourceFactory: BaseRecipeFactory) {
                 observe(owner, observer)
             }
         }
+        sourceFactory.currentDataSource.value?.invalidate()
     }
 
     private fun buildPagedList() = LivePagedListBuilder(sourceFactory, config)
             .setBoundaryCallback(sourceFactory.getNetworkSwapCallback())
             .build()
 
-    private fun observerAlreadyAdded(owner: LifecycleOwner, observer: Observer<PagedList<Food>>) =
+    private fun observerAlreadyAdded(owner: LifecycleOwner, observer: Observer<PagedList<Recipe>>) =
             observers.containsKey(owner) && (!observers.containsKey(owner) || observers[owner]!!.contains(observer))
 
     companion object {

@@ -1,10 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="180dp">
 
     <ImageView
-        android:id="@+id/foodImageView"
+        android:id="@+id/recipeImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
@@ -15,7 +14,7 @@
         android:src="@color/colorPrimary" />
 
     <TextView
-        android:id="@+id/textFoodNameView"
+        android:id="@+id/textRecipeNameView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:maxLines="1"

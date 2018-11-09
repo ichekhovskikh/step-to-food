@@ -41,6 +41,7 @@ class StartActivity : LoginView, AppCompatActivity() {
     }
 
     private fun openLoginWindow() {
+        setContentView(R.layout.activity_start)
         setFragment(LoginFragment.getInstance())
     }
 
@@ -70,7 +71,6 @@ class StartActivity : LoginView, AppCompatActivity() {
     override fun onShowError(error: String) {
         val showingView = supportFragmentManager.findFragmentByTag(operationTag) as BaseView?
         if (showingView == null) {
-            setContentView(R.layout.activity_start)
             openLoginWindow()
         }
         showingView?.onShowError(error)

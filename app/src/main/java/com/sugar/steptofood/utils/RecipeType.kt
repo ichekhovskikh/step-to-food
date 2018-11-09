@@ -1,6 +1,6 @@
 package com.sugar.steptofood.utils
 
-enum class FoodType {
+enum class RecipeType {
     RECOMMENDED,
     ADDED,
     LIKE,

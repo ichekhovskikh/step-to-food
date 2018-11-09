@@ -3,16 +3,16 @@ package com.sugar.steptofood.ui.fragment.recipes
 import android.annotation.SuppressLint
 import android.widget.TextView
 import com.sugar.steptofood.R
-import com.sugar.steptofood.utils.FoodType
-import kotlinx.android.synthetic.main.fragment_recipes.*
+import com.sugar.steptofood.utils.RecipeType
+import kotlinx.android.synthetic.main.fragment_recipe_list.*
 
-class UserLikeFragment : RecipesFragment() {
+class LikeRecipeFragment : RecipeFragment() {
 
     companion object {
-        fun getInstance() = UserLikeFragment()
+        fun getInstance() = LikeRecipeFragment()
     }
 
-    override fun getFoodType() = FoodType.LIKE
+    override fun getRecipeType() = RecipeType.LIKE
 
     @SuppressLint("InflateParams")
     override fun initHeader() {

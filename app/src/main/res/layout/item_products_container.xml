@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:padding="16dp"
-            android:text="@string/food_label"
+            android:text="@string/products_label"
             android:textAlignment="textStart"
             android:textColor="@color/colorPrimary"
             android:textSize="18sp" />

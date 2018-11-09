@@ -14,7 +14,6 @@
         app:srcCompat="@mipmap/login" />
 
     <TextView
-        android:id="@+id/stepTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/step_to"
@@ -28,7 +27,6 @@
         app:layout_constraintVertical_bias="0.10" />
 
     <TextView
-        android:id="@+id/foodTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/food"

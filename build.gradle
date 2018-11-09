@@ -34,6 +34,7 @@ ext {
     paging_version = '1.0.1'
     ormlite_version = '5.1'
     junit_version = '4.12'
+    mockito_version = '2.23.0'
     test_runner_version = '1.0.2'
     test_espresso_version = '3.0.2'
     retrofit_version = '2.4.0'

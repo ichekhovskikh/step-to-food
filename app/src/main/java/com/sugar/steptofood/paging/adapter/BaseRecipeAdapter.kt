@@ -13,73 +13,74 @@ import android.widget.*
 import com.sugar.steptofood.R
 import com.sugar.steptofood.Session
 import com.sugar.steptofood.extension.downloadSubscribe
-import com.sugar.steptofood.model.Food
+import com.sugar.steptofood.model.Recipe
 import com.sugar.steptofood.rest.ApiService
 
 abstract class BaseRecipeAdapter(context: Context,
                                  private val api: ApiService,
                                  private val session: Session,
-                                 private val onFoodImageClick: ((Food) -> Unit)?,
-                                 private val onUserNameClick: ((Food) -> Unit)?,
-                                 private val onRemoveClick: ((Food) -> Unit)?,
-                                 private val onLikeClick: ((Food, Boolean) -> Unit)?)
-    : PagedListAdapter<Food, BaseRecipeAdapter.FoodViewHolder>(FoodDiffUtilCallback()) {
+                                 private val onRecipeImageClick: ((Recipe) -> Unit)?,
+                                 private val onUserNameClick: ((Recipe) -> Unit)?,
+                                 private val onRemoveClick: ((Recipe) -> Unit)?,
+                                 private val onLikeClick: ((Recipe, Boolean) -> Unit)?)
+    : PagedListAdapter<Recipe, BaseRecipeAdapter.RecipeViewHolder>(RecipeDiffUtilCallback()) {
 
     protected val inflater: LayoutInflater = LayoutInflater.from(context)
 
-    abstract fun getFoodCardLayout(): Int
+    abstract fun getRecipeCardLayout(): Int
 
     @SuppressLint("InflateParams")
     protected fun createItemView(viewType: Int): View {
-        val foodCard = inflater.inflate(getFoodCardLayout(), null)
-        val buttonInCorner = if (viewType == YOUR_FOOD) removeButtonInCorner() else likeButtonInCorner()
-        val buttonContainer: FrameLayout = foodCard.findViewById(R.id.buttonContainer)
+        val recipeCard = inflater.inflate(getRecipeCardLayout(), null)
+        val buttonInCorner = if (viewType == YOUR_RECIPE) removeButtonInCorner() else likeButtonInCorner()
+        val buttonContainer: FrameLayout = recipeCard.findViewById(R.id.buttonContainer)
         buttonContainer.addView(buttonInCorner)
-        return foodCard
+        return recipeCard
     }
 
-    protected fun bindFoodViewHolder(holder: FoodViewHolder, position: Int) {
-        val food = getItem(position)!!
-        holder.textFoodNameView.text = food.name
-        holder.textCalorieNameView.text = food.calorie.toString()
+    protected fun bindRecipeViewHolder(holder: RecipeViewHolder, position: Int) {
+        val recipe = getItem(position)!!
+        holder.textRecipeNameView.text = recipe.name
+        holder.textCalorieNameView.text = recipe.calorie.toString()
 
-        api.getFoodImage(food.id!!)
+        //TODO
+        api.getRecipeImage(recipe.id!!)
                 .downloadSubscribe({
                     val bitmap: Bitmap? = BitmapFactory.decodeStream(it.byteStream())
                     if (bitmap != null)
-                        holder.foodImageView.setImageBitmap(bitmap)
+                        holder.recipeImageView.setImageBitmap(bitmap)
                 }, {})
 
-        if (holder.itemViewType == ANOTHER_USER_FOOD) {
-            holder.textUserNameView.text = food.author?.name
-            holder.buttonLike?.isChecked = food.hasYourLike
+        if (holder.itemViewType == ANOTHER_USER_RECIPE) {
+            holder.textUserNameView.text = recipe.author?.name
+            holder.buttonLike?.isChecked = recipe.hasYourLike
         }
     }
 
-    protected fun setFoodViewListeners(holder: FoodViewHolder) {
-        val food = getItem(holder.adapterPosition)!!
-        holder.foodImageView.setOnClickListener {
-            onFoodImageClick?.invoke(food)
+    protected fun setRecipeViewListeners(holder: RecipeViewHolder) {
+        val recipe = getItem(holder.adapterPosition)!!
+        holder.recipeImageView.setOnClickListener {
+            onRecipeImageClick?.invoke(recipe)
         }
 
-        if (holder.itemViewType == ANOTHER_USER_FOOD) {
+        if (holder.itemViewType == ANOTHER_USER_RECIPE) {
             holder.textUserNameView.setOnClickListener {
-                onUserNameClick?.invoke(food)
+                onUserNameClick?.invoke(recipe)
             }
             holder.buttonLike?.setOnCheckedChangeListener { buttonView, hasLike ->
-                onLikeClick?.invoke(food, hasLike)
+                onLikeClick?.invoke(recipe, hasLike)
             }
         } else {
             holder.buttonRemove?.setOnClickListener {
-                onRemoveClick?.invoke(food)
+                onRemoveClick?.invoke(recipe)
             }
         }
     }
 
     override fun getItemViewType(position: Int) =
             if (getItem(position)!!.author?.id == session.userId)
-                YOUR_FOOD
-            else ANOTHER_USER_FOOD
+                YOUR_RECIPE
+            else ANOTHER_USER_RECIPE
 
     @SuppressLint("InflateParams")
     protected fun likeButtonInCorner() = inflater.inflate(R.layout.button_like, null) as ToggleButton
@@ -88,26 +89,26 @@ abstract class BaseRecipeAdapter(context: Context,
     protected fun removeButtonInCorner() = inflater.inflate(R.layout.button_remove, null) as Button
 
     companion object {
-        const val ANOTHER_USER_FOOD = 0
-        const val YOUR_FOOD = 1
+        const val ANOTHER_USER_RECIPE = 0
+        const val YOUR_RECIPE = 1
     }
 
-    open class FoodViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val foodImageView: ImageView = itemView.findViewById(R.id.foodImageView)
-        val textFoodNameView: TextView = itemView.findViewById(R.id.textFoodNameView)
+    open class RecipeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val recipeImageView: ImageView = itemView.findViewById(R.id.recipeImageView)
+        val textRecipeNameView: TextView = itemView.findViewById(R.id.textRecipeNameView)
         val textUserNameView: TextView = itemView.findViewById(R.id.textUserNameView)
         val textCalorieNameView: TextView = itemView.findViewById(R.id.textCalorieNameView)
         val buttonLike: ToggleButton? = itemView.findViewById(R.id.buttonLike)
         val buttonRemove: Button? = itemView.findViewById(R.id.buttonRemove)
     }
 
-    private class FoodDiffUtilCallback : DiffUtil.ItemCallback<Food>() {
-        override fun areItemsTheSame(oldFood: Food, newFood: Food): Boolean {
-            return oldFood.id == newFood.id
+    private class RecipeDiffUtilCallback : DiffUtil.ItemCallback<Recipe>() {
+        override fun areItemsTheSame(oldRecipe: Recipe, newRecipe: Recipe): Boolean {
+            return oldRecipe.id == newRecipe.id
         }
 
-        override fun areContentsTheSame(oldFood: Food, newFood: Food): Boolean {
-            return oldFood == newFood
+        override fun areContentsTheSame(oldRecipe: Recipe, newRecipe: Recipe): Boolean {
+            return oldRecipe == newRecipe
         }
     }
 }

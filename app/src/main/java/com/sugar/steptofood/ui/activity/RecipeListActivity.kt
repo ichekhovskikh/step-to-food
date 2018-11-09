@@ -5,13 +5,13 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import com.sugar.steptofood.App
 import com.sugar.steptofood.R
-import com.sugar.steptofood.ui.fragment.recipes.UserLikeFragment
-import com.sugar.steptofood.ui.fragment.recipes.UserRecipesFragment
+import com.sugar.steptofood.ui.fragment.recipes.LikeRecipeFragment
+import com.sugar.steptofood.ui.fragment.recipes.AddedRecipeFragment
 import com.sugar.steptofood.utils.ExtraName.ITEM_TYPE
 import com.sugar.steptofood.utils.ExtraName.UID
-import com.sugar.steptofood.utils.FoodType
+import com.sugar.steptofood.utils.RecipeType
 
-class UserItemActivity : AppCompatActivity() {
+class RecipeListActivity : AppCompatActivity() {
 
     var userId: Int? = null
         private set
@@ -19,16 +19,16 @@ class UserItemActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         App.appComponent.inject(this)
-        setContentView(R.layout.activity_user_item)
+        setContentView(R.layout.activity_user_recipes)
         userId = intent.getIntExtra(UID, -1)
-        val type = intent.getSerializableExtra(ITEM_TYPE) as FoodType
+        val type = intent.getSerializableExtra(ITEM_TYPE) as RecipeType
         selectFragment(type)
     }
 
-    private fun selectFragment(type: FoodType) {
+    private fun selectFragment(type: RecipeType) {
         when (type) {
-            FoodType.ADDED -> setFragment(UserRecipesFragment.getInstance())
-            FoodType.LIKE -> setFragment(UserLikeFragment.getInstance())
+            RecipeType.ADDED -> setFragment(AddedRecipeFragment.getInstance())
+            RecipeType.LIKE -> setFragment(LikeRecipeFragment.getInstance())
             else -> {
             }
         }

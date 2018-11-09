@@ -15,7 +15,6 @@ android:orientation="horizontal">
     android:textColor="@android:color/darker_gray"
     android:textSize="14sp" />
 
-
 <include
     android:id="@+id/buttonAddProduct"
     layout="@layout/button_add"
