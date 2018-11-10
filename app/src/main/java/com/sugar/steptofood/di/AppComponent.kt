@@ -5,19 +5,17 @@ import com.sugar.steptofood.di.module.NetworkModule
 import com.sugar.steptofood.ui.activity.*
 import com.sugar.steptofood.ui.fragment.recipe.RecipeFragment
 import com.sugar.steptofood.ui.fragment.user.UserFragment
+import com.sugar.steptofood.ui.viewmodel.ProductViewModel
+import com.sugar.steptofood.ui.viewmodel.RecipeViewModel
+import com.sugar.steptofood.ui.viewmodel.UserViewModel
 import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
 @Component(modules = [ContextModule::class, NetworkModule::class])
 interface AppComponent {
-
-    fun inject(startActivity: StartActivity)
     fun inject(tabsActivity: TabsActivity)
-    fun inject(recipeActivity: RecipeActivity)
-    fun inject(recipeCreationActivity: RecipeCreationActivity)
-    fun inject(searchProductActivity: SearchProductActivity)
-    fun inject(recipeFragment: RecipeFragment)
-    fun inject(userFragment: UserFragment)
-    fun inject(recipeListActivity: RecipeListActivity)
+    fun inject(userViewModel: UserViewModel)
+    fun inject(recipeViewModel: RecipeViewModel)
+    fun inject(productViewModel: ProductViewModel)
 }

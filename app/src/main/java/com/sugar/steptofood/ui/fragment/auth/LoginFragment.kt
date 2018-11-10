@@ -7,14 +7,13 @@ import android.support.transition.*
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
 import com.sugar.steptofood.R
+import com.sugar.steptofood.extension.observe
 import com.sugar.steptofood.extension.validate
 import com.sugar.steptofood.ui.activity.StartActivity
-import com.sugar.steptofood.ui.activity.StartActivity.Companion.REG_TAG
 import com.sugar.steptofood.ui.fragment.BaseFragment
-import com.sugar.steptofood.ui.view.BaseView
 import kotlinx.android.synthetic.main.fragment_login.*
 
-class LoginFragment : BaseView, BaseFragment() {
+class LoginFragment : BaseFragment() {
 
     companion object {
         fun getInstance() = LoginFragment()
@@ -23,6 +22,7 @@ class LoginFragment : BaseView, BaseFragment() {
     private val startActivity by lazy { activity as StartActivity }
 
     override fun initView(view: View, savedInstanceState: Bundle?) {
+        initErrorObserver()
         buttonRegistration.setOnClickListener { toRegistration() }
         buttonLogin.setOnClickListener { login() }
     }
@@ -34,7 +34,7 @@ class LoginFragment : BaseView, BaseFragment() {
             errorLogMsg.visibility = View.INVISIBLE
             startActivity.checkLoginAndPassword(
                     loginLogText.text.toString(), passLogText.text.toString())
-        } else onShowError(getString(R.string.error_text_input))
+        } else showError(getString(R.string.error_text_input))
     }
 
     private fun toRegistration() {
@@ -43,7 +43,7 @@ class LoginFragment : BaseView, BaseFragment() {
         setTransitionAnimation(this)
 
         getTransactionWithSharedElements()
-                .replace(R.id.fragmentContainer, registration, REG_TAG)
+                .replace(R.id.fragmentContainer, registration)
                 .addToBackStack(this.tag)
                 .commit()
     }
@@ -63,15 +63,13 @@ class LoginFragment : BaseView, BaseFragment() {
         fragment.exitTransition = Fade()
     }
 
-    override fun onShowLoading() {
-        startActivity.onShowLoading()
+    private fun initErrorObserver() {
+        startActivity.getErrorMessage().observe(this) { message ->
+            if (isVisible) showError(message)
+        }
     }
 
-    override fun onHideLoading() {
-        startActivity.onHideLoading()
-    }
-
-    override fun onShowError(error: String) {
+    private fun showError(error: String) {
         errorLogMsg?.text = error
         errorLogMsg?.visibility = View.VISIBLE
     }

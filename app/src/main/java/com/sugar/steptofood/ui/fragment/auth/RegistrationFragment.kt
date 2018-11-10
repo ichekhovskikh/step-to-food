@@ -3,13 +3,13 @@ package com.sugar.steptofood.ui.fragment.auth
 import android.os.Bundle
 import android.view.View
 import com.sugar.steptofood.R
+import com.sugar.steptofood.extension.observe
 import com.sugar.steptofood.extension.validate
 import com.sugar.steptofood.ui.activity.StartActivity
 import com.sugar.steptofood.ui.fragment.BaseFragment
-import com.sugar.steptofood.ui.view.BaseView
 import kotlinx.android.synthetic.main.fragment_registration.*
 
-class RegistrationFragment : BaseView, BaseFragment() {
+class RegistrationFragment : BaseFragment() {
 
     companion object {
         fun getInstance() = RegistrationFragment()
@@ -18,6 +18,7 @@ class RegistrationFragment : BaseView, BaseFragment() {
     private val startActivity by lazy { activity as StartActivity }
 
     override fun initView(view: View, savedInstanceState: Bundle?) {
+        initErrorObserver()
         buttonRegister.setOnClickListener { register() }
     }
 
@@ -30,18 +31,16 @@ class RegistrationFragment : BaseView, BaseFragment() {
                     nameRegText.text.toString(),
                     loginRegText.text.toString(),
                     passRegText.text.toString())
-        } else onShowError(getString(R.string.error_text_input))
+        } else showError(getString(R.string.error_text_input))
     }
 
-    override fun onShowLoading() {
-        startActivity.onShowLoading()
+    private fun initErrorObserver() {
+        startActivity.getErrorMessage().observe(this) { message ->
+            if (isVisible) showError(message)
+        }
     }
 
-    override fun onHideLoading() {
-        startActivity.onHideLoading()
-    }
-
-    override fun onShowError(error: String) {
+    private fun showError(error: String) {
         errorRegMsg?.text = error
         errorRegMsg?.visibility = View.VISIBLE
     }

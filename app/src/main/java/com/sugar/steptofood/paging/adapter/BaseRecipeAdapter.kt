@@ -43,18 +43,20 @@ abstract class BaseRecipeAdapter(context: Context,
         holder.textRecipeNameView.text = recipe.name
         holder.textCalorieNameView.text = recipe.calorie.toString()
 
-        //TODO move to data source
+        setImage(holder, recipe)
+        if (holder.itemViewType == ANOTHER_USER_RECIPE) {
+            holder.textUserNameView.text = recipe.author?.name
+            holder.buttonLike?.isChecked = recipe.hasYourLike
+        }
+    }
+
+    private fun setImage(holder: RecipeViewHolder, recipe: Recipe) {
         api.getRecipeImage(recipe.id!!)
                 .downloadSubscribe({
                     val bitmap: Bitmap? = BitmapFactory.decodeStream(it.byteStream())
                     if (bitmap != null)
                         holder.recipeImageView.setImageBitmap(bitmap)
                 }, {})
-
-        if (holder.itemViewType == ANOTHER_USER_RECIPE) {
-            holder.textUserNameView.text = recipe.author?.name
-            holder.buttonLike?.isChecked = recipe.hasYourLike
-        }
     }
 
     protected fun setRecipeViewListeners(holder: RecipeViewHolder) {

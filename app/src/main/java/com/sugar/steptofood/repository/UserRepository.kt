@@ -11,7 +11,6 @@ import android.net.Uri
 import com.sugar.steptofood.Session
 import com.sugar.steptofood.extension.downloadSubscribe
 import com.sugar.steptofood.extension.readBytes
-import com.sugar.steptofood.ui.view.UserView
 import okhttp3.*
 
 class UserRepository(private val api: ApiService,
@@ -24,7 +23,7 @@ class UserRepository(private val api: ApiService,
                 .customSubscribe({
                     liveStatus.postValue(LoadingStatus.LOADED)
                     login(login, password, onSuccess)
-                }, { errorMessage.postValue(it) })
+                }, onError())
     }
 
     fun login(login: String, password: String, onSuccess: () -> Unit) {
@@ -35,7 +34,7 @@ class UserRepository(private val api: ApiService,
                     session.userId = response.id!!
                     liveStatus.postValue(LoadingStatus.LOADED)
                     onSuccess.invoke()
-                }, { errorMessage.postValue(it) })
+                }, onError())
     }
 
     fun login(onSuccess: () -> Unit) {
@@ -49,7 +48,7 @@ class UserRepository(private val api: ApiService,
                 .customSubscribe({
                     liveStatus.postValue(LoadingStatus.LOADED)
                     onSuccess.invoke()
-                }, { errorMessage.postValue(it) })
+                }, onError())
     }
 
     fun getAvatar(userId: Int): LiveData<Bitmap?> {
@@ -58,7 +57,7 @@ class UserRepository(private val api: ApiService,
                 .downloadSubscribe({
                     val bitmap: Bitmap? = BitmapFactory.decodeStream(it.byteStream())
                     avatar.postValue(bitmap)
-                }, { errorMessage.postValue(it) })
+                }, onError())
         return avatar
     }
 
@@ -69,7 +68,7 @@ class UserRepository(private val api: ApiService,
                 .customSubscribe({
                     liveStatus.postValue(LoadingStatus.LOADED)
                     liveName.postValue(it.name)
-                }, { errorMessage.postValue(it) })
+                }, onError())
         return liveName
     }
 
@@ -89,6 +88,6 @@ class UserRepository(private val api: ApiService,
                 .customSubscribe({
                     liveStatus.postValue(LoadingStatus.LOADED)
                     session.reset()
-                }, { errorMessage.postValue(it) })
+                }, onError())
     }
 }

@@ -7,44 +7,47 @@ import android.widget.ArrayAdapter
 import com.sugar.steptofood.R
 import kotlinx.android.synthetic.main.activity_search_product.*
 import android.app.Activity
+import android.arch.lifecycle.ViewModelProviders
 import android.view.View
 import android.widget.AdapterView
 import android.widget.Toast
-import com.sugar.steptofood.App
 import com.sugar.steptofood.extension.afterTextChanged
+import com.sugar.steptofood.extension.observe
 import com.sugar.steptofood.model.Product
-import com.sugar.steptofood.presenter.ProductPresenter
-import com.sugar.steptofood.rest.ApiService
-import com.sugar.steptofood.ui.view.ProductView
+import com.sugar.steptofood.repository.BaseRepository
+import com.sugar.steptofood.ui.viewmodel.ProductViewModel
 import com.sugar.steptofood.utils.ExtraName.PRODUCT
 import kotlinx.android.synthetic.main.item_search.*
-import javax.inject.Inject
 
-class SearchProductActivity : ProductView, AppCompatActivity() {
+class SearchProductActivity : AppCompatActivity() {
 
-    @Inject
-    lateinit var api: ApiService
-
-    private val presenter by lazy { ProductPresenter(this, api) }
-    private var adapter: ArrayAdapter<Product>? = null
+    private val productViewModel by lazy { ViewModelProviders.of(this).get(ProductViewModel::class.java) }
+    private lateinit var adapter: ArrayAdapter<Product>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        App.appComponent.inject(this)
         setContentView(R.layout.activity_search_product)
+
         initSearch()
         initProductList()
-        presenter.getAllProducts()
+        initLoader()
+        initErrorObserver()
+
+        productViewModel.getAll().observe(this) { products ->
+            refreshProducts(products)
+        }
     }
 
-    override fun refreshProducts(products: List<Product>) {
-        adapter?.clear()
-        adapter?.addAll(products)
+    private fun refreshProducts(products: List<Product>) {
+        adapter.clear()
+        adapter.addAll(products)
     }
 
     private fun initSearch() {
         search.afterTextChanged {name ->
-            presenter.searchProducts(name)
+            productViewModel.search(name).observe(this) { products ->
+                refreshProducts(products)
+            }
         }
     }
 
@@ -55,21 +58,32 @@ class SearchProductActivity : ProductView, AppCompatActivity() {
         searchResultListView.onItemClickListener =
                 AdapterView.OnItemClickListener { _, _, position, _ ->
                     val returnIntent = Intent()
-                    returnIntent.putExtra(PRODUCT, adapter?.getItem(position))
+                    returnIntent.putExtra(PRODUCT, adapter.getItem(position))
                     setResult(Activity.RESULT_OK, returnIntent)
                     finish()
                 }
     }
 
-    override fun onShowLoading() {
+    private fun initLoader() {
+        productViewModel.getLoadingStatus().observe(this) { status ->
+            when (status) {
+                BaseRepository.LoadingStatus.LOADING -> showLoading()
+                BaseRepository.LoadingStatus.LOADED -> hideLoading()
+            }
+        }
+    }
+
+    private fun showLoading() {
         progressBar?.visibility = View.VISIBLE
     }
 
-    override fun onHideLoading() {
+    private fun hideLoading() {
         progressBar?.visibility = View.GONE
     }
 
-    override fun onShowError(error: String) {
-        Toast.makeText(this, error, Toast.LENGTH_LONG).show()
+    private fun initErrorObserver() {
+        productViewModel.getErrorMessage().observe(this) { message ->
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+        }
     }
 }

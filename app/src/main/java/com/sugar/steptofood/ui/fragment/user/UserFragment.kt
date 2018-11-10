@@ -1,6 +1,7 @@
 package com.sugar.steptofood.ui.fragment.user
 
 import android.app.Activity
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
@@ -11,30 +12,21 @@ import android.widget.Button
 import com.sugar.steptofood.R
 import android.support.annotation.Nullable
 import android.widget.Toast
-import com.sugar.steptofood.App
-import com.sugar.steptofood.Session
-import com.sugar.steptofood.presenter.UserPresenter
-import com.sugar.steptofood.rest.ApiService
+import com.sugar.steptofood.extension.observe
+import com.sugar.steptofood.repository.BaseRepository
 import com.sugar.steptofood.ui.activity.RecipeCreationActivity
 import com.sugar.steptofood.ui.activity.StartActivity
 import com.sugar.steptofood.ui.activity.RecipeListActivity
 import com.sugar.steptofood.ui.fragment.BaseFragment
-import com.sugar.steptofood.ui.view.UserView
+import com.sugar.steptofood.ui.viewmodel.UserViewModel
 import com.sugar.steptofood.utils.*
 import com.sugar.steptofood.utils.ExtraName.ITEM_TYPE
 import com.sugar.steptofood.utils.ExtraName.UID
 import kotlinx.android.synthetic.main.fragment_user.*
-import javax.inject.Inject
 
-open class UserFragment : UserView, BaseFragment() {
+open class UserFragment : BaseFragment() {
 
-    @Inject
-    lateinit var session: Session
-    @Inject
-    lateinit var api: ApiService
-
-    private val presenter by lazy { UserPresenter(this, api, session, context!!) }
-    protected var userId: Int? = null
+    private val userViewModel by lazy { ViewModelProviders.of(this).get(UserViewModel::class.java) }
 
     companion object {
         fun getInstance() = UserFragment()
@@ -43,17 +35,16 @@ open class UserFragment : UserView, BaseFragment() {
     }
 
     override fun initView(view: View, savedInstanceState: Bundle?) {
-        App.appComponent.inject(this)
-
         userImageView.setOnClickListener {
             userAvatarClickListener()
         }
-
         initMenuItems(view)
-        userId = activity!!.intent.getIntExtra(UID, session.userId)
-        presenter.getUserName(userId!!)
-        presenter.getAvatar(userId!!)
+        initUserContent(getCurrentUserId())
+        initLoader()
+        initErrorObserver()
     }
+
+    fun getCurrentUserId() = activity!!.intent.getIntExtra(UID, userViewModel.session.userId)
 
     open fun userAvatarClickListener() {
         chooseImageIfHasPermissions()
@@ -68,11 +59,20 @@ open class UserFragment : UserView, BaseFragment() {
         initExit(itemMenuContainer)
     }
 
-    override fun setUserName(name: String) {
+    private fun initUserContent(userId: Int) {
+        userViewModel.getUserName(userId).observe(this) { name ->
+            setUserName(name)
+        }
+        userViewModel.getAvatar(userId).observe(this) { avatar ->
+            setUserAvatar(avatar)
+        }
+    }
+
+    private fun setUserName(name: String) {
         userNameTextView?.text = name
     }
 
-    override fun setUserAvatar(image: Bitmap?) {
+    private fun setUserAvatar(image: Bitmap?) {
         if (image != null)
             userImageView?.setImageBitmap(image)
     }
@@ -98,7 +98,7 @@ open class UserFragment : UserView, BaseFragment() {
 
         button.setOnClickListener {
             val intent = Intent(activity, RecipeListActivity::class.java)
-            intent.putExtra(UID, userId)
+            intent.putExtra(UID, getCurrentUserId())
             intent.putExtra(ITEM_TYPE, RecipeType.ADDED)
             startActivity(intent)
         }
@@ -113,7 +113,7 @@ open class UserFragment : UserView, BaseFragment() {
 
         button.setOnClickListener {
             val intent = Intent(activity, RecipeListActivity::class.java)
-            intent.putExtra(UID, userId)
+            intent.putExtra(UID, getCurrentUserId())
             intent.putExtra(ITEM_TYPE, RecipeType.LIKE)
             startActivity(intent)
         }
@@ -142,7 +142,7 @@ open class UserFragment : UserView, BaseFragment() {
     private fun exit() {
         val intent = Intent(activity, StartActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        session.reset()
+        userViewModel.session.reset()
         startActivity(intent)
     }
 
@@ -159,19 +159,30 @@ open class UserFragment : UserView, BaseFragment() {
         if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK) {
             val uri = intent?.data!!
             userImageView.setImageURI(uri)
-            presenter.setAvatar(uri)
+            userViewModel.setAvatar(uri)
         }
     }
 
-    override fun onShowLoading() {
+    private fun initLoader() {
+        userViewModel.getLoadingStatus().observe(this) { status ->
+            when (status) {
+                BaseRepository.LoadingStatus.LOADING -> showLoading()
+                BaseRepository.LoadingStatus.LOADED -> hideLoading()
+            }
+        }
+    }
+
+    private fun showLoading() {
         progressBar?.visibility = View.VISIBLE
     }
 
-    override fun onHideLoading() {
+    private fun hideLoading() {
         progressBar?.visibility = View.GONE
     }
 
-    override fun onShowError(error: String) {
-        Toast.makeText(context, error, Toast.LENGTH_LONG).show()
+    private fun initErrorObserver() {
+        userViewModel.getErrorMessage().observe(this) { message ->
+            Toast.makeText(activity, message, Toast.LENGTH_LONG).show()
+        }
     }
 }

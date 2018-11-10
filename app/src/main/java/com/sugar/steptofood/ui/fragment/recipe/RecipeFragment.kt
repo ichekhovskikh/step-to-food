@@ -1,51 +1,35 @@
 package com.sugar.steptofood.ui.fragment.recipe
 
 import android.annotation.SuppressLint
-import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import com.mancj.materialsearchbar.MaterialSearchBar
-import com.sugar.steptofood.App
 import com.sugar.steptofood.R
 import com.sugar.steptofood.model.Recipe
 import com.sugar.steptofood.ui.fragment.BaseFragment
-import com.sugar.steptofood.ui.view.RecipeView
 import kotlinx.android.synthetic.main.fragment_recipe_list.*
-import com.sugar.steptofood.presenter.RecipePresenter
-import com.sugar.steptofood.rest.ApiService
 import com.sugar.steptofood.ui.activity.UserActivity
 import com.sugar.steptofood.ui.activity.RecipeActivity
 import com.sugar.steptofood.utils.ExtraName.RECIPE_ID
 import com.sugar.steptofood.utils.ExtraName.UID
-import javax.inject.Inject
 import android.widget.Toast
-import com.sugar.steptofood.Session
-import com.sugar.steptofood.db.SQLiteHelper
-import com.sugar.steptofood.paging.factory.UserRecipeSourceFactory
 import com.sugar.steptofood.paging.adapter.BaseRecipeAdapter
 import com.sugar.steptofood.paging.adapter.UserRecipeAdapter
 import com.sugar.steptofood.utils.RecipeType
 import android.view.ViewGroup
 import com.sugar.steptofood.extension.afterTextChanged
-import com.sugar.steptofood.paging.PagedRecipeRepository
+import com.sugar.steptofood.extension.observe
 import com.sugar.steptofood.paging.factory.BaseRecipeFactory
+import com.sugar.steptofood.repository.BaseRepository
+import com.sugar.steptofood.ui.viewmodel.RecipeViewModel
 import com.sugar.steptofood.utils.isNetworkAvailable
 
 @SuppressLint("InflateParams")
-open class RecipeFragment : RecipeView, BaseFragment() {
+open class RecipeFragment : BaseFragment() {
 
-    @Inject
-    protected lateinit var dbHelper: SQLiteHelper
-
-    @Inject
-    protected lateinit var api: ApiService
-
-    @Inject
-    protected lateinit var session: Session
-
-    protected val presenter by lazy { RecipePresenter(this, api, context!!) }
-    private var pagedRecipeRepository: PagedRecipeRepository? = null
+    protected val recipeViewModel by lazy { ViewModelProviders.of(this).get(RecipeViewModel::class.java) }
     private var adapter: BaseRecipeAdapter? = null
 
     private val search by lazy { inflater?.inflate(R.layout.item_search, null) as MaterialSearchBar }
@@ -55,13 +39,12 @@ open class RecipeFragment : RecipeView, BaseFragment() {
     }
 
     override fun initView(view: View, savedInstanceState: Bundle?) {
-        App.appComponent.inject(this)
-
         if (isNetworkAvailable(context!!))
-            dbHelper.recipeBusinessObject.removeAll()
-
+            recipeViewModel.clearCache()
         initHeader()
         initContent()
+        initLoader()
+        initErrorObserver()
     }
 
     override fun getLayout() = R.layout.fragment_recipe_list
@@ -74,7 +57,7 @@ open class RecipeFragment : RecipeView, BaseFragment() {
         search.setHint(getString(R.string.search_recipe))
         search.setPlaceHolder(getString(R.string.search_recipe))
         search.afterTextChanged {
-            pagedRecipeRepository?.refreshData(getRecipeSourceFactory())
+            recipeViewModel.refreshPagedRecipeList(getRecipeSourceFactory())
         }
         tittleTabContainer.addView(search)
     }
@@ -83,28 +66,24 @@ open class RecipeFragment : RecipeView, BaseFragment() {
 
     open fun createRecipeAdapter(): BaseRecipeAdapter? =
             UserRecipeAdapter(context!!,
-                    api,
-                    session,
+                    recipeViewModel.api,
+                    recipeViewModel.session,
                     ::onRecipeImageClickListener,
                     ::onUserNameClickListener,
                     ::onRemoveClickListener,
                     ::onLikeClickListener)
 
     open fun getRecipeSourceFactory(): BaseRecipeFactory =
-            UserRecipeSourceFactory(api, session, dbHelper, getAuthor(), getRecipeType(), search.text)
+            recipeViewModel.getRecipeSourceFactory(getAuthor(), getRecipeType(), search.text)
 
-    private fun getAuthor() = activity!!.intent.getIntExtra(UID, session.userId)
+    private fun getAuthor() = activity!!.intent.getIntExtra(UID, recipeViewModel.session.userId)
 
     private fun initContent() {
         adapter = createRecipeAdapter()
         recycler.adapter = adapter
 
         val sourceFactory = getRecipeSourceFactory()
-        pagedRecipeRepository?.removeObservers(this)
-        pagedRecipeRepository = PagedRecipeRepository(sourceFactory)
-        pagedRecipeRepository?.observe(this, Observer { recipes ->
-            adapter?.submitList(recipes)
-        })
+        recipeViewModel.setLivePagedRecipeList(this, sourceFactory, adapter!!)
     }
 
     protected fun onRecipeImageClickListener(recipe: Recipe) {
@@ -120,23 +99,33 @@ open class RecipeFragment : RecipeView, BaseFragment() {
     }
 
     protected fun onRemoveClickListener(recipe: Recipe) {
-        pagedRecipeRepository?.removeItem(recipe.id!!)
+        recipeViewModel.removeRecipe(recipe.id!!)
     }
 
     protected fun onLikeClickListener(recipe: Recipe, hasLike: Boolean) {
-        presenter.setLikeRecipe(recipe.id!!, hasLike)
-        dbHelper.recipeBusinessObject.setOrRemoveLike(recipe.id!!, session.userId, hasLike)
+        recipeViewModel.setLikeRecipe(recipe.id!!, hasLike)
     }
 
-    override fun onShowLoading() {
+    private fun initLoader() {
+        recipeViewModel.getLoadingStatus().observe(this) { status ->
+            when (status) {
+                BaseRepository.LoadingStatus.LOADING -> showLoading()
+                BaseRepository.LoadingStatus.LOADED -> hideLoading()
+            }
+        }
+    }
+
+    private fun showLoading() {
         progressBar?.visibility = View.VISIBLE
     }
 
-    override fun onHideLoading() {
+    private fun hideLoading() {
         progressBar?.visibility = View.GONE
     }
 
-    override fun onShowError(error: String) {
-        Toast.makeText(context, error, Toast.LENGTH_LONG).show()
+    private fun initErrorObserver() {
+        recipeViewModel.getErrorMessage().observe(this) { message ->
+            Toast.makeText(activity, message, Toast.LENGTH_LONG).show()
+        }
     }
 }

@@ -48,9 +48,13 @@ dependencies {
 
     implementation "com.j256.ormlite:ormlite-android:$ormlite_version"
 
+    implementation "android.arch.lifecycle:extensions:$lifecycle_version"
+    implementation "android.arch.lifecycle:viewmodel:$lifecycle_version"
+
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "com.android.support.test:runner:$test_runner_version"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$test_espresso_version"
+    androidTestImplementation "com.android.support.test.espresso:espresso-intents:$test_espresso_version"
     testImplementation "org.mockito:mockito-core:$mockito_version"
 
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"

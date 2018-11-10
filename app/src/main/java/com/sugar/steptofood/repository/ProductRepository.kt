@@ -15,7 +15,7 @@ class ProductRepository(private val api: ApiService) : BaseRepository() {
                 .customSubscribe({
                     liveStatus.postValue(LoadingStatus.LOADED)
                     products.postValue(it)
-                }, { errorMessage.postValue(it) })
+                }, onError())
         return products
     }
 
@@ -26,7 +26,7 @@ class ProductRepository(private val api: ApiService) : BaseRepository() {
                 .customSubscribe({
                     liveStatus.postValue(LoadingStatus.LOADED)
                     products.postValue(it)
-                }, { errorMessage.postValue(it) })
+                }, onError())
         return products
     }
 }

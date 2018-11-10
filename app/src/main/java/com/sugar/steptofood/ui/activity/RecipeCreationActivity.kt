@@ -2,6 +2,7 @@ package com.sugar.steptofood.ui.activity
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -10,14 +11,13 @@ import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import com.sugar.steptofood.App
 import com.sugar.steptofood.R
+import com.sugar.steptofood.extension.observe
 import com.sugar.steptofood.extension.validate
 import com.sugar.steptofood.model.Recipe
 import com.sugar.steptofood.model.Product
-import com.sugar.steptofood.presenter.RecipePresenter
-import com.sugar.steptofood.rest.ApiService
-import com.sugar.steptofood.ui.view.RecipeView
+import com.sugar.steptofood.repository.BaseRepository
+import com.sugar.steptofood.ui.viewmodel.RecipeViewModel
 import com.sugar.steptofood.utils.*
 import com.sugar.steptofood.utils.ExtraName.PRODUCT
 import kotlinx.android.synthetic.main.activity_recipe.*
@@ -26,21 +26,18 @@ import kotlinx.android.synthetic.main.item_edit_energy.*
 import kotlinx.android.synthetic.main.item_edit_how_cook.*
 import kotlinx.android.synthetic.main.item_products_container.*
 import kotlinx.android.synthetic.main.action_bar_edit.*
-import javax.inject.Inject
 
-class RecipeCreationActivity : RecipeView, AppCompatActivity() {
+class RecipeCreationActivity : AppCompatActivity() {
 
-    @Inject
-    lateinit var api: ApiService
-
-    private val presenter by lazy { RecipePresenter(this, api, this) }
+    private val recipeViewModel by lazy { ViewModelProviders.of(this).get(RecipeViewModel::class.java) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        App.appComponent.inject(this)
         setContentView(R.layout.activity_recipe)
         initActionBar()
         initEditRecipeView()
+        initLoader()
+        initErrorObserver()
     }
 
     private fun initActionBar() {
@@ -68,7 +65,7 @@ class RecipeCreationActivity : RecipeView, AppCompatActivity() {
     private fun setActionOnClickButtons() {
         buttonDone.setOnClickListener {
             if (validateAllFields())
-                presenter.addRecipe(getCreatedRecipe(), ::showSuccessToastAndExit)
+                recipeViewModel.addRecipe(getCreatedRecipe(), ::showSuccessToastAndExit)
         }
         buttonCancel.setOnClickListener { finish() }
     }
@@ -224,16 +221,27 @@ class RecipeCreationActivity : RecipeView, AppCompatActivity() {
         finish()
     }
 
-    override fun onShowLoading() {
+    private fun initLoader() {
+        recipeViewModel.getLoadingStatus().observe(this) { status ->
+            when (status) {
+                BaseRepository.LoadingStatus.LOADING -> showLoading()
+                BaseRepository.LoadingStatus.LOADED -> hideLoading()
+            }
+        }
+    }
+
+    private fun showLoading() {
         progressBar?.visibility = View.VISIBLE
     }
 
-    override fun onHideLoading() {
+    private fun hideLoading() {
         progressBar?.visibility = View.GONE
     }
 
-    override fun onShowError(error: String) {
-        Toast.makeText(this, error, Toast.LENGTH_LONG).show()
+    private fun initErrorObserver() {
+        recipeViewModel.getErrorMessage().observe(this) { message ->
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+        }
     }
 
     companion object {

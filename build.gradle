@@ -32,6 +32,7 @@ ext {
     material_search_bar_version = '0.7.6'
     circle_image_view_version = '2.2.0'
     paging_version = '1.0.1'
+    lifecycle_version = '1.1.1'
     ormlite_version = '5.1'
     junit_version = '4.12'
     mockito_version = '2.23.0'

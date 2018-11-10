@@ -1,6 +1,7 @@
 package com.sugar.steptofood.ui.activity
 
 import android.annotation.SuppressLint
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.graphics.Bitmap
 import android.support.v7.app.AppCompatActivity
@@ -9,61 +10,39 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.ToggleButton
-import com.sugar.steptofood.App
 import com.sugar.steptofood.R
-import com.sugar.steptofood.Session
-import com.sugar.steptofood.db.SQLiteHelper
 import com.sugar.steptofood.extension.observe
 import com.sugar.steptofood.model.Recipe
 import com.sugar.steptofood.model.Product
 import com.sugar.steptofood.model.User
-import com.sugar.steptofood.presenter.RecipePresenter
-import com.sugar.steptofood.rest.ApiService
-import com.sugar.steptofood.ui.view.RecipeView
+import com.sugar.steptofood.repository.BaseRepository
+import com.sugar.steptofood.ui.viewmodel.RecipeViewModel
 import com.sugar.steptofood.utils.ExtraName.RECIPE_ID
 import com.sugar.steptofood.utils.ExtraName.UID
-import com.sugar.steptofood.utils.isNetworkAvailable
 import kotlinx.android.synthetic.main.activity_recipe.*
 import kotlinx.android.synthetic.main.item_energy.*
 import kotlinx.android.synthetic.main.item_how_cook.*
 import kotlinx.android.synthetic.main.item_products_container.*
-import javax.inject.Inject
 
-class RecipeActivity : RecipeView, AppCompatActivity() {
+class RecipeActivity : AppCompatActivity() {
 
-    @Inject
-    lateinit var dbHelper: SQLiteHelper
-
-    @Inject
-    lateinit var api: ApiService
-
-    @Inject
-    lateinit var session: Session
-
-    private val presenter by lazy { RecipePresenter(this, api, this) }
+    private val recipeViewModel by lazy { ViewModelProviders.of(this).get(RecipeViewModel::class.java) }
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        App.appComponent.inject(this)
         setContentView(R.layout.activity_recipe)
-        initRecipeView()
-
         val recipeId = intent.getIntExtra(RECIPE_ID, -1)
-        getRecipeFromApiOrCacheIfNoInternet(recipeId)
+
+        initRecipeView()
+        initLoader()
+        initErrorObserver()
+        initRecipe(recipeId)
     }
 
-    private fun getRecipeFromApiOrCacheIfNoInternet(recipeId: Int) {
-        if (isNetworkAvailable(this))
-            presenter.getRecipe(recipeId).observe(this) { recipe ->
-                setRecipe(recipe)
-            }
-        else onShowError(getString(R.string.error_no_internet))
-        setRecipeFromCacheAtLoadTime(recipeId)
-    }
-
-    private fun setRecipeFromCacheAtLoadTime(recipeId: Int) {
-        val recipe = dbHelper.recipeDao.queryForId(recipeId)
-        recipe?.let { setRecipe(recipe) }
+    private fun initRecipe(recipeId: Int) {
+        recipeViewModel.getRecipe(recipeId).observe(this) { recipe ->
+            setRecipe(recipe)
+        }
     }
 
     private fun setRecipe(recipe: Recipe) {
@@ -71,7 +50,7 @@ class RecipeActivity : RecipeView, AppCompatActivity() {
             return
 
         recipeNameTextView.setText(recipe.name)
-        if (recipe.author?.id != session.userId) {
+        if (recipe.author?.id != recipeViewModel.session.userId) {
             addLikeButton(recipe)
             setAuthor(recipe.author)
         } else addRemoveButton(recipe)
@@ -80,7 +59,7 @@ class RecipeActivity : RecipeView, AppCompatActivity() {
             addProduct(product)
         setRecipeEnergy(recipe)
 
-        presenter.getRecipeImage(recipe.id!!).observe(this) {
+        recipeViewModel.getRecipeImage(recipe.id!!).observe(this) {
             setRecipeImage(it)
         }
     }
@@ -110,7 +89,7 @@ class RecipeActivity : RecipeView, AppCompatActivity() {
             return
 
         userNameTextView?.text = author.name
-        presenter.getRecipeAuthorAvatar(author.id!!).observe(this) {
+        recipeViewModel.getRecipeAuthorAvatar(author.id!!).observe(this) {
             setRecipeAuthorAvatar(it)
         }
         userNameTextView.setOnClickListener {
@@ -136,8 +115,7 @@ class RecipeActivity : RecipeView, AppCompatActivity() {
         val buttonLike = layoutInflater.inflate(R.layout.button_like, null) as ToggleButton
         buttonLike.isChecked = recipe.hasYourLike
         buttonLike.setOnCheckedChangeListener { _, hasLike ->
-            presenter.setLikeRecipe(recipe.id!!, hasLike)
-            dbHelper.recipeBusinessObject.setOrRemoveLike(recipe.id!!, session.userId, hasLike)
+            recipeViewModel.setLikeRecipe(recipe.id!!, hasLike)
         }
         imageActionContainer.addView(buttonLike)
     }
@@ -146,8 +124,7 @@ class RecipeActivity : RecipeView, AppCompatActivity() {
     private fun addRemoveButton(recipe: Recipe) {
         val buttonRemove = layoutInflater.inflate(R.layout.button_remove, null)
         buttonRemove.setOnClickListener {
-            presenter.removeRecipe(recipe.id!!)
-            dbHelper.recipeBusinessObject.cascadeRemove(recipe.id!!)
+            recipeViewModel.removeRecipe(recipe.id!!)
             finish()
         }
         imageActionContainer.addView(buttonRemove)
@@ -168,15 +145,26 @@ class RecipeActivity : RecipeView, AppCompatActivity() {
         userImageView?.visibility = View.VISIBLE
     }
 
-    override fun onShowLoading() {
+    private fun initLoader() {
+        recipeViewModel.getLoadingStatus().observe(this) { status ->
+            when (status) {
+                BaseRepository.LoadingStatus.LOADING -> showLoading()
+                BaseRepository.LoadingStatus.LOADED -> hideLoading()
+            }
+        }
+    }
+
+    private fun showLoading() {
         progressBar?.visibility = View.VISIBLE
     }
 
-    override fun onHideLoading() {
+    private fun hideLoading() {
         progressBar?.visibility = View.GONE
     }
 
-    override fun onShowError(error: String) {
-        Toast.makeText(this, error, Toast.LENGTH_LONG).show()
+    private fun initErrorObserver() {
+        recipeViewModel.getErrorMessage().observe(this) { message ->
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+        }
     }
 }

@@ -1,43 +1,53 @@
 package com.sugar.steptofood.ui.activity
 
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.view.View
-import com.sugar.steptofood.App
 import com.sugar.steptofood.R
-import com.sugar.steptofood.Session
-import com.sugar.steptofood.presenter.LoginPresenter
-import com.sugar.steptofood.rest.ApiService
-import com.sugar.steptofood.ui.view.LoginView
+import com.sugar.steptofood.extension.observe
+import com.sugar.steptofood.repository.BaseRepository
 import com.sugar.steptofood.ui.fragment.auth.LoginFragment
-import com.sugar.steptofood.ui.view.BaseView
+import com.sugar.steptofood.ui.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.activity_start.*
-import javax.inject.Inject
 
-class StartActivity : LoginView, AppCompatActivity() {
+class StartActivity : AppCompatActivity() {
 
-    @Inject
-    lateinit var session: Session
-    @Inject
-    lateinit var api: ApiService
-
-    private val presenter by lazy { LoginPresenter(this, api, session) }
-    private var operationTag: String = LOG_TAG
+    private val userViewModel by lazy { ViewModelProviders.of(this).get(UserViewModel::class.java) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        App.appComponent.inject(this)
         setContentView(R.layout.splash_fragment)
-        presenter.login()
+        initLoader()
+        initErrorObserver()
+        userViewModel.login(::login)
     }
 
     private fun setFragment(fragment: Fragment) {
         supportFragmentManager
                 .beginTransaction()
-                .add(R.id.fragmentContainer, fragment, LOG_TAG)
+                .add(R.id.fragmentContainer, fragment)
                 .commit()
+    }
+
+    fun register(name: String, login: String, pass: String) {
+        userViewModel.register(name, login, pass, ::login)
+    }
+
+    fun checkLoginAndPassword(login: String, pass: String) {
+        userViewModel.login(login, pass, ::login)
+    }
+
+    fun getErrorMessage(): LiveData<String> {
+        return userViewModel.getErrorMessage()
+    }
+
+    private fun login() {
+        val intent = Intent(this, TabsActivity::class.java)
+        startActivity(intent)
     }
 
     private fun openLoginWindow() {
@@ -45,39 +55,27 @@ class StartActivity : LoginView, AppCompatActivity() {
         setFragment(LoginFragment.getInstance())
     }
 
-    fun register(name: String, login: String, pass: String) {
-        operationTag = REG_TAG
-        presenter.register(name, login, pass)
+    private fun initLoader() {
+        userViewModel.getLoadingStatus().observe(this) { status ->
+            when (status) {
+                BaseRepository.LoadingStatus.LOADING -> showLoading()
+                BaseRepository.LoadingStatus.LOADED -> hideLoading()
+            }
+        }
     }
 
-    fun checkLoginAndPassword(login: String, pass: String) {
-        operationTag = LOG_TAG
-        presenter.login(login, pass)
-    }
-
-    override fun login() {
-        val intent = Intent(this, TabsActivity::class.java)
-        startActivity(intent)
-    }
-
-    override fun onShowLoading() {
+    private fun showLoading() {
         progressBar?.visibility = View.VISIBLE
     }
 
-    override fun onHideLoading() {
+    private fun hideLoading() {
         progressBar?.visibility = View.GONE
     }
 
-    override fun onShowError(error: String) {
-        val showingView = supportFragmentManager.findFragmentByTag(operationTag) as BaseView?
-        if (showingView == null) {
-            openLoginWindow()
+    private fun initErrorObserver() {
+        userViewModel.getErrorMessage().observe(this) {
+            if (supportFragmentManager.backStackEntryCount == 0)
+                openLoginWindow()
         }
-        showingView?.onShowError(error)
-    }
-
-    companion object {
-        const val LOG_TAG = "login"
-        const val REG_TAG = "registration"
     }
 }

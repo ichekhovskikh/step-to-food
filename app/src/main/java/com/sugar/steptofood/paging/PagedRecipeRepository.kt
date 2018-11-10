@@ -37,11 +37,12 @@ class PagedRecipeRepository(private var sourceFactory: BaseRecipeFactory) {
         }
     }
 
-    fun refreshData(sourceFactory: BaseRecipeFactory) {
+    fun refreshData(sourceFactory: BaseRecipeFactory = this.sourceFactory) {
         this.sourceFactory = sourceFactory
         refreshPagedList()
     }
 
+    @Deprecated("not using")
     fun removeItem(recipeId: Int) {
         val dataSource = sourceFactory.currentDataSource.value
         dataSource?.removeItem(recipeId) {

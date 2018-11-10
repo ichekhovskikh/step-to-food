@@ -11,8 +11,13 @@ open class BaseRepository {
         return liveStatus
     }
 
-    protected fun error(): LiveData<String> {
+    fun error(): MutableLiveData<String> {
         return errorMessage
+    }
+
+    protected fun onError() = { message: String ->
+        liveStatus.postValue(LoadingStatus.LOADED)
+        errorMessage.postValue(message)
     }
 
     enum class LoadingStatus {
