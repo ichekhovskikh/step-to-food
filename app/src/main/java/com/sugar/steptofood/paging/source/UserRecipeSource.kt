@@ -1,5 +1,6 @@
 package com.sugar.steptofood.paging.source
 
+import android.arch.paging.PositionalDataSource
 import com.sugar.steptofood.Session
 import com.sugar.steptofood.db.SQLiteHelper
 import com.sugar.steptofood.extension.customSubscribe
@@ -12,7 +13,7 @@ class UserRecipeSource(private val api: ApiService,
                        private val dbHelper: SQLiteHelper,
                        private val userId: Int,
                        private val type: RecipeType,
-                       private val searchName: String) : BaseRecipeSource(api, dbHelper) {
+                       private val searchName: String) : PositionalDataSource<Recipe>() {
 
     override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<Recipe>) {
         loadData(params.requestedStartPosition, params.requestedLoadSize) { recipes ->

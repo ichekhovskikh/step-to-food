@@ -1,12 +1,13 @@
 package com.sugar.steptofood.paging.source
 
+import android.arch.paging.PositionalDataSource
 import com.sugar.steptofood.extension.customSubscribe
 import com.sugar.steptofood.model.Recipe
 import com.sugar.steptofood.model.Product
 import com.sugar.steptofood.rest.ApiService
 
 class ComposedRecipeSource(private val api: ApiService,
-                           products: List<Product>) : BaseRecipeSource(api) {
+                           products: List<Product>) : PositionalDataSource<Recipe>() {
 
     private val productsId: List<Int> = products.asSequence().map { it.id!! }.toList()
 

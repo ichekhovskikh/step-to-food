@@ -42,14 +42,6 @@ class PagedRecipeRepository(private var sourceFactory: BaseRecipeFactory) {
         refreshPagedList()
     }
 
-    @Deprecated("not using")
-    fun removeItem(recipeId: Int) {
-        val dataSource = sourceFactory.currentDataSource.value
-        dataSource?.removeItem(recipeId) {
-            refreshPagedList()
-        }
-    }
-
     private fun refreshPagedList() {
         observers.keys.forEach { owner ->
             pagedList.removeObservers(owner)
