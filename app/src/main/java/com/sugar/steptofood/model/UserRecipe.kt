@@ -1,20 +1,17 @@
 package com.sugar.steptofood.model
 
-import com.j256.ormlite.field.DatabaseField
-import com.j256.ormlite.table.DatabaseTable
-import com.sugar.steptofood.utils.RecipeType
+import android.arch.persistence.room.*
 
-@DatabaseTable(tableName = "user_recipe")
+@Entity
 data class UserRecipe (
-        @DatabaseField(generatedId = true)
+        @PrimaryKey(autoGenerate = true)
         override var id: Int? = null,
 
-        @DatabaseField(foreignAutoRefresh = true, foreign = true)
-        var recipe: Recipe? = null,
+        @ForeignKey(entity = Recipe::class, parentColumns = ["id"], childColumns = ["recipeId"], onDelete = ForeignKey.CASCADE)
+        var recipeId: Int? = null,
 
-        @DatabaseField(foreignAutoRefresh = true, foreign = true)
-        var user: User? = null,
+        @ForeignKey(entity = Product::class, parentColumns = ["id"], childColumns = ["userId"], onDelete = ForeignKey.CASCADE)
+        var userId: Int? = null,
 
-        @DatabaseField
-        var type: String = RecipeType.LIKE.toString()
-) : Entity
+        var type: String? = null
+) : EntityDto

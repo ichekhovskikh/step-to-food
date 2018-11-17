@@ -84,6 +84,7 @@ class RecipeCreationActivity : AppCompatActivity() {
     }
 
     private fun initEditRecipeView() {
+        recipeImageView.contentDescription = null
         addEditContainersOnView()
         setLabels()
         setClickEditButtonListeners()

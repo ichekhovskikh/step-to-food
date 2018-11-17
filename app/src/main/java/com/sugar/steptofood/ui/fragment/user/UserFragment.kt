@@ -63,18 +63,11 @@ open class UserFragment : BaseFragment() {
         userViewModel.getUserName(userId).observe(this) { name ->
             setUserName(name)
         }
-        userViewModel.getAvatar(userId).observe(this) { avatar ->
-            setUserAvatar(avatar)
-        }
+        loadAvatar(userId).into(userImageView)
     }
 
     private fun setUserName(name: String) {
         userNameTextView?.text = name
-    }
-
-    private fun setUserAvatar(image: Bitmap?) {
-        if (image != null)
-            userImageView?.setImageBitmap(image)
     }
 
     fun initAddRecipe(container: ViewGroup) {

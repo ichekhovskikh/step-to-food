@@ -1,26 +1,19 @@
 package com.sugar.steptofood.model
 
+import android.arch.persistence.room.*
 import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
-import com.j256.ormlite.field.DatabaseField
-import com.j256.ormlite.table.DatabaseTable
 
-@DatabaseTable(tableName = "user")
+@Entity
 data class User(
-        @DatabaseField(columnName = "id", id = true)
-        @SerializedName("id")
+        @PrimaryKey(autoGenerate = false)
         override var id: Int? = null,
 
-        @DatabaseField(columnName = "name")
-        @SerializedName("name")
         var name: String? = null,
 
-        @DatabaseField(columnName = "avatar")
-        @SerializedName("avatar")
         @Expose
         var avatar: String? = null,
 
-        @SerializedName("token")
+        @Ignore
         @Expose
         val token: String? = null
-) : Entity
+) : EntityDto

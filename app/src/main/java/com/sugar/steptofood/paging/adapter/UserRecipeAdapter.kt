@@ -4,17 +4,17 @@ import android.content.Context
 import android.view.ViewGroup
 import com.sugar.steptofood.R
 import com.sugar.steptofood.Session
-import com.sugar.steptofood.model.Recipe
-import com.sugar.steptofood.rest.ApiService
+import com.sugar.steptofood.db.AppDatabase
+import com.sugar.steptofood.model.*
 
 class UserRecipeAdapter(context: Context,
-                        api: ApiService,
+                        appDatabase: AppDatabase,
                         session: Session,
                         onRecipeImageClick: ((Recipe) -> Unit)? = {},
                         onUserNameClick: ((Recipe) -> Unit)? = {},
                         onRemoveClick: ((Recipe) -> Unit)? = {},
                         onLikeClick: ((Recipe, Boolean) -> Unit)? = { _, _ -> })
-    : BaseRecipeAdapter(context, api, session, onRecipeImageClick, onUserNameClick, onRemoveClick, onLikeClick) {
+    : BaseRecipeAdapter(context, appDatabase, session, onRecipeImageClick, onUserNameClick, onRemoveClick, onLikeClick) {
 
     override fun getRecipeCardLayout() = R.layout.item_recipe_card
 
@@ -23,7 +23,7 @@ class UserRecipeAdapter(context: Context,
     }
 
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
-        bindRecipeViewHolder(holder, position)
-        setRecipeViewListeners(holder)
+        val recipe = getItem(position)!!
+        bindRecipeViewHolder(holder, recipe)
     }
 }

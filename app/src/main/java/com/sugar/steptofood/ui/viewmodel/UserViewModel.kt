@@ -40,10 +40,6 @@ class UserViewModel(app: Application) : AndroidViewModel(app) {
         userRepository.login(onSuccess)
     }
 
-    fun getAvatar(userId: Int): LiveData<Bitmap?> {
-        return userRepository.getAvatar(userId)
-    }
-
     fun getUserName(userId: Int): LiveData<String> {
         return userRepository.getUserName(userId)
     }

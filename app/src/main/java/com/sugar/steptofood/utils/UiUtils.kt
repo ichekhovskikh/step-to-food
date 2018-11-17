@@ -26,7 +26,7 @@ fun showExitDialog(context: Context?, positive: () -> Unit, negative: () -> Unit
     val builder = AlertDialog.Builder(context)
     builder.setTitle(context?.getString(R.string.dialog_tittle))
     builder.setMessage(context?.getString(R.string.dialog_message))
-    builder.setNegativeButton(context?.getString(R.string.no)) { dialog, which -> negative.invoke() }
-    builder.setPositiveButton(context?.getString(R.string.yes)) { dialog, which -> positive.invoke() }
+    builder.setNegativeButton(context?.getString(R.string.no)) { _, _ -> negative.invoke() }
+    builder.setPositiveButton(context?.getString(R.string.yes)) { _, _ -> positive.invoke() }
     builder.create().show()
 }

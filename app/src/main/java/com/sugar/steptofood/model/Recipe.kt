@@ -1,53 +1,43 @@
 package com.sugar.steptofood.model
 
+import android.arch.persistence.room.*
+import android.graphics.Bitmap
 import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
-import com.j256.ormlite.field.DatabaseField
-import com.j256.ormlite.table.DatabaseTable
 
-@DatabaseTable(tableName = "recipe")
+@Entity
 data class Recipe(
-        @DatabaseField(columnName = "id", id = true)
-        @SerializedName("id")
+        @PrimaryKey(autoGenerate = false)
         override var id: Int? = null,
 
-        @DatabaseField(columnName = "name", canBeNull = false)
-        @SerializedName("name")
         var name: String = "",
 
-        @DatabaseField(columnName = "image")
-        @SerializedName("image")
         var image: String? = "",
 
-        @DatabaseField(columnName = "description", canBeNull = false)
-        @SerializedName("description")
         var description: String = "",
 
-        @DatabaseField(columnName = "calorie", canBeNull = false)
-        @SerializedName("calorie")
         var calorie: Double? = null,
 
-        @DatabaseField(columnName = "protein", canBeNull = false)
-        @SerializedName("protein")
         var protein: Double? = null,
 
-        @DatabaseField(columnName = "fat", canBeNull = false)
-        @SerializedName("fat")
         var fat: Double? = null,
 
-        @DatabaseField(columnName = "carbohydrates", canBeNull = false)
-        @SerializedName("carbohydrates")
         var carbohydrates: Double? = null,
 
-        @DatabaseField(foreignAutoRefresh = true, foreign = true)
-        @SerializedName("author")
+        @ForeignKey(entity = User::class, parentColumns = ["id"], childColumns = ["authorId"], onDelete = ForeignKey.CASCADE)
+        var authorId: Int? = null,
+
+        @Ignore
         var author: User? = null,
 
-        @SerializedName("products")
+        @Ignore
         @Expose
         var products: List<Product>? = mutableListOf(),
 
-        @SerializedName("hasYourLike")
+        @Ignore
         @Expose
-        var hasYourLike: Boolean = false
-) : Entity
+        var hasYourLike: Boolean = false,
+
+        @Ignore
+        @Expose
+        var bitmap: Bitmap? = null
+) : EntityDto

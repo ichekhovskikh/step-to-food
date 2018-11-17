@@ -21,16 +21,14 @@ import com.sugar.steptofood.utils.RecipeType
 import android.view.ViewGroup
 import com.sugar.steptofood.extension.afterTextChanged
 import com.sugar.steptofood.extension.observe
-import com.sugar.steptofood.paging.factory.BaseRecipeFactory
 import com.sugar.steptofood.repository.BaseRepository
 import com.sugar.steptofood.ui.viewmodel.RecipeViewModel
-import com.sugar.steptofood.utils.isNetworkAvailable
 
 @SuppressLint("InflateParams")
 open class RecipeFragment : BaseFragment() {
 
     protected val recipeViewModel by lazy { ViewModelProviders.of(this).get(RecipeViewModel::class.java) }
-    private var adapter: BaseRecipeAdapter? = null
+    protected var adapter: BaseRecipeAdapter? = null
 
     private val search by lazy { inflater?.inflate(R.layout.item_search, null) as MaterialSearchBar }
 
@@ -39,8 +37,6 @@ open class RecipeFragment : BaseFragment() {
     }
 
     override fun initView(view: View, savedInstanceState: Bundle?) {
-        if (isNetworkAvailable(context!!))
-            recipeViewModel.clearCache()
         initHeader()
         initContent()
         initLoader()
@@ -57,7 +53,7 @@ open class RecipeFragment : BaseFragment() {
         search.setHint(getString(R.string.search_recipe))
         search.setPlaceHolder(getString(R.string.search_recipe))
         search.afterTextChanged {
-            recipeViewModel.refreshPagedRecipeList(getRecipeSourceFactory())
+            refreshPagedRecipeList()
         }
         tittleTabContainer.addView(search)
     }
@@ -66,24 +62,26 @@ open class RecipeFragment : BaseFragment() {
 
     open fun createRecipeAdapter(): BaseRecipeAdapter? =
             UserRecipeAdapter(context!!,
-                    recipeViewModel.api,
+                    recipeViewModel.appDatabase,
                     recipeViewModel.session,
                     ::onRecipeImageClickListener,
                     ::onUserNameClickListener,
                     ::onRemoveClickListener,
                     ::onLikeClickListener)
 
-    open fun getRecipeSourceFactory(): BaseRecipeFactory =
-            recipeViewModel.getRecipeSourceFactory(getAuthor(), getRecipeType(), search.text)
+    open fun refreshPagedRecipeList() {
+        recipeViewModel.getPagedList(getRecipeType(), getUser(), search.text)
+                .observe(this) { pagedList ->
+                    adapter?.submitList(pagedList)
+                }
+    }
 
-    private fun getAuthor() = activity!!.intent.getIntExtra(UID, recipeViewModel.session.userId)
+    private fun getUser() = activity!!.intent.getIntExtra(UID, recipeViewModel.session.userId)
 
     private fun initContent() {
         adapter = createRecipeAdapter()
         recycler.adapter = adapter
-
-        val sourceFactory = getRecipeSourceFactory()
-        recipeViewModel.setLivePagedRecipeList(this, sourceFactory, adapter!!)
+        refreshPagedRecipeList()
     }
 
     protected fun onRecipeImageClickListener(recipe: Recipe) {

@@ -1,9 +1,10 @@
 package com.sugar.steptofood.di.module
 
 import android.app.Application
+import android.arch.persistence.room.Room
 import android.content.Context
 import com.sugar.steptofood.Session
-import com.sugar.steptofood.db.SQLiteHelper
+import com.sugar.steptofood.db.AppDatabase
 import dagger.Module
 import dagger.Provides
 import io.reactivex.disposables.CompositeDisposable
@@ -21,9 +22,9 @@ class ContextModule(private val app: Application) {
     fun provideSession(context: Context): Session = Session(context)
 
     @Provides
-    @Singleton
-    fun provideDbHelper(context: Context): SQLiteHelper = SQLiteHelper(context)
+    fun provideCompositeDisposable(): CompositeDisposable = CompositeDisposable()
 
     @Provides
-    fun provideCompositeDisposable(): CompositeDisposable = CompositeDisposable()
+    fun provideAppDatabase(context: Context): AppDatabase =
+            Room.databaseBuilder(context, AppDatabase::class.java, "database").allowMainThreadQueries().fallbackToDestructiveMigration().build()
 }

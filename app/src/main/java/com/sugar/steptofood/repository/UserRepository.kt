@@ -3,13 +3,10 @@ package com.sugar.steptofood.repository
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.content.Context
-import android.graphics.Bitmap
 import com.sugar.steptofood.extension.customSubscribe
 import com.sugar.steptofood.rest.ApiService
-import android.graphics.BitmapFactory
 import android.net.Uri
 import com.sugar.steptofood.Session
-import com.sugar.steptofood.extension.downloadSubscribe
 import com.sugar.steptofood.extension.readBytes
 import okhttp3.*
 
@@ -49,16 +46,6 @@ class UserRepository(private val api: ApiService,
                     liveStatus.postValue(LoadingStatus.LOADED)
                     onSuccess.invoke()
                 }, onError())
-    }
-
-    fun getAvatar(userId: Int): LiveData<Bitmap?> {
-        val avatar = MutableLiveData<Bitmap?>()
-        api.getUserAvatar(userId)
-                .downloadSubscribe({
-                    val bitmap: Bitmap? = BitmapFactory.decodeStream(it.byteStream())
-                    avatar.postValue(bitmap)
-                }, onError())
-        return avatar
     }
 
     fun getUserName(userId: Int): LiveData<String> {

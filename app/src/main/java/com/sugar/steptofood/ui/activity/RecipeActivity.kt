@@ -3,10 +3,10 @@ package com.sugar.steptofood.ui.activity
 import android.annotation.SuppressLint
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
-import android.graphics.Bitmap
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.ToggleButton
@@ -19,6 +19,8 @@ import com.sugar.steptofood.repository.BaseRepository
 import com.sugar.steptofood.ui.viewmodel.RecipeViewModel
 import com.sugar.steptofood.utils.ExtraName.RECIPE_ID
 import com.sugar.steptofood.utils.ExtraName.UID
+import com.sugar.steptofood.utils.loadAvatar
+import com.sugar.steptofood.utils.loadImage
 import kotlinx.android.synthetic.main.activity_recipe.*
 import kotlinx.android.synthetic.main.item_energy.*
 import kotlinx.android.synthetic.main.item_how_cook.*
@@ -41,6 +43,8 @@ class RecipeActivity : AppCompatActivity() {
 
     private fun initRecipe(recipeId: Int) {
         recipeViewModel.getRecipe(recipeId).observe(this) { recipe ->
+            val businessObject = recipeViewModel.appDatabase.businessObject
+            businessObject.setRecipeProperty(recipe, recipeViewModel.session.userId)
             setRecipe(recipe)
         }
     }
@@ -55,13 +59,12 @@ class RecipeActivity : AppCompatActivity() {
             setAuthor(recipe.author)
         } else addRemoveButton(recipe)
 
+        (productContainer as ViewGroup).removeAllViews()
         for (product in recipe.products!!)
             addProduct(product)
         setRecipeEnergy(recipe)
 
-        recipeViewModel.getRecipeImage(recipe.id!!).observe(this) {
-            setRecipeImage(it)
-        }
+        loadImage(recipe.image!!).into(recipeImageView)
     }
 
     private fun setRecipeEnergy(recipe: Recipe) {
@@ -89,9 +92,8 @@ class RecipeActivity : AppCompatActivity() {
             return
 
         userNameTextView?.text = author.name
-        recipeViewModel.getRecipeAuthorAvatar(author.id!!).observe(this) {
-            setRecipeAuthorAvatar(it)
-        }
+        setRecipeAuthorAvatar(author.id!!)
+
         userNameTextView.setOnClickListener {
             onUserNameClickListener(author)
         }
@@ -136,12 +138,8 @@ class RecipeActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun setRecipeImage(bitmap: Bitmap?) {
-        bitmap?.let { recipeImageView?.setImageBitmap(bitmap) }
-    }
-
-    private fun setRecipeAuthorAvatar(bitmap: Bitmap?) {
-        bitmap?.let { userImageView?.setImageBitmap(bitmap) }
+    private fun setRecipeAuthorAvatar(userId: Int) {
+        loadAvatar(userId).into(userImageView)
         userImageView?.visibility = View.VISIBLE
     }
 

@@ -3,8 +3,6 @@ package com.sugar.steptofood.paging.adapter
 import android.annotation.SuppressLint
 import android.arch.paging.PagedListAdapter
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -12,12 +10,12 @@ import android.view.View
 import android.widget.*
 import com.sugar.steptofood.R
 import com.sugar.steptofood.Session
-import com.sugar.steptofood.extension.downloadSubscribe
+import com.sugar.steptofood.db.AppDatabase
 import com.sugar.steptofood.model.Recipe
-import com.sugar.steptofood.rest.ApiService
+import com.sugar.steptofood.utils.loadImage
 
 abstract class BaseRecipeAdapter(context: Context,
-                                 private val api: ApiService,
+                                 private val appDatabase: AppDatabase,
                                  private val session: Session,
                                  private val onRecipeImageClick: ((Recipe) -> Unit)?,
                                  private val onUserNameClick: ((Recipe) -> Unit)?,
@@ -38,29 +36,19 @@ abstract class BaseRecipeAdapter(context: Context,
         return recipeCard
     }
 
-    protected fun bindRecipeViewHolder(holder: RecipeViewHolder, position: Int) {
-        val recipe = getItem(position)!!
+    protected fun bindRecipeViewHolder(holder: RecipeViewHolder, recipe: Recipe) {
         holder.textRecipeNameView.text = recipe.name
         holder.textCalorieNameView.text = recipe.calorie.toString()
+        recipe.image?.let { link -> loadImage(link).into(holder.recipeImageView) }
 
-        setImage(holder, recipe)
         if (holder.itemViewType == ANOTHER_USER_RECIPE) {
             holder.textUserNameView.text = recipe.author?.name
             holder.buttonLike?.isChecked = recipe.hasYourLike
         }
+        setRecipeViewListeners(holder, recipe)
     }
 
-    private fun setImage(holder: RecipeViewHolder, recipe: Recipe) {
-        api.getRecipeImage(recipe.id!!)
-                .downloadSubscribe({
-                    val bitmap: Bitmap? = BitmapFactory.decodeStream(it.byteStream())
-                    if (bitmap != null)
-                        holder.recipeImageView.setImageBitmap(bitmap)
-                }, {})
-    }
-
-    protected fun setRecipeViewListeners(holder: RecipeViewHolder) {
-        val recipe = getItem(holder.adapterPosition)!!
+    private fun setRecipeViewListeners(holder: RecipeViewHolder, recipe: Recipe) {
         holder.recipeImageView.setOnClickListener {
             onRecipeImageClick?.invoke(recipe)
         }
@@ -69,7 +57,7 @@ abstract class BaseRecipeAdapter(context: Context,
             holder.textUserNameView.setOnClickListener {
                 onUserNameClick?.invoke(recipe)
             }
-            holder.buttonLike?.setOnCheckedChangeListener { buttonView, hasLike ->
+            holder.buttonLike?.setOnCheckedChangeListener { _, hasLike ->
                 onLikeClick?.invoke(recipe, hasLike)
             }
         } else {
@@ -79,10 +67,12 @@ abstract class BaseRecipeAdapter(context: Context,
         }
     }
 
-    override fun getItemViewType(position: Int) =
-            if (getItem(position)!!.author?.id == session.userId)
-                YOUR_RECIPE
-            else ANOTHER_USER_RECIPE
+    override fun getItemViewType(position: Int): Int {
+        val recipe = getItem(position)!!
+        appDatabase.businessObject.setRecipeProperty(recipe, session.userId)
+        return if (recipe.author?.id == session.userId) YOUR_RECIPE else ANOTHER_USER_RECIPE
+    }
+
 
     @SuppressLint("InflateParams")
     protected fun likeButtonInCorner() = inflater.inflate(R.layout.button_like, null) as ToggleButton

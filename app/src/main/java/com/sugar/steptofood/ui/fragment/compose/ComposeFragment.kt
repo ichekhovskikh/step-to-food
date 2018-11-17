@@ -33,7 +33,7 @@ class ComposeFragment : BaseFragment() {
         adapter = HandwrittenListAdapter(view.context)
         productListView.adapter = adapter
 
-        productListView.onItemClickListener = AdapterView.OnItemClickListener { adapterView, parent, position, id ->
+        productListView.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
             adapter.remove(adapter.getItem(position))
         }
     }

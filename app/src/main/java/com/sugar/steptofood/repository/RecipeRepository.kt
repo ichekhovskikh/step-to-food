@@ -3,13 +3,10 @@ package com.sugar.steptofood.repository
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import com.sugar.steptofood.Session
-import com.sugar.steptofood.db.SQLiteHelper
+import com.sugar.steptofood.db.AppDatabase
 import com.sugar.steptofood.extension.customSubscribe
-import com.sugar.steptofood.extension.downloadSubscribe
 import com.sugar.steptofood.extension.readBytes
 import com.sugar.steptofood.model.Recipe
 import com.sugar.steptofood.rest.ApiService
@@ -18,24 +15,14 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
 class RecipeRepository(private val api: ApiService,
-                       private var dbHelper: SQLiteHelper,
+                       private val appDatabase: AppDatabase,
                        private val session: Session,
                        private val context: Context) : BaseRepository() {
-
-    fun getRecipeImage(recipeId: Int): LiveData<Bitmap?> {
-        val image = MutableLiveData<Bitmap?>()
-        api.getRecipeImage(recipeId)
-                .downloadSubscribe({
-                    val bitmap: Bitmap? = BitmapFactory.decodeStream(it.byteStream())
-                    image.postValue(bitmap)
-                }, onError())
-        return image
-    }
 
     fun getRecipe(recipeId: Int): LiveData<Recipe> {
         liveStatus.postValue(LoadingStatus.LOADING)
         val liveRecipe = MutableLiveData<Recipe>()
-        liveRecipe.value = dbHelper.recipeDao.queryForId(recipeId)
+        liveRecipe.value = appDatabase.recipeDao().getById(recipeId)
         api.getRecipe(recipeId)
                 .customSubscribe({
                     liveStatus.postValue(LoadingStatus.LOADED)
@@ -44,20 +31,20 @@ class RecipeRepository(private val api: ApiService,
         return liveRecipe
     }
 
-    fun removeRecipe(recipeId: Int, onSuccess: () -> Unit) {
+    fun removeRecipe(recipeId: Int, onSuccess: () -> Unit = {}) {
         api.removeRecipe(recipeId).customSubscribe({
-            dbHelper.recipeBusinessObject.cascadeRemove(recipeId)
+            appDatabase.recipeDao().remove(recipeId)
             onSuccess.invoke()
         }, onError())
     }
 
     fun setLikeRecipe(recipeId: Int, hasLike: Boolean) {
         api.setLike(recipeId, hasLike).customSubscribe({
-            dbHelper.recipeBusinessObject.setOrRemoveLike(recipeId, session.userId, hasLike)
+            appDatabase.businessObject.setOrRemoveLike(recipeId, session.userId, hasLike)
         }, onError())
     }
 
-    fun addRecipe(recipe: Recipe, onSuccess: () -> Unit) {
+    fun addRecipe(recipe: Recipe, onSuccess: () -> Unit = {}) {
         liveStatus.postValue(LoadingStatus.LOADING)
         uploadContentAndRecipePhoto(recipe, onSuccess)
     }
