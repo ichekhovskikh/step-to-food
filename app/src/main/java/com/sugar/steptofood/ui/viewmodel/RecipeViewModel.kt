@@ -33,12 +33,15 @@ class RecipeViewModel(private val app: Application) : AndroidViewModel(app) {
         App.appComponent.inject(this)
     }
 
-    fun getPagedList(products: List<Product>) =
-            pagedRecipeFactory.getPagedList(products)
+    fun getComposedPagedList(products: List<Product>) =
+            pagedRecipeFactory.getComposedPagedList(products)
 
-    fun getPagedList(type: RecipeType, userId: Int, searchName: String) =
-            if (searchName == "") pagedRecipeFactory.getPagedList(type, userId)
-            else pagedRecipeFactory.getPagedList(type, userId, searchName)
+    fun getCachePagedList(type: RecipeType, userId: Int) =
+            pagedRecipeFactory.getCachePagedList(type, userId)
+
+    fun getNetworkPagedList(type: RecipeType, userId: Int, searchName: String) =
+            if (searchName == "") pagedRecipeFactory.getNetworkUserPagedList(type, userId)
+            else pagedRecipeFactory.getSearchPagedList(type, userId, searchName)
 
     fun getRecipe(recipeId: Int): LiveData<Recipe> {
         if (!isNetworkAvailable(getApplication()))
@@ -46,7 +49,7 @@ class RecipeViewModel(private val app: Application) : AndroidViewModel(app) {
         return recipeRepository.getRecipe(recipeId)
     }
 
-    fun removeRecipe(recipeId: Int) {
+    fun removeRecipe(recipeId: Int,  onSuccess: () -> Unit = {}) {
         recipeRepository.removeRecipe(recipeId)
     }
 

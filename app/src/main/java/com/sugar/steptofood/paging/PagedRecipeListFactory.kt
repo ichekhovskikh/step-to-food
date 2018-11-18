@@ -1,13 +1,11 @@
 package com.sugar.steptofood.paging
 
-import android.arch.lifecycle.*
 import android.arch.paging.*
 import com.sugar.steptofood.Session
 import com.sugar.steptofood.rest.ApiService
 import com.sugar.steptofood.db.AppDatabase
 import com.sugar.steptofood.model.*
-import com.sugar.steptofood.paging.source.ComposedRecipeSourceFactory
-import com.sugar.steptofood.paging.source.SearchRecipeSourceFactory
+import com.sugar.steptofood.paging.source.*
 import com.sugar.steptofood.utils.RecipeType
 
 class PagedRecipeListFactory(private val api: ApiService,
@@ -18,28 +16,38 @@ class PagedRecipeListFactory(private val api: ApiService,
     init {
         config = PagedList.Config.Builder()
                 .setEnablePlaceholders(false)
+                .setPrefetchDistance(5)
                 .setPageSize(PAGE_SIZE)
                 .build()
     }
 
-    fun getPagedList(products: List<Product>): LiveData<PagedList<Recipe>> {
-        val sourceFactory = ComposedRecipeSourceFactory(api, products)
-        return LivePagedListBuilder(sourceFactory, config)
-                .build()
+    fun getComposedPagedList(products: List<Product>): RecipePagedListWithLoadState {
+        val composedSourceFactory = ComposedRecipeSourceFactory(api, products)
+        return buildPagedList(composedSourceFactory)
     }
 
-    fun getPagedList(type: RecipeType, userId: Int): LiveData<PagedList<Recipe>> {
-        val sourceFactory = appDatabase.businessObject.getRangeRecipe(type, userId)
-        val networkSwapCallback = RecipeNetworkSwapCallback(api, appDatabase, session, type, userId, PAGE_SIZE)
-        return LivePagedListBuilder(sourceFactory, config)
-                .setBoundaryCallback(networkSwapCallback)
-                .build()
+    fun getCachePagedList(type: RecipeType, userId: Int): RecipePagedListWithLoadState {
+        val cacheSourceFactory = CacheUserRecipeSourceFactory(appDatabase, session, type, userId)
+        return buildPagedList(cacheSourceFactory)
     }
 
-    fun getPagedList(type: RecipeType, userId: Int, searchName: String): LiveData<PagedList<Recipe>> {
-        val sourceFactory = SearchRecipeSourceFactory(api, type, userId, searchName)
-        return LivePagedListBuilder(sourceFactory, config)
+    fun getNetworkUserPagedList(type: RecipeType, userId: Int): RecipePagedListWithLoadState {
+        val networkSourceFactory = NetworkUserRecipeSourceFactory(api, appDatabase, session, type, userId)
+        return buildPagedList(networkSourceFactory)
+    }
+
+    fun getSearchPagedList(type: RecipeType, userId: Int, searchName: String): RecipePagedListWithLoadState {
+        val searchSourceFactory = SearchRecipeSourceFactory(api, type, userId, searchName)
+        return buildPagedList(searchSourceFactory)
+    }
+
+    private fun buildPagedList(sourceFactory: StateSourceFactory<Int, Recipe>): RecipePagedListWithLoadState {
+        val pagedList = LivePagedListBuilder(sourceFactory, config)
                 .build()
+
+        return RecipePagedListWithLoadState(pagedList,
+                sourceFactory.getInitialLoadState(),
+                sourceFactory.getAdditionalLoadState())
     }
 
     companion object {

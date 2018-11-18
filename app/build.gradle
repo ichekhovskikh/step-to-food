@@ -44,6 +44,8 @@ dependencies {
     implementation "com.android.support.constraint:constraint-layout:$constraint_layout_version"
     implementation "com.github.mancj:MaterialSearchBar:$material_search_bar_version"
     implementation "de.hdodenhof:circleimageview:$circle_image_view_version"
+    implementation "com.baoyz.pullrefreshlayout:library:$pull_refresh_layout_version"
+
     implementation "android.arch.paging:runtime:$paging_version"
 
     implementation "android.arch.persistence.room:runtime:$room_version"

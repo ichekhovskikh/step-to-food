@@ -18,9 +18,15 @@ class RecipeBusinessObject(private val recipeDao: RecipeDao,
         recipeDao.removeAll()
     }
 
-    fun getRangeRecipe(type: RecipeType, otherUserId: Int) =
-            if (type == RecipeType.ADDED) recipeDao.getRangeAddedRecipe(otherUserId)
-            else recipeDao.getRangeUserRecipe(type.toString(), otherUserId)
+    fun getRangeRecipe(type: RecipeType, otherUserId: Int, start: Int, size: Int) =
+            if (type == RecipeType.ADDED) recipeDao.getRangeAddedRecipe(otherUserId, start, size)
+            else recipeDao.getRangeUserRecipe(type.toString(), otherUserId, start, size)
+
+    fun setRangeRecipeProperty(recipes: List<Recipe>, userId: Int? = null) {
+        recipes.forEach { recipe ->
+            setRecipeProperty(recipe, userId)
+        }
+    }
 
     fun setRecipeProperty(recipe: Recipe, userId: Int? = null) {
         recipe.products = productDao.getByRecipeId(recipe.id!!)

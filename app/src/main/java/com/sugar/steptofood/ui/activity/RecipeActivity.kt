@@ -64,7 +64,7 @@ class RecipeActivity : AppCompatActivity() {
             addProduct(product)
         setRecipeEnergy(recipe)
 
-        loadImage(recipe.image!!).into(recipeImageView)
+        recipe.image?.let { loadImage(it).into(recipeImageView) }
     }
 
     private fun setRecipeEnergy(recipe: Recipe) {

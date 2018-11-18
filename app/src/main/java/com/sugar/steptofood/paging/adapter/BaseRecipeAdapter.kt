@@ -1,6 +1,7 @@
 package com.sugar.steptofood.paging.adapter
 
 import android.annotation.SuppressLint
+import android.arch.lifecycle.MutableLiveData
 import android.arch.paging.PagedListAdapter
 import android.content.Context
 import android.support.v7.util.DiffUtil
@@ -12,10 +13,10 @@ import com.sugar.steptofood.R
 import com.sugar.steptofood.Session
 import com.sugar.steptofood.db.AppDatabase
 import com.sugar.steptofood.model.Recipe
+import com.sugar.steptofood.utils.LoadState
 import com.sugar.steptofood.utils.loadImage
 
 abstract class BaseRecipeAdapter(context: Context,
-                                 private val appDatabase: AppDatabase,
                                  private val session: Session,
                                  private val onRecipeImageClick: ((Recipe) -> Unit)?,
                                  private val onUserNameClick: ((Recipe) -> Unit)?,
@@ -24,6 +25,11 @@ abstract class BaseRecipeAdapter(context: Context,
     : PagedListAdapter<Recipe, BaseRecipeAdapter.RecipeViewHolder>(RecipeDiffUtilCallback()) {
 
     protected val inflater: LayoutInflater = LayoutInflater.from(context)
+    private var loadState: LoadState? = null
+
+    fun setLoadState(loadState: LoadState) {
+        this.loadState = loadState
+    }
 
     abstract fun getRecipeCardLayout(): Int
 
@@ -69,7 +75,6 @@ abstract class BaseRecipeAdapter(context: Context,
 
     override fun getItemViewType(position: Int): Int {
         val recipe = getItem(position)!!
-        appDatabase.businessObject.setRecipeProperty(recipe, session.userId)
         return if (recipe.author?.id == session.userId) YOUR_RECIPE else ANOTHER_USER_RECIPE
     }
 
@@ -83,6 +88,7 @@ abstract class BaseRecipeAdapter(context: Context,
     companion object {
         const val ANOTHER_USER_RECIPE = 0
         const val YOUR_RECIPE = 1
+        const val LOADER = 2
     }
 
     open class RecipeViewHolder(view: View) : RecyclerView.ViewHolder(view) {

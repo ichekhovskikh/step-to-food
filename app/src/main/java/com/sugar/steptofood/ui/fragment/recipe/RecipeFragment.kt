@@ -10,19 +10,18 @@ import com.sugar.steptofood.R
 import com.sugar.steptofood.model.Recipe
 import com.sugar.steptofood.ui.fragment.BaseFragment
 import kotlinx.android.synthetic.main.fragment_recipe_list.*
-import com.sugar.steptofood.ui.activity.UserActivity
-import com.sugar.steptofood.ui.activity.RecipeActivity
+import com.sugar.steptofood.ui.activity.*
 import com.sugar.steptofood.utils.ExtraName.RECIPE_ID
 import com.sugar.steptofood.utils.ExtraName.UID
 import android.widget.Toast
-import com.sugar.steptofood.paging.adapter.BaseRecipeAdapter
-import com.sugar.steptofood.paging.adapter.UserRecipeAdapter
+import com.sugar.steptofood.paging.adapter.*
 import com.sugar.steptofood.utils.RecipeType
 import android.view.ViewGroup
-import com.sugar.steptofood.extension.afterTextChanged
-import com.sugar.steptofood.extension.observe
+import com.sugar.steptofood.extension.*
 import com.sugar.steptofood.repository.BaseRepository
 import com.sugar.steptofood.ui.viewmodel.RecipeViewModel
+import com.sugar.steptofood.utils.LoadState
+import com.sugar.steptofood.utils.isNetworkAvailable
 
 @SuppressLint("InflateParams")
 open class RecipeFragment : BaseFragment() {
@@ -30,7 +29,9 @@ open class RecipeFragment : BaseFragment() {
     protected val recipeViewModel by lazy { ViewModelProviders.of(this).get(RecipeViewModel::class.java) }
     protected var adapter: BaseRecipeAdapter? = null
 
-    private val search by lazy { inflater?.inflate(R.layout.item_search, null) as MaterialSearchBar }
+    protected var searchText = ""
+
+    protected val search by lazy { inflater?.inflate(R.layout.item_search, null) as MaterialSearchBar }
 
     companion object {
         fun getInstance() = RecipeFragment()
@@ -41,6 +42,10 @@ open class RecipeFragment : BaseFragment() {
         initContent()
         initLoader()
         initErrorObserver()
+
+        swipeRefreshLayout.setOnRefreshListener {
+            refreshPagedRecipeList()
+        }
     }
 
     override fun getLayout() = R.layout.fragment_recipe_list
@@ -53,7 +58,8 @@ open class RecipeFragment : BaseFragment() {
         search.setHint(getString(R.string.search_recipe))
         search.setPlaceHolder(getString(R.string.search_recipe))
         search.afterTextChanged {
-            refreshPagedRecipeList()
+            if (it != searchText)
+                refreshPagedRecipeList()
         }
         tittleTabContainer.addView(search)
     }
@@ -62,18 +68,44 @@ open class RecipeFragment : BaseFragment() {
 
     open fun createRecipeAdapter(): BaseRecipeAdapter? =
             UserRecipeAdapter(context!!,
-                    recipeViewModel.appDatabase,
                     recipeViewModel.session,
                     ::onRecipeImageClickListener,
                     ::onUserNameClickListener,
                     ::onRemoveClickListener,
                     ::onLikeClickListener)
 
+    open fun isShowingCache() = true
+
+    open fun showCacheRecipeList() {
+        val cache = recipeViewModel.getCachePagedList(getRecipeType(), getUser())
+        cache.value.observe(this) { list ->
+            adapter?.submitList(list)
+        }
+
+        cache.initialLoadState.observe(this) { state ->
+            if (state == LoadState.LOADED)
+                refreshPagedRecipeList()
+        }
+
+        cache.additionalLoadState.observe(this) {
+            adapter?.setLoadState(it)
+        }
+    }
+
     open fun refreshPagedRecipeList() {
-        recipeViewModel.getPagedList(getRecipeType(), getUser(), search.text)
-                .observe(this) { pagedList ->
-                    adapter?.submitList(pagedList)
-                }
+        if (!isNetworkAvailable(context!!))
+            return
+
+        searchText = search.text
+        val networkList = recipeViewModel.getNetworkPagedList(getRecipeType(), getUser(), searchText)
+        networkList.value.observe(this) { list ->
+            adapter?.submitList(list)
+            swipeRefreshLayout.setRefreshing(false)
+        }
+
+        networkList.additionalLoadState.observe(this) {
+            adapter?.setLoadState(it)
+        }
     }
 
     private fun getUser() = activity!!.intent.getIntExtra(UID, recipeViewModel.session.userId)
@@ -81,7 +113,9 @@ open class RecipeFragment : BaseFragment() {
     private fun initContent() {
         adapter = createRecipeAdapter()
         recycler.adapter = adapter
-        refreshPagedRecipeList()
+
+        if (isShowingCache()) showCacheRecipeList()
+        else refreshPagedRecipeList()
     }
 
     protected fun onRecipeImageClickListener(recipe: Recipe) {
@@ -97,7 +131,9 @@ open class RecipeFragment : BaseFragment() {
     }
 
     protected fun onRemoveClickListener(recipe: Recipe) {
-        recipeViewModel.removeRecipe(recipe.id!!)
+        recipeViewModel.removeRecipe(recipe.id!!) {
+            adapter?.currentList?.dataSource?.invalidate()
+        }
     }
 
     protected fun onLikeClickListener(recipe: Recipe, hasLike: Boolean) {

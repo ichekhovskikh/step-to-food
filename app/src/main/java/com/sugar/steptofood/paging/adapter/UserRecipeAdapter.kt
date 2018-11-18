@@ -8,13 +8,12 @@ import com.sugar.steptofood.db.AppDatabase
 import com.sugar.steptofood.model.*
 
 class UserRecipeAdapter(context: Context,
-                        appDatabase: AppDatabase,
                         session: Session,
                         onRecipeImageClick: ((Recipe) -> Unit)? = {},
                         onUserNameClick: ((Recipe) -> Unit)? = {},
                         onRemoveClick: ((Recipe) -> Unit)? = {},
                         onLikeClick: ((Recipe, Boolean) -> Unit)? = { _, _ -> })
-    : BaseRecipeAdapter(context, appDatabase, session, onRecipeImageClick, onUserNameClick, onRemoveClick, onLikeClick) {
+    : BaseRecipeAdapter(context, session, onRecipeImageClick, onUserNameClick, onRemoveClick, onLikeClick) {
 
     override fun getRecipeCardLayout() = R.layout.item_recipe_card
 

@@ -10,6 +10,7 @@ import com.sugar.steptofood.utils.ExtraName.PRODUCTS
 import com.sugar.steptofood.utils.RecipeType
 
 class ComposedRecipeFragment : RecipeFragment() {
+
     companion object {
         fun getInstance() = ComposedRecipeFragment()
     }
@@ -18,19 +19,28 @@ class ComposedRecipeFragment : RecipeFragment() {
         (header.parent as ViewGroup).removeView(header)
     }
 
+    override fun isShowingCache() = false
+
     override fun refreshPagedRecipeList() {
+        searchText = search.text
         val products = activity!!.intent.getSerializableExtra(PRODUCTS) as List<Product>
-        recipeViewModel.getPagedList(products)
-                .observe(this) { pagedList ->
-                    adapter?.submitList(pagedList)
+        val pagedList = recipeViewModel.getComposedPagedList(products)
+        pagedList.value
+                .observe(this) { list ->
+                    adapter?.submitList(list)
+                    swipeRefreshLayout.setRefreshing(false)
                 }
+
+
+        pagedList.additionalLoadState.observe(this) {
+            adapter?.setLoadState(it)
+        }
     }
 
     override fun getRecipeType() = RecipeType.COMPOSED
 
     override fun createRecipeAdapter(): BaseRecipeAdapter? =
             ComposedRecipeAdapter(this.context!!,
-                    recipeViewModel.appDatabase,
                     recipeViewModel.session,
                     ::onRecipeImageClickListener,
                     ::onUserNameClickListener,

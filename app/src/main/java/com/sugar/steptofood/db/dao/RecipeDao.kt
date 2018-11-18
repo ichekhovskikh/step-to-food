@@ -30,12 +30,14 @@ interface RecipeDao : EntityDao<Recipe> {
             "recipe.calorie, recipe.protein, recipe.fat, recipe.carbohydrates, recipe.authorId " +
             "FROM userrecipe, recipe WHERE userrecipe.recipeId = recipe.id " +
             "AND userrecipe.userId = :userId " +
-            "AND userrecipe.type = :type")
-    fun getRangeUserRecipe(type: String, userId: Int): DataSource.Factory<Int, Recipe>
+            "AND userrecipe.type = :type " +
+            "LIMIT :size OFFSET :start")
+    fun getRangeUserRecipe(type: String, userId: Int, start: Int, size: Int): List<Recipe>
 
     @Query("SELECT * FROM recipe " +
-            "WHERE authorId = :userId")
-    fun getRangeAddedRecipe(userId: Int): DataSource.Factory<Int, Recipe>
+            "WHERE authorId = :userId " +
+            "LIMIT :size OFFSET :start")
+    fun getRangeAddedRecipe(userId: Int, start: Int, size: Int): List<Recipe>
 
     @Query("SELECT COUNT(*) FROM userrecipe, recipe " +
             "WHERE userrecipe.recipeId = recipe.id " +
