@@ -26,7 +26,7 @@ class SearchRecipeSourceFactory(private val api: ApiService,
                         callback.onResult(recipes, 0, recipes.size)
                         initialLoadState.postValue(LoadState.LOADED)
                     }, {
-                        initialLoadState.postValue(LoadState.LOADED)
+                        initialLoadState.postValue(LoadState.ERROR)
                     })
         }
 
@@ -41,7 +41,7 @@ class SearchRecipeSourceFactory(private val api: ApiService,
                         callback.onResult(recipes, params.key + recipes.size)
                         additionalLoadState.postValue(LoadState.LOADED)
                     }, {
-                        additionalLoadState.postValue(LoadState.LOADED)
+                        additionalLoadState.postValue(LoadState.ERROR)
                     })
         }
     }

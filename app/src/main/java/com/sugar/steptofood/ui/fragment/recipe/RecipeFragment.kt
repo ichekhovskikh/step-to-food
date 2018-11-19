@@ -76,19 +76,30 @@ open class RecipeFragment : BaseFragment() {
 
     open fun isShowingCache() = true
 
-    open fun showCacheRecipeList() {
-        val cache = recipeViewModel.getCachePagedList(getRecipeType(), getUser())
-        cache.value.observe(this) { list ->
+    open fun showCacheBeforeNetworkRecipeList() {
+        val networkList =
+                recipeViewModel.getNetworkPagedList(getRecipeType(), getUser(), searchText)
+        networkList.value.observe(this) { list ->
             adapter?.submitList(list)
         }
 
-        cache.initialLoadState.observe(this) { state ->
-            if (state == LoadState.LOADED)
-                refreshPagedRecipeList()
-        }
-
-        cache.additionalLoadState.observe(this) {
-            adapter?.setLoadState(it)
+        val cache = recipeViewModel.getCachePagedList(getRecipeType(), getUser())
+        networkList.initialLoadState.observe(this) { state ->
+            if (state == LoadState.LOADED) {
+                networkList.value.observe(this) { list ->
+                    adapter?.submitList(list)
+                }
+                networkList.additionalLoadState.observe(this) {
+                    adapter?.setLoadState(it)
+                }
+            } else {
+                cache.value.observe(this) { list ->
+                    adapter?.submitList(list)
+                }
+                cache.additionalLoadState.observe(this) {
+                    adapter?.setLoadState(it)
+                }
+            }
         }
     }
 
@@ -97,7 +108,8 @@ open class RecipeFragment : BaseFragment() {
             return
 
         searchText = search.text
-        val networkList = recipeViewModel.getNetworkPagedList(getRecipeType(), getUser(), searchText)
+        val networkList =
+                recipeViewModel.getNetworkPagedList(getRecipeType(), getUser(), searchText)
         networkList.value.observe(this) { list ->
             adapter?.submitList(list)
             swipeRefreshLayout.setRefreshing(false)
@@ -114,7 +126,7 @@ open class RecipeFragment : BaseFragment() {
         adapter = createRecipeAdapter()
         recycler.adapter = adapter
 
-        if (isShowingCache()) showCacheRecipeList()
+        if (isShowingCache()) showCacheBeforeNetworkRecipeList()
         else refreshPagedRecipeList()
     }
 
@@ -132,7 +144,8 @@ open class RecipeFragment : BaseFragment() {
 
     protected fun onRemoveClickListener(recipe: Recipe) {
         recipeViewModel.removeRecipe(recipe.id!!) {
-            adapter?.currentList?.dataSource?.invalidate()
+            val pagedList = adapter?.currentList
+            pagedList?.dataSource?.invalidate()
         }
     }
 

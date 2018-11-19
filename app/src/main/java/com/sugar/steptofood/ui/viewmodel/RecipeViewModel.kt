@@ -50,7 +50,7 @@ class RecipeViewModel(private val app: Application) : AndroidViewModel(app) {
     }
 
     fun removeRecipe(recipeId: Int,  onSuccess: () -> Unit = {}) {
-        recipeRepository.removeRecipe(recipeId)
+        recipeRepository.removeRecipe(recipeId, onSuccess)
     }
 
     fun setLikeRecipe(recipeId: Int, hasLike: Boolean) {
