@@ -3,10 +3,10 @@ package com.sugar.steptofood.db
 import android.arch.persistence.room.*
 
 import com.sugar.steptofood.db.dao.*
-import com.sugar.steptofood.model.*
+import com.sugar.steptofood.model.dto.*
 
 @Database(entities = [User::class, Recipe::class, Product::class,
-    UserRecipe::class, ProductRecipe::class], version = 2)
+    UserRecipe::class, ProductRecipe::class], version = 3)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun recipeDao(): RecipeDao
     abstract fun userDao(): UserDao
@@ -14,6 +14,6 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun productRecipeDao(): ProductRecipeDao
     abstract fun userRecipeDao(): UserRecipeDao
 
-    val businessObject by lazy { RecipeBusinessObject(recipeDao(), userDao(),
-            productDao(), productRecipeDao(), userRecipeDao()) }
+    val businessLogicObject by lazy { RecipeBusinessLogicObject(recipeDao(),
+            userDao(), productDao(), productRecipeDao(), userRecipeDao()) }
 }

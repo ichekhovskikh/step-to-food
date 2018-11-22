@@ -1,47 +1,44 @@
 package com.sugar.steptofood.ui.activity
 
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.support.v4.view.ViewPager
-import com.sugar.steptofood.App
 import com.sugar.steptofood.ui.fragment.compose.ComposeFragment
 import com.sugar.steptofood.R
-import com.sugar.steptofood.Session
-import com.sugar.steptofood.ui.fragment.recipe.RecipeFragment
-import com.sugar.steptofood.ui.fragment.user.UserFragment
 import com.sugar.steptofood.adapter.SectionsPageAdapter
+import com.sugar.steptofood.ui.fragment.recipe.RecommendedRecipeFragment
+import com.sugar.steptofood.ui.fragment.user.SessionUserFragment
+import com.sugar.steptofood.ui.viewmodel.RecipeViewModel
 import com.sugar.steptofood.utils.ExtraName.UID
 import com.sugar.steptofood.utils.OPEN_GALLERY_PERMISSIONS_REQUEST_CODE
 import com.sugar.steptofood.utils.hasStoragePermissions
 import kotlinx.android.synthetic.main.activity_main_tabs.*
-import javax.inject.Inject
 
 class TabsActivity : AppCompatActivity() {
 
-    @Inject
-    lateinit var session: Session
+    private val recipeViewModel by lazy { ViewModelProviders.of(this).get(RecipeViewModel::class.java) }
 
     lateinit var sectionsPageAdapter: SectionsPageAdapter
         private set
 
-    private var recipeFragment: RecipeFragment? = null
+    private var recipeFragment: RecommendedRecipeFragment? = null
     private var composeFragment: ComposeFragment? = null
-    private var userFragment: UserFragment? = null
+    private var userFragment: SessionUserFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        App.appComponent.inject(this)
         this.setContentView(R.layout.activity_main_tabs)
         initTabs()
     }
 
     private fun initTabs() {
-        intent.putExtra(UID, session.userId)
-        recipeFragment = RecipeFragment.getInstance()
+        intent.putExtra(UID, recipeViewModel.session.userId)
+        recipeFragment = RecommendedRecipeFragment.getInstance()
         composeFragment = ComposeFragment.getInstance()
-        userFragment = UserFragment.getInstance()
+        userFragment = SessionUserFragment.getInstance()
 
         setupViewPager(pager)
         tabLayout.setupWithViewPager(pager)
@@ -60,7 +57,6 @@ class TabsActivity : AppCompatActivity() {
             sectionsPageAdapter.replace(COMPOSE_TAB, composeFragment!!)
             pager.adapter?.notifyDataSetChanged()
         } else toHome()
-
     }
 
     private fun currentTabIsComposedRecipe(): Boolean = pager.currentItem == COMPOSE_TAB
@@ -76,13 +72,11 @@ class TabsActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == OPEN_GALLERY_PERMISSIONS_REQUEST_CODE && hasStoragePermissions(this)) {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
-            startActivityForResult(intent, UserFragment.PICK_IMAGE)
+            startActivityForResult(intent, SessionUserFragment.PICK_IMAGE)
         }
     }
 
     companion object {
-        const val RECIPES_TAB = 0
         const val COMPOSE_TAB = 1
-        const val USER_TAB = 2
     }
 }

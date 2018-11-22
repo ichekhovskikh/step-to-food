@@ -1,6 +1,7 @@
 package com.sugar.steptofood.ui.activity
 
 import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
@@ -8,21 +9,21 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.sugar.steptofood.R
-import com.sugar.steptofood.extension.observe
-import com.sugar.steptofood.repository.BaseRepository
+import com.sugar.steptofood.utils.extension.observe
 import com.sugar.steptofood.ui.fragment.auth.LoginFragment
 import com.sugar.steptofood.ui.viewmodel.UserViewModel
+import com.sugar.steptofood.utils.Status
 import kotlinx.android.synthetic.main.activity_start.*
 
 class StartActivity : AppCompatActivity() {
 
     private val userViewModel by lazy { ViewModelProviders.of(this).get(UserViewModel::class.java) }
+    private val errorMessage by lazy { MutableLiveData<String>() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.splash_fragment)
         initLoader()
-        initErrorObserver()
         userViewModel.login(::login)
     }
 
@@ -41,9 +42,7 @@ class StartActivity : AppCompatActivity() {
         userViewModel.login(login, pass, ::login)
     }
 
-    fun getErrorMessage(): LiveData<String> {
-        return userViewModel.getErrorMessage()
-    }
+    fun getErrorMessage(): LiveData<String> = errorMessage
 
     private fun login() {
         val intent = Intent(this, TabsActivity::class.java)
@@ -56,10 +55,11 @@ class StartActivity : AppCompatActivity() {
     }
 
     private fun initLoader() {
-        userViewModel.getLoadingStatus().observe(this) { status ->
-            when (status) {
-                BaseRepository.LoadingStatus.LOADING -> showLoading()
-                BaseRepository.LoadingStatus.LOADED -> hideLoading()
+        userViewModel.getLoadingStatus().observe(this) { networkState ->
+            when (networkState.status) {
+                Status.RUNNING -> showLoading()
+                Status.SUCCESS -> hideLoading()
+                Status.FAILED -> showError(networkState.msg)
             }
         }
     }
@@ -72,10 +72,9 @@ class StartActivity : AppCompatActivity() {
         progressBar?.visibility = View.GONE
     }
 
-    private fun initErrorObserver() {
-        userViewModel.getErrorMessage().observe(this) {
-            if (supportFragmentManager.backStackEntryCount == 0)
-                openLoginWindow()
-        }
+    private fun showError(message: String?) {
+        if (supportFragmentManager.backStackEntryCount == 0)
+            openLoginWindow()
+        errorMessage.postValue(message)
     }
 }

@@ -1,28 +1,29 @@
 package com.sugar.steptofood.paging.adapter
 
 import android.content.Context
+import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import com.sugar.steptofood.R
 import com.sugar.steptofood.Session
-import com.sugar.steptofood.db.AppDatabase
-import com.sugar.steptofood.model.*
+import com.sugar.steptofood.model.fullinfo.*
+import com.sugar.steptofood.paging.adapter.holder.*
 
 class UserRecipeAdapter(context: Context,
                         session: Session,
-                        onRecipeImageClick: ((Recipe) -> Unit)? = {},
-                        onUserNameClick: ((Recipe) -> Unit)? = {},
-                        onRemoveClick: ((Recipe) -> Unit)? = {},
-                        onLikeClick: ((Recipe, Boolean) -> Unit)? = { _, _ -> })
+                        onRecipeImageClick: ((FullRecipeInfo) -> Unit)? = {},
+                        onUserNameClick: ((FullRecipeInfo) -> Unit)? = {},
+                        onRemoveClick: ((FullRecipeInfo) -> Unit)? = {},
+                        onLikeClick: ((FullRecipeInfo, Boolean) -> Unit)? = { _, _ -> })
     : BaseRecipeAdapter(context, session, onRecipeImageClick, onUserNameClick, onRemoveClick, onLikeClick) {
 
     override fun getRecipeCardLayout() = R.layout.item_recipe_card
 
-    override fun onCreateViewHolder(container: ViewGroup, viewType: Int): RecipeViewHolder {
-        return RecipeViewHolder(createItemView(viewType))
+    override fun onCreateViewHolder(container: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return if (viewType == LOADER) NetworkStateItemViewHolder(createNetworkStateItemView(container))
+        else RecipeViewHolder(createRecipeItemView(viewType))
     }
 
-    override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
-        val recipe = getItem(position)!!
-        bindRecipeViewHolder(holder, recipe)
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        bindRecipeViewHolder(holder, position)
     }
 }

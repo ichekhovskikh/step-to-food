@@ -7,8 +7,8 @@ import android.view.View
 import android.widget.AdapterView
 import com.sugar.steptofood.R
 import com.sugar.steptofood.adapter.HandwrittenListAdapter
-import com.sugar.steptofood.extension.getAll
-import com.sugar.steptofood.model.Product
+import com.sugar.steptofood.model.fullinfo.FullProductInfo
+import com.sugar.steptofood.utils.extension.getAll
 import com.sugar.steptofood.ui.activity.SearchProductActivity
 import kotlinx.android.synthetic.main.fragment_compose.*
 import com.sugar.steptofood.ui.activity.TabsActivity
@@ -19,7 +19,7 @@ import com.sugar.steptofood.utils.ExtraName.PRODUCTS
 
 class ComposeFragment : BaseFragment() {
 
-    private lateinit var adapter: HandwrittenListAdapter<Product>
+    private lateinit var adapter: HandwrittenListAdapter<FullProductInfo>
 
     override fun initView(view: View, savedInstanceState: Bundle?) {
         initProductList(view)
@@ -56,7 +56,7 @@ class ComposeFragment : BaseFragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == GET_PRODUCT && resultCode == RESULT_OK) {
-            val product = data?.getSerializableExtra(PRODUCT) as Product
+            val product = data?.getSerializableExtra(PRODUCT) as FullProductInfo
             adapter.add(product)
         }
     }

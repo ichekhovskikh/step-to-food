@@ -1,15 +1,12 @@
 package com.sugar.steptofood.ui.viewmodel
 
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.LiveData
-import android.graphics.Bitmap
+import android.arch.lifecycle.*
 import android.net.Uri
-import com.sugar.steptofood.App
-import com.sugar.steptofood.Session
-import com.sugar.steptofood.repository.BaseRepository
+import com.sugar.steptofood.*
 import com.sugar.steptofood.repository.UserRepository
 import com.sugar.steptofood.rest.ApiService
+import com.sugar.steptofood.utils.NetworkState
 import javax.inject.Inject
 
 class UserViewModel(app: Application) : AndroidViewModel(app) {
@@ -52,11 +49,7 @@ class UserViewModel(app: Application) : AndroidViewModel(app) {
         userRepository.terminate()
     }
 
-    fun getLoadingStatus(): LiveData<BaseRepository.LoadingStatus> {
+    fun getLoadingStatus(): LiveData<NetworkState> {
         return userRepository.loadingStatus()
-    }
-
-    fun getErrorMessage(): LiveData<String> {
-        return userRepository.error()
     }
 }

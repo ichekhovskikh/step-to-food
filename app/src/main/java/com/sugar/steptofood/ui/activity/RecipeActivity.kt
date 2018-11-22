@@ -1,26 +1,22 @@
 package com.sugar.steptofood.ui.activity
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import android.widget.Toast
-import android.widget.ToggleButton
+import android.widget.*
 import com.sugar.steptofood.R
-import com.sugar.steptofood.extension.observe
-import com.sugar.steptofood.model.Recipe
-import com.sugar.steptofood.model.Product
-import com.sugar.steptofood.model.User
-import com.sugar.steptofood.repository.BaseRepository
+import com.sugar.steptofood.utils.extension.observe
+import com.sugar.steptofood.model.dto.User
+import com.sugar.steptofood.model.fullinfo.*
 import com.sugar.steptofood.ui.viewmodel.RecipeViewModel
 import com.sugar.steptofood.utils.ExtraName.RECIPE_ID
 import com.sugar.steptofood.utils.ExtraName.UID
-import com.sugar.steptofood.utils.loadAvatar
-import com.sugar.steptofood.utils.loadImage
+import com.sugar.steptofood.utils.*
 import kotlinx.android.synthetic.main.activity_recipe.*
 import kotlinx.android.synthetic.main.item_energy.*
 import kotlinx.android.synthetic.main.item_how_cook.*
@@ -37,19 +33,16 @@ class RecipeActivity : AppCompatActivity() {
 
         initRecipeView()
         initLoader()
-        initErrorObserver()
         initRecipe(recipeId)
     }
 
     private fun initRecipe(recipeId: Int) {
         recipeViewModel.getRecipe(recipeId).observe(this) { recipe ->
-            val businessObject = recipeViewModel.appDatabase.businessObject
-            businessObject.setRecipeProperty(recipe, recipeViewModel.session.userId)
             setRecipe(recipe)
         }
     }
 
-    private fun setRecipe(recipe: Recipe) {
+    private fun setRecipe(recipe: FullRecipeInfo) {
         if (isFinishing)
             return
 
@@ -64,10 +57,10 @@ class RecipeActivity : AppCompatActivity() {
             addProduct(product)
         setRecipeEnergy(recipe)
 
-        recipe.image?.let { loadImage(it).into(recipeImageView) }
+        recipe.image?.let { loadImage(it)?.into(recipeImageView) }
     }
 
-    private fun setRecipeEnergy(recipe: Recipe) {
+    private fun setRecipeEnergy(recipe: FullRecipeInfo) {
         descriptionTextView.text = recipe.description
         calorieTextView.text = recipe.calorie.toString()
         proteinTextView.text = recipe.protein.toString()
@@ -103,7 +96,7 @@ class RecipeActivity : AppCompatActivity() {
     }
 
     @SuppressLint("InflateParams")
-    private fun addProduct(product: Product) {
+    private fun addProduct(product: FullProductInfo) {
         val productItem = layoutInflater.inflate(R.layout.item_product, null)
         val productNameView: TextView = productItem.findViewById(R.id.productNameTextView)
         val productWeightView: TextView = productItem.findViewById(R.id.weightTextView)
@@ -113,9 +106,9 @@ class RecipeActivity : AppCompatActivity() {
     }
 
     @SuppressLint("InflateParams")
-    private fun addLikeButton(recipe: Recipe) {
+    private fun addLikeButton(recipe: FullRecipeInfo) {
         val buttonLike = layoutInflater.inflate(R.layout.button_like, null) as ToggleButton
-        buttonLike.isChecked = recipe.hasYourLike
+        buttonLike.isChecked = recipe.hasSessionUserLike
         buttonLike.setOnCheckedChangeListener { _, hasLike ->
             recipeViewModel.setLikeRecipe(recipe.id!!, hasLike)
         }
@@ -123,10 +116,11 @@ class RecipeActivity : AppCompatActivity() {
     }
 
     @SuppressLint("InflateParams")
-    private fun addRemoveButton(recipe: Recipe) {
+    private fun addRemoveButton(recipe: FullRecipeInfo) {
         val buttonRemove = layoutInflater.inflate(R.layout.button_remove, null)
         buttonRemove.setOnClickListener {
             recipeViewModel.removeRecipe(recipe.id!!)
+            setResult(Activity.RESULT_OK)
             finish()
         }
         imageActionContainer.addView(buttonRemove)
@@ -139,15 +133,16 @@ class RecipeActivity : AppCompatActivity() {
     }
 
     private fun setRecipeAuthorAvatar(userId: Int) {
-        loadAvatar(userId).into(userImageView)
+        loadAvatar(userId)?.into(userImageView)
         userImageView?.visibility = View.VISIBLE
     }
 
     private fun initLoader() {
-        recipeViewModel.getLoadingStatus().observe(this) { status ->
-            when (status) {
-                BaseRepository.LoadingStatus.LOADING -> showLoading()
-                BaseRepository.LoadingStatus.LOADED -> hideLoading()
+        recipeViewModel.getLoadingStatus().observe(this) { networkState ->
+            when (networkState.status) {
+                Status.RUNNING -> showLoading()
+                Status.SUCCESS -> hideLoading()
+                Status.FAILED -> showError(networkState.msg)
             }
         }
     }
@@ -160,9 +155,7 @@ class RecipeActivity : AppCompatActivity() {
         progressBar?.visibility = View.GONE
     }
 
-    private fun initErrorObserver() {
-        recipeViewModel.getErrorMessage().observe(this) { message ->
-            Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-        }
+    private fun showError(message: String?) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 }

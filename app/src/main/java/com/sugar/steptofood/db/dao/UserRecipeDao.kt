@@ -1,7 +1,7 @@
 package com.sugar.steptofood.db.dao
 
 import android.arch.persistence.room.*
-import com.sugar.steptofood.model.*
+import com.sugar.steptofood.model.dto.UserRecipe
 
 @Dao
 interface UserRecipeDao : EntityDao<UserRecipe> {

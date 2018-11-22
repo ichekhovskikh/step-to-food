@@ -3,18 +3,13 @@ package com.sugar.steptofood.paging.source
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.paging.DataSource
-import com.sugar.steptofood.utils.LoadState
+import com.sugar.steptofood.utils.NetworkState
 
 abstract class StateSourceFactory<K, V> : DataSource.Factory<K, V>() {
-    protected var initialLoadState: MutableLiveData<LoadState> = MutableLiveData()
-    protected var additionalLoadState: MutableLiveData<LoadState> = MutableLiveData()
+    protected var initialLoadState = MutableLiveData<NetworkState>()
+    protected var additionalLoadState = MutableLiveData<NetworkState>()
 
-    init {
-        initialLoadState.postValue(LoadState.LOADING)
-        additionalLoadState.postValue(LoadState.LOADED)
-    }
+    fun getInitialLoadState(): LiveData<NetworkState> = initialLoadState
 
-    fun getInitialLoadState(): LiveData<LoadState> = initialLoadState
-
-    fun getAdditionalLoadState(): LiveData<LoadState> = additionalLoadState
+    fun getAdditionalLoadState(): LiveData<NetworkState> = additionalLoadState
 }

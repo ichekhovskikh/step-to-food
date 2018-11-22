@@ -13,6 +13,9 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "INTERNET_BASE_URL", "\"https://steptofoodserver-nplmwvwjii.now.sh\""
+        buildConfigField "String", "LOCAL_BASE_URL", "\"http://10.0.2.2:2134\""
     }
     buildTypes {
         release {
@@ -36,6 +39,7 @@ repositories {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    //noinspection GradleCompatible
     implementation "com.android.support:appcompat-v7:$android_version"
     implementation "com.android.support:cardview-v7:$android_version"
     implementation "com.android.support:design:$android_version"

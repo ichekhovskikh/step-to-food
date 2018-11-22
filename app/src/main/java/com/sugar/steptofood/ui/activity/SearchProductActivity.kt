@@ -11,18 +11,17 @@ import android.arch.lifecycle.ViewModelProviders
 import android.view.View
 import android.widget.AdapterView
 import android.widget.Toast
-import com.sugar.steptofood.extension.afterTextChanged
-import com.sugar.steptofood.extension.observe
-import com.sugar.steptofood.model.Product
-import com.sugar.steptofood.repository.BaseRepository
+import com.sugar.steptofood.model.fullinfo.FullProductInfo
+import com.sugar.steptofood.utils.extension.*
 import com.sugar.steptofood.ui.viewmodel.ProductViewModel
 import com.sugar.steptofood.utils.ExtraName.PRODUCT
+import com.sugar.steptofood.utils.Status
 import kotlinx.android.synthetic.main.item_search.*
 
 class SearchProductActivity : AppCompatActivity() {
 
     private val productViewModel by lazy { ViewModelProviders.of(this).get(ProductViewModel::class.java) }
-    private lateinit var adapter: ArrayAdapter<Product>
+    private lateinit var adapter: ArrayAdapter<FullProductInfo>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,16 +30,10 @@ class SearchProductActivity : AppCompatActivity() {
         initSearch()
         initProductList()
         initLoader()
-        initErrorObserver()
 
         productViewModel.getAll().observe(this) { products ->
             refreshProducts(products)
         }
-    }
-
-    private fun refreshProducts(products: List<Product>) {
-        adapter.clear()
-        adapter.addAll(products)
     }
 
     private fun initSearch() {
@@ -49,6 +42,11 @@ class SearchProductActivity : AppCompatActivity() {
                 refreshProducts(products)
             }
         }
+    }
+
+    private fun refreshProducts(products: List<FullProductInfo>) {
+        adapter.clear()
+        adapter.addAll(products)
     }
 
     private fun initProductList() {
@@ -65,10 +63,11 @@ class SearchProductActivity : AppCompatActivity() {
     }
 
     private fun initLoader() {
-        productViewModel.getLoadingStatus().observe(this) { status ->
-            when (status) {
-                BaseRepository.LoadingStatus.LOADING -> showLoading()
-                BaseRepository.LoadingStatus.LOADED -> hideLoading()
+        productViewModel.getLoadingStatus().observe(this) { networkState ->
+            when (networkState.status) {
+                Status.RUNNING -> showLoading()
+                Status.SUCCESS -> hideLoading()
+                Status.FAILED -> showError(networkState.msg)
             }
         }
     }
@@ -81,9 +80,7 @@ class SearchProductActivity : AppCompatActivity() {
         progressBar?.visibility = View.GONE
     }
 
-    private fun initErrorObserver() {
-        productViewModel.getErrorMessage().observe(this) { message ->
-            Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-        }
+    private fun showError(message: String?) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 }

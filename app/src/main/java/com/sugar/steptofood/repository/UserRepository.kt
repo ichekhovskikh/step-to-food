@@ -1,59 +1,57 @@
 package com.sugar.steptofood.repository
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.*
 import android.content.Context
-import com.sugar.steptofood.extension.customSubscribe
+import com.sugar.steptofood.utils.extension.*
 import com.sugar.steptofood.rest.ApiService
 import android.net.Uri
 import com.sugar.steptofood.Session
-import com.sugar.steptofood.extension.readBytes
+import com.sugar.steptofood.utils.NetworkState
 import okhttp3.*
 
 class UserRepository(private val api: ApiService,
                      private val session: Session,
-                     private val context: Context) : BaseRepository() {
+                     private val context: Context) : BaseStatusRepository() {
 
     fun register(name: String, login: String, password: String, onSuccess: () -> Unit) {
-        liveStatus.postValue(LoadingStatus.LOADING)
+        status.postValue(NetworkState.LOADING)
         api.register(name, login, password)
-                .customSubscribe({
-                    liveStatus.postValue(LoadingStatus.LOADED)
+                .smartSubscribe({
+                    status.postValue(NetworkState.LOADED)
                     login(login, password, onSuccess)
                 }, onError())
     }
 
     fun login(login: String, password: String, onSuccess: () -> Unit) {
-        liveStatus.postValue(LoadingStatus.LOADING)
+        status.postValue(NetworkState.LOADING)
         api.login(login, password)
-                .customSubscribe({ response ->
+                .smartSubscribe({ response ->
                     session.token = response.token
                     session.userId = response.id!!
-                    liveStatus.postValue(LoadingStatus.LOADED)
+                    status.postValue(NetworkState.LOADED)
                     onSuccess.invoke()
                 }, onError())
     }
 
     fun login(onSuccess: () -> Unit) {
-        liveStatus.postValue(LoadingStatus.LOADING)
+        status.postValue(NetworkState.LOADING)
         if (session.token.isEmpty()) {
-            liveStatus.postValue(LoadingStatus.LOADED)
-            errorMessage.postValue("Token is absent")
+            onError().invoke("Token is absent")
         }
 
         api.login(session.token)
-                .customSubscribe({
-                    liveStatus.postValue(LoadingStatus.LOADED)
+                .smartSubscribe({
+                    status.postValue(NetworkState.LOADED)
                     onSuccess.invoke()
                 }, onError())
     }
 
     fun getUserName(userId: Int): LiveData<String> {
-        liveStatus.postValue(LoadingStatus.LOADING)
+        status.postValue(NetworkState.LOADING)
         val liveName = MutableLiveData<String>()
         api.getUser(userId)
-                .customSubscribe({
-                    liveStatus.postValue(LoadingStatus.LOADED)
+                .smartSubscribe({
+                    status.postValue(NetworkState.LOADED)
                     liveName.postValue(it.name)
                 }, onError())
         return liveName
@@ -66,14 +64,14 @@ class UserRepository(private val api: ApiService,
 
         val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), bytes)
         val body = MultipartBody.Part.createFormData("image", uri.lastPathSegment, requestFile)
-        api.setUserAvatar(body).customSubscribe({}, { errorMessage.postValue(it) })
+        api.setUserAvatar(body).smartSubscribe({}, onError())
     }
 
     fun terminate() {
-        liveStatus.postValue(LoadingStatus.LOADING)
+        status.postValue(NetworkState.LOADING)
         api.terminate()
-                .customSubscribe({
-                    liveStatus.postValue(LoadingStatus.LOADED)
+                .smartSubscribe({
+                    status.postValue(NetworkState.LOADED)
                     session.reset()
                 }, onError())
     }

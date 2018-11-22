@@ -1,9 +1,9 @@
-package com.sugar.steptofood.model
+package com.sugar.steptofood.model.dto
 
 import android.arch.persistence.room.*
 import android.arch.persistence.room.ForeignKey.CASCADE
 
-@Entity
+@Entity(indices = [Index(value = ["recipeId", "productId"], unique = true)])
 data class ProductRecipe(
         @PrimaryKey(autoGenerate = true)
         override var id: Int? = null,

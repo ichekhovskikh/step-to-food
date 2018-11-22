@@ -3,16 +3,29 @@ package com.sugar.steptofood.ui.fragment.recipe
 import android.annotation.SuppressLint
 import android.widget.TextView
 import com.sugar.steptofood.R
+import com.sugar.steptofood.paging.adapter.*
 import com.sugar.steptofood.utils.RecipeType
 import kotlinx.android.synthetic.main.fragment_recipe_list.*
 
-class LikeRecipeFragment : RecipeFragment() {
+class LikeRecipeFragment : BaseRecipeFragment() {
 
     companion object {
         fun getInstance() = LikeRecipeFragment()
     }
 
-    override fun getRecipeType() = RecipeType.LIKE
+    override fun createRecipeAdapter(): BaseRecipeAdapter? =
+            UserRecipeAdapter(context!!,
+                    recipeViewModel.session,
+                    ::onRecipeImageClickListener,
+                    ::onUserNameClickListener,
+                    ::onRemoveClickListener,
+                    ::onLikeClickListener)
+
+    override fun createNetworkRecipePagedList() =
+            recipeViewModel.getNetworkTypeRecipePagedList(RecipeType.LIKE, currentUserId, "")
+
+    override fun createCacheRecipePagedList() =
+            recipeViewModel.getCacheTypeRecipePagedList(RecipeType.LIKE, currentUserId, "")
 
     @SuppressLint("InflateParams")
     override fun initHeader() {

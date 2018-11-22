@@ -3,8 +3,7 @@ package com.sugar.steptofood.ui.fragment.auth
 import android.os.Bundle
 import android.view.View
 import com.sugar.steptofood.R
-import com.sugar.steptofood.extension.observe
-import com.sugar.steptofood.extension.validate
+import com.sugar.steptofood.utils.extension.*
 import com.sugar.steptofood.ui.activity.StartActivity
 import com.sugar.steptofood.ui.fragment.BaseFragment
 import kotlinx.android.synthetic.main.fragment_registration.*

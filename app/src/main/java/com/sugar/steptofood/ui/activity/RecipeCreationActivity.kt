@@ -8,15 +8,10 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import com.sugar.steptofood.R
-import com.sugar.steptofood.extension.observe
-import com.sugar.steptofood.extension.validate
-import com.sugar.steptofood.model.Recipe
-import com.sugar.steptofood.model.Product
-import com.sugar.steptofood.repository.BaseRepository
+import com.sugar.steptofood.utils.extension.*
+import com.sugar.steptofood.model.fullinfo.*
 import com.sugar.steptofood.ui.viewmodel.RecipeViewModel
 import com.sugar.steptofood.utils.*
 import com.sugar.steptofood.utils.ExtraName.PRODUCT
@@ -37,7 +32,6 @@ class RecipeCreationActivity : AppCompatActivity() {
         initActionBar()
         initEditRecipeView()
         initLoader()
-        initErrorObserver()
     }
 
     private fun initActionBar() {
@@ -48,10 +42,10 @@ class RecipeCreationActivity : AppCompatActivity() {
         setActionOnClickButtons()
     }
 
-    private fun getSelectedProducts(): List<Product> {
-        val products = mutableListOf<Product>()
+    private fun getSelectedProducts(): List<FullProductInfo> {
+        val products = mutableListOf<FullProductInfo>()
         for (i in 0 until productContainer.childCount) {
-            val product = Product()
+            val product = FullProductInfo()
 
             val view = productContainer.getChildAt(i)
             val weightEditText: EditText = view.findViewById(R.id.weightEditText)
@@ -70,8 +64,8 @@ class RecipeCreationActivity : AppCompatActivity() {
         buttonCancel.setOnClickListener { finish() }
     }
 
-    private fun getCreatedRecipe(): Recipe {
-        val recipe = Recipe()
+    private fun getCreatedRecipe(): FullRecipeInfo {
+        val recipe = FullRecipeInfo()
         recipe.name = recipeNameTextView.text.toString()
         recipe.image = recipeImageView.contentDescription.toString()
         recipe.description = descriptionTextView.text.toString()
@@ -199,7 +193,7 @@ class RecipeCreationActivity : AppCompatActivity() {
 
     @SuppressLint("InflateParams")
     private fun addProduct(intent: Intent?) {
-        val product: Product = intent?.getSerializableExtra(PRODUCT) as Product
+        val product: FullProductInfo = intent?.getSerializableExtra(PRODUCT) as FullProductInfo
         val productItem = layoutInflater.inflate(R.layout.item_edit_product, null)
         val productNameView: TextView = productItem.findViewById(R.id.productNameTextView)
         productItem.tag = product.id
@@ -223,10 +217,11 @@ class RecipeCreationActivity : AppCompatActivity() {
     }
 
     private fun initLoader() {
-        recipeViewModel.getLoadingStatus().observe(this) { status ->
-            when (status) {
-                BaseRepository.LoadingStatus.LOADING -> showLoading()
-                BaseRepository.LoadingStatus.LOADED -> hideLoading()
+        recipeViewModel.getLoadingStatus().observe(this) { networkState ->
+            when (networkState.status) {
+                Status.RUNNING -> showLoading()
+                Status.SUCCESS -> hideLoading()
+                Status.FAILED -> showError(networkState.msg)
             }
         }
     }
@@ -239,10 +234,8 @@ class RecipeCreationActivity : AppCompatActivity() {
         progressBar?.visibility = View.GONE
     }
 
-    private fun initErrorObserver() {
-        recipeViewModel.getErrorMessage().observe(this) { message ->
-            Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-        }
+    private fun showError(message: String?) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 
     companion object {

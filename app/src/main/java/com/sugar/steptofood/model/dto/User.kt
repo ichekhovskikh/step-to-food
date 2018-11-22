@@ -1,4 +1,4 @@
-package com.sugar.steptofood.model
+package com.sugar.steptofood.model.dto
 
 import android.arch.persistence.room.*
 import com.google.gson.annotations.Expose

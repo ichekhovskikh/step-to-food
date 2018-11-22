@@ -1,9 +1,9 @@
-package com.sugar.steptofood.model
+package com.sugar.steptofood.model.dto
 
 import android.arch.persistence.room.*
 
-@Entity
-data class UserRecipe (
+@Entity(indices = [Index(value = ["recipeId", "userId", "type"], unique = true)])
+data class UserRecipe(
         @PrimaryKey(autoGenerate = true)
         override var id: Int? = null,
 

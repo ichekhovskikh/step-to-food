@@ -1,4 +1,4 @@
-package com.sugar.steptofood.model
+package com.sugar.steptofood.model.dto
 
 import java.io.Serializable
 

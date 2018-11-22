@@ -1,12 +1,11 @@
 package com.sugar.steptofood.ui.viewmodel
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.ViewModel
+import android.arch.lifecycle.*
 import com.sugar.steptofood.App
-import com.sugar.steptofood.model.Product
-import com.sugar.steptofood.repository.BaseRepository
+import com.sugar.steptofood.model.fullinfo.FullProductInfo
 import com.sugar.steptofood.repository.ProductRepository
 import com.sugar.steptofood.rest.ApiService
+import com.sugar.steptofood.utils.NetworkState
 import javax.inject.Inject
 
 class ProductViewModel : ViewModel() {
@@ -21,19 +20,15 @@ class ProductViewModel : ViewModel() {
         App.appComponent.inject(this)
     }
 
-    fun getAll(): LiveData<List<Product>> {
+    fun getAll(): LiveData<List<FullProductInfo>> {
         return productRepository.getAllProducts()
     }
 
-    fun search(name: String): LiveData<List<Product>> {
+    fun search(name: String): LiveData<List<FullProductInfo>> {
         return productRepository.searchProducts(name)
     }
 
-    fun getLoadingStatus(): LiveData<BaseRepository.LoadingStatus> {
+    fun getLoadingStatus(): LiveData<NetworkState> {
         return productRepository.loadingStatus()
-    }
-
-    fun getErrorMessage(): LiveData<String> {
-        return productRepository.error()
     }
 }
