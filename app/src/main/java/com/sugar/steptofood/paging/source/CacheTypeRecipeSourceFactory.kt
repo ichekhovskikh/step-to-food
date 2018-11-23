@@ -34,8 +34,8 @@ class CacheTypeRecipeSourceFactory(private val onLoadMoreFromCache: (start: Int,
             networkState.postValue(NetworkState.LOADING)
             onLoadMoreFromCache.invoke(start, size) { recipes ->
                 callback.invoke(recipes, start + recipes.size)
+                networkState.postValue(NetworkState.LOADED)
             }
-            networkState.postValue(NetworkState.LOADED)
         }
     }
 }

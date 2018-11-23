@@ -1,6 +1,5 @@
 package com.sugar.steptofood.ui.fragment.recipe
 
-import android.app.Activity
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
@@ -15,6 +14,7 @@ import android.widget.Toast
 import com.sugar.steptofood.paging.adapter.*
 import com.sugar.steptofood.model.fullinfo.FullRecipeInfo
 import com.sugar.steptofood.paging.Listing
+import com.sugar.steptofood.ui.activity.RecipeActivity.Companion.REMOVED_ITEM_RESULT
 import com.sugar.steptofood.utils.extension.*
 import com.sugar.steptofood.ui.viewmodel.RecipeViewModel
 import com.sugar.steptofood.utils.Status
@@ -27,7 +27,7 @@ abstract class BaseRecipeFragment : BaseFragment() {
     protected val currentUserId by lazy { activity!!.intent.getIntExtra(UID, recipeViewModel.session.userId) }
 
     companion object {
-        val REMOVED_ITEM_RESULT = 1
+        const val OPEN_RECIPE = 1
     }
 
     override fun initView(view: View, savedInstanceState: Bundle?) {
@@ -62,6 +62,7 @@ abstract class BaseRecipeFragment : BaseFragment() {
             networkList.refresh.invoke()
         }
 
+        //to call a method initial load in networkList
         networkList.pagedList.observe(this) {}
 
         networkList.initialLoadState.observe(this) { state ->
@@ -102,11 +103,11 @@ abstract class BaseRecipeFragment : BaseFragment() {
     protected fun onRecipeImageClickListener(recipe: FullRecipeInfo) {
         val intent = Intent(activity, RecipeActivity::class.java)
         intent.putExtra(RECIPE_ID, recipe.id)
-        startActivityForResult(intent, REMOVED_ITEM_RESULT)
+        startActivityForResult(intent, OPEN_RECIPE)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
-        if (requestCode == REMOVED_ITEM_RESULT && resultCode == Activity.RESULT_OK) {
+        if (requestCode == OPEN_RECIPE && resultCode == REMOVED_ITEM_RESULT) {
             val pagedList = adapter?.currentList
             pagedList?.dataSource?.invalidate()
         }

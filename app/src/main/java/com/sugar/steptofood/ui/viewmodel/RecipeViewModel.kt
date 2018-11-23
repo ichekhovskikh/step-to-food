@@ -51,10 +51,10 @@ class RecipeViewModel(app: Application) : AndroidViewModel(app) {
                         type = type,
                         userId = userId,
                         handleInitialLoadResponse = {
-                            recipeRepository.addRecipesInCache(it, type, userId)
+                            recipeRepository.refreshAllRecipesInCache(it, type, userId)
                         },
                         handleAdditionalLoadResponse = {
-                            recipeRepository.refreshAllRecipesInCache(it, type, userId)
+                            recipeRepository.addRecipesInCache(it, type, userId)
                         })
             } else pagedRecipeListFactory.getSearchRecipePagedList(type, userId, searchName)
 

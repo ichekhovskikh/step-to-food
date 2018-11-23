@@ -1,7 +1,6 @@
 package com.sugar.steptofood.ui.activity
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
@@ -25,6 +24,10 @@ import kotlinx.android.synthetic.main.item_products_container.*
 class RecipeActivity : AppCompatActivity() {
 
     private val recipeViewModel by lazy { ViewModelProviders.of(this).get(RecipeViewModel::class.java) }
+
+    companion object {
+        const val REMOVED_ITEM_RESULT = 1
+    }
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -120,7 +123,7 @@ class RecipeActivity : AppCompatActivity() {
         val buttonRemove = layoutInflater.inflate(R.layout.button_remove, null)
         buttonRemove.setOnClickListener {
             recipeViewModel.removeRecipe(recipe.id!!)
-            setResult(Activity.RESULT_OK)
+            setResult(REMOVED_ITEM_RESULT)
             finish()
         }
         imageActionContainer.addView(buttonRemove)
